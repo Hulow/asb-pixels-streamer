@@ -2,6 +2,7 @@
 #include <cstdint>
 #include "Command.h"
 #include "Logger.h"
+#include <functional> 
 
 class CommandHandler {
     private:
@@ -10,5 +11,5 @@ class CommandHandler {
     
     public:
         CommandHandler(Logger& logger);
-        void execute(const Command& command);
+        void execute(const Command& command, std::function<void()> callBack);
 };
