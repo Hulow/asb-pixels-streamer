@@ -12,4 +12,8 @@ class Sequence {
         void add(const Pixel& pixel) {
             _pixels.push_back(pixel);
         }
+
+        Pixel getPixel(const int& pixelNb) {
+            return _pixels.at(pixelNb);
+        }
 };
