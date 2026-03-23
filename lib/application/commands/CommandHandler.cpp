@@ -27,5 +27,6 @@ void CommandHandler::execute(const Command& command, std::function<void()> callB
             )
         );
         PixelConverter symbols = PixelConverter::fromPixel(sequence.getPixel(i));
+        _streamer.stream(symbols.toSymbols());
     }
 }

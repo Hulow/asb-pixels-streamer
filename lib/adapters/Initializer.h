@@ -10,4 +10,5 @@ class Initializer {
         void turnOnTransmitter();
     public:
         Initializer(const rmt_tx_channel_config_t& channelConfigs);
+        rmt_channel_handle_t getChannel();
 };
