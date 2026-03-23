@@ -5,7 +5,7 @@
 #include "domain/Sequence.h"
 #include <sstream>
 
-CommandHandler::CommandHandler(Logger& logger) : _logger(logger) {}
+CommandHandler::CommandHandler(Logger& logger, IPixelsStreamer& streamer) : _logger(logger), _streamer(streamer) {}
 
 void CommandHandler::execute(const Command& command, std::function<void()> callBack) {
     // std::stringstream ss;

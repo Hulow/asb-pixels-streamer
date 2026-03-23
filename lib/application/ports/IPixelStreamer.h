@@ -1,4 +1,6 @@
+#pragma once
+
 class IPixelsStreamer {
-    public: 
+    public:
         virtual ~IPixelsStreamer() = default;
 };

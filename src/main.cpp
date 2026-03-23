@@ -1,5 +1,7 @@
 #include "commands/CommandHandler.h"
 #include "Logger.h"
+#include "Transceiver.h"
+#include "ConfigsBuilder.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
@@ -28,9 +30,20 @@ void task(void* param) {
 
 extern "C" void app_main() {
     Logger logger;
-    CommandHandler handlerOne(logger);
+    ConfigsBuilder baseConfigs = ConfigsBuilder()
+        .clock(static_cast<rmt_clock_source_t>(RMT_CLK_SRC_DEFAULT))
+        .memBlocks(64)
+        .queueDepth(1)
+        .resolutionHz(10'000'000);
+
+    ConfigsBuilder configsOne = baseConfigs.gpioNum(GPIO_NUM_4);
+    Transceiver transceiverOne(configsOne.build());
+    CommandHandler handlerOne(logger, transceiverOne);
     Command commandOne = Command::from(0, 255, 0, 10);
-    CommandHandler handlerTwo(logger);
+
+    ConfigsBuilder configsTwo = baseConfigs.gpioNum(GPIO_NUM_5);
+    Transceiver transceiverTwo(configsTwo.build());
+    CommandHandler handlerTwo(logger, transceiverTwo);
     Command commandTwo = Command::from(0, 255, 0, 20);
 
     auto* argsOne = new TaskArgs{
