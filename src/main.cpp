@@ -29,9 +29,9 @@ void task(void* param) {
 extern "C" void app_main() {
     Logger logger;
     CommandHandler handlerOne(logger);
-    Command commandOne = Command::from(10);
+    Command commandOne = Command::from(0, 255, 0, 10);
     CommandHandler handlerTwo(logger);
-    Command commandTwo = Command::from(20);
+    Command commandTwo = Command::from(0, 255, 0, 20);
 
     auto* argsOne = new TaskArgs{
         handlerOne, 
