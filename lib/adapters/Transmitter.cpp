@@ -1,5 +1,4 @@
 #include "Transmitter.h"
-#include <iostream>
 #include <functional>
 #include "freertos/FreeRTOS.h"
 
@@ -8,10 +7,14 @@ Transmitter::Transmitter(rmt_channel_handle_t channel) : _channel(channel) {
     _streamEncoder = nullptr;
     _streamConfigs = {};
     _streamConfigs.loop_count = 0;
+
 }
 
 void Transmitter::transmit(const std::vector<rmt_symbol_word_t>& symbols) {
-    rmt_new_copy_encoder(&_encoderConfigs, &_streamEncoder);
+
+    printf("item nb: %d \n", symbols.size());
+        rmt_new_copy_encoder(&_encoderConfigs, &_streamEncoder);
+
 
     esp_err_t err = rmt_transmit(
         _channel,

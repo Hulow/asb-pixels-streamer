@@ -3,24 +3,26 @@
 #include "../Symbol.h"
 #include "../Frame.h"
 #include "../Timing.h"
+#include <vector>
 
+/**
+ * FrameConverter
+ * ----------------
+ * Converts a Frame (collection of Pixels) into a vector of Symbols
+ * ready to be streamed to LEDs.
+ * Stateless design: no internal buffers, safe for progressive LED sequences.
+ */
 class FrameConverter {
-    private: 
-        Frame _frame;
-        Timing _timing;
-        std::vector<Symbol> _symbols;
-        void toSymbol(
-            const Pixel& pixel
-        );
-        Symbol mapSymbol(
-            const uint8_t& bit
-        );
-        void reset();
-        FrameConverter(
-            const Frame& frame, 
-            const Timing& timing = Timing(300, 1090, 1090, 320, 30000)
-        );
-    public:
-        static FrameConverter from(const Frame& frame);
-        std::vector<Symbol> toSymbols();
+public:
+    /**
+     * Convert a frame into a vector of Symbols.
+     * @param frame: the frame to convert
+     * @param timing: timing configuration for LED signals
+     * @param outSymbols: preallocated vector to store the output symbols
+     */
+    static void toSymbols(
+        const Frame& frame,
+        const Timing& timing,
+        std::vector<Symbol>& outSymbols
+    );
 };

@@ -1,47 +1,26 @@
 #include "FrameConverter.h"
 
-FrameConverter::FrameConverter(
-    const Frame& frame, 
-    const Timing& timing
-) : 
-    _frame(frame), 
-    _timing(timing) 
-{}
+void FrameConverter::toSymbols(
+    const Frame& frame,
+    const Timing& timing,
+    std::vector<Symbol>& outSymbols
+) {
+    // Clear the vector before filling
+    outSymbols.clear();
 
-FrameConverter FrameConverter::from(const Frame& frame) {
-    return FrameConverter(frame);
-}
-
-std::vector<Symbol> FrameConverter::toSymbols() {
-    _symbols.clear();
-    for (const Pixel& pixel : _frame.getPixels() ) {
-        toSymbol(pixel);
+    // Convert each Pixel in the frame to symbols
+    for (const Pixel& pixel : frame.getPixels()) {
+        auto bits = pixel.serializeColor(); // get color bits
+        for (const uint8_t& bit : bits) {
+            // Map each bit to a Symbol based on timing
+            outSymbols.push_back(
+                bit == 1
+                    ? Symbol::from(timing.getLowTimeLineSignal(), timing.getHighTimeLineSignal())
+                    : Symbol::from(timing.getLowTimeLineNoSignal(), timing.getHighTimeLineNoSignal())
+            );
+        }
     }
 
-    reset();
-
-    return _symbols;
-}
-
-void FrameConverter::toSymbol(const Pixel& pixel) {
-    for (const uint8_t& bit : pixel.serializeColor() ) {
-        _symbols.push_back(
-            mapSymbol(bit)
-        );
-    }
-}
-
-Symbol FrameConverter::mapSymbol(const uint8_t& bit) {
-    return bit == 1
-        ? Symbol::from(
-            _timing.getLowTimeLineSignal(), 
-            _timing.getHighTimeLineSignal())
-        : Symbol::from(
-            _timing.getLowTimeLineNoSignal(), 
-            _timing.getHighTimeLineNoSignal()
-        );
-}
-
-void FrameConverter::reset() {
-    _symbols.push_back(Symbol::from(_timing.getLowResetDuration(), 0));
+    // Add a reset symbol at the end to finalize the frame
+    outSymbols.push_back(Symbol::from(timing.getLowResetDuration(), 0));
 }
