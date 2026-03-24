@@ -3,21 +3,15 @@
 #include "domain/Pixel.h"
 #include "domain/Color.h"
 #include "domain/Sequence.h"
-#include "domain/services/PixelConverter.h"
+#include "domain/services/FrameConverter.h"
 #include <sstream>
 
 CommandHandler::CommandHandler(Logger& logger, IPixelsStreamer& streamer) : _logger(logger), _streamer(streamer) {}
 
 void CommandHandler::execute(const Command& command, std::function<void()> callBack) {
-    // std::stringstream ss;
-    // ss << "Executed with pixel: " << static_cast<int>(command.getPixelsCount());
-    // _logger.info("CommandHandler", ss.str());
-
-    // callBack();
-
-    Sequence sequence(command.getPixelsCount());
+    std::vector<Pixel> pixels;
     for (int i = 0; i < command.getPixelsCount(); ++i) {
-        sequence.add(
+        pixels.push_back(
             Pixel::from(
                 Color::from(
                     command.getGreen(), 
@@ -26,7 +20,9 @@ void CommandHandler::execute(const Command& command, std::function<void()> callB
                 )
             )
         );
-        PixelConverter symbols = PixelConverter::fromPixel(sequence.getPixel(i));
+        FrameConverter symbols = FrameConverter::from(Frame::from(pixels));
         _streamer.stream(symbols.toSymbols());
+
     }
+
 }

@@ -39,7 +39,7 @@ extern "C" void app_main() {
     ConfigsBuilder configsOne = baseConfigs.gpioNum(GPIO_NUM_4);
     Transceiver transceiverOne(configsOne.build());
     CommandHandler handlerOne(logger, transceiverOne);
-    Command commandOne = Command::from(0, 255, 0, 1);
+    Command commandOne = Command::from(0, 0, 0, 10);
 
     ConfigsBuilder configsTwo = baseConfigs.gpioNum(GPIO_NUM_5);
     Transceiver transceiverTwo(configsTwo.build());

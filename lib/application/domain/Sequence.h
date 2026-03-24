@@ -1,19 +1,18 @@
 #pragma once
 #include <vector>
-#include "Pixel.h"
+#include "Frame.h"
 
 class Sequence {
     private:
-        std::vector<Pixel> _pixels = {};
+        std::vector<Frame> _frames = {};
     public:
-        Sequence(const int& pixelsCount) {
-            _pixels.reserve(pixelsCount);
-        };
-        void add(const Pixel& pixel) {
-            _pixels.push_back(pixel);
+        Sequence() = default;
+
+        void add(const Frame& frame) {
+            _frames.push_back(frame);
         }
 
-        Pixel getPixel(const int& pixelNb) {
-            return _pixels.at(pixelNb);
+        std::vector<Frame> getFrames() {
+            return _frames;
         }
 };

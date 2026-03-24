@@ -12,6 +12,7 @@ Transmitter::Transmitter(rmt_channel_handle_t channel) : _channel(channel) {
 
 void Transmitter::transmit(const std::vector<rmt_symbol_word_t>& symbols) {
     rmt_new_copy_encoder(&_encoderConfigs, &_streamEncoder);
+
     esp_err_t err = rmt_transmit(
         _channel,
         _streamEncoder,
@@ -23,8 +24,6 @@ void Transmitter::transmit(const std::vector<rmt_symbol_word_t>& symbols) {
     if (err != ESP_OK) {
         printf("rmt_transmit failed: %d\n", err);
     }
-
-    _streamEncoder = nullptr;
 
     rmt_tx_wait_all_done(_channel, portMAX_DELAY);
     rmt_del_encoder(_streamEncoder);

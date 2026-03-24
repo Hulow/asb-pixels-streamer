@@ -3,19 +3,19 @@
 
 class Timing {
     private:
-        uint16_t _highTimeLineNoSignal  = 300;
-        uint16_t _lowTimeLineNoSignal = 1090;
-        uint16_t _highTimeLineSignal = 1090;
-        uint16_t _lowTimeLineSignal = 320;
-        uint16_t _lowResetDuration = 30000;
+        uint16_t _highTimeLineNoSignal;
+        uint16_t _lowTimeLineNoSignal;
+        uint16_t _highTimeLineSignal;
+        uint16_t _lowTimeLineSignal;
+        uint16_t _lowResetDuration;
     
     public: 
         Timing(
-            uint16_t highNoSignal = 300,
-            uint16_t lowNoSignal = 1090,
-            uint16_t highSignal = 1090,
-            uint16_t lowSignal = 320,
-            uint16_t lowReset = 30000
+            uint16_t highNoSignal,
+            uint16_t lowNoSignal,
+            uint16_t highSignal,
+            uint16_t lowSignal,
+            uint16_t lowReset
         ) 
         : _highTimeLineNoSignal(highNoSignal),
           _lowTimeLineNoSignal(lowNoSignal),
