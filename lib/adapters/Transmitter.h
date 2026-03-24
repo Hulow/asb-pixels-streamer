@@ -15,4 +15,5 @@ class Transmitter {
     public: 
         Transmitter(rmt_channel_handle_t channel);
         void transmit(const std::vector<rmt_symbol_word_t>& symbols);
+        void finish();
 };

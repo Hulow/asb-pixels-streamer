@@ -7,7 +7,7 @@
 #include "domain/Timing.h"
 
 
-#include "domain/services/FrameConverter.h"
+#include "domain/services/PixelConverter.h"
 #include <sstream>
 
 CommandHandler::CommandHandler(Logger& logger, IPixelsStreamer& streamer)
@@ -21,14 +21,24 @@ void CommandHandler::execute(const Command& command, std::function<void()> callB
     int totalLEDs = command.getPixelsCount();
 
     for (int i = 0; i < totalLEDs; ++i) {
-        pixels.push_back(Pixel::from(Color::from(command.getGreen(), command.getRed(), command.getBlue())));
-
-        Frame frame = Frame::from(pixels);
-        FrameConverter::toSymbols(frame, timing, symbols);
-        _streamer.stream(symbols);
-      
-
+        PixelConverter converter = 
+            PixelConverter::from(
+                Pixel::from(
+                    Color::from(
+                        command.getGreen(), 
+                        command.getRed(), 
+                        command.getBlue()
+                    )
+                ),
+                timing
+        );
+        
+        _streamer.stream(converter.toSymbols());
     }
+
+    symbols.push_back(Symbol::from(timing.getLowResetDuration(), 0));
+    _streamer.stream(symbols);
+    _streamer.finish();
 
     if (callBack) callBack();
 }

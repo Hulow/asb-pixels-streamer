@@ -13,4 +13,5 @@ class Transceiver : public IPixelsStreamer {
     public:
         Transceiver(const rmt_tx_channel_config_t& channelConfigs);
         void stream(const std::vector<Symbol>& symbols);
+        void finish();
 };
