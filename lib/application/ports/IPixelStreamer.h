@@ -8,7 +8,7 @@
 class IPixelsStreamer {
     public:
         virtual ~IPixelsStreamer() = default;
-        virtual void stream(const std::vector<Symbol>& symbols) = 0;
-        virtual rmt_channel_handle_t getChannelHandle() = 0;
-         virtual void test() = 0;
+        virtual std::vector<rmt_symbol_word_t> toRmtSymbols(const std::vector<Symbol>& symbols) = 0;
+        virtual void stream() = 0;
+        virtual void addSymbolsToQueue(const std::vector<rmt_symbol_word_t>& symbols) = 0;
 };

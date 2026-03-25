@@ -1,9 +1,10 @@
 #pragma once
 #include <cstddef>
+#include <vector>
 #include "driver/rmt_tx.h"
 
 template <size_t SIZE>
-class RingBuffer {
+class SymbolsQueue {
 private:
     rmt_symbol_word_t buffer[SIZE];
     size_t head = 0;
@@ -19,6 +20,15 @@ public:
 
         buffer[head] = item;
         head = next;
+        return true;
+    }
+
+    bool pushSymbols(const std::vector<rmt_symbol_word_t>& items) {
+        for (const auto& item : items) {
+            if (!push(item)) {
+                return false; // stop if buffer becomes full
+            }
+        }
         return true;
     }
 

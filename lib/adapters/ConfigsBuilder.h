@@ -21,7 +21,7 @@ public:
         return *this;
     }
 
-    ConfigsBuilder& memBlocks(int blocks) { 
+    ConfigsBuilder& memBlockSymbols(int blocks) { 
         _config.mem_block_symbols = blocks;
         return *this;
     }

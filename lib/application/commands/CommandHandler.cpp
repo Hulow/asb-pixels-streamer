@@ -8,7 +8,6 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-
 #include "domain/services/PixelConverter.h"
 #include <sstream>
 
@@ -34,19 +33,15 @@ void CommandHandler::execute(const Command& command, std::function<void()> callB
                 ),
                 timing
             );
-
-        auto symbols = converter.toSymbols();
-        allSymbols.insert(allSymbols.end(), symbols.begin(), symbols.end());
-
-
-        // _streamer.stream(converter.toSymbols());
+            _streamer.addSymbolsToQueue(
+                _streamer.toRmtSymbols(
+                    converter.toSymbols()
+                )
+            );
     }
-    allSymbols.push_back(Symbol::from(timing.getLowResetDuration(), 0));
-    // symbols.push_back(Symbol::from(timing.getLowResetDuration(), 0));
-    _streamer.stream(allSymbols);
-    vTaskDelay(pdMS_TO_TICKS(100));
 
-    _streamer.test();
+    _streamer.stream();
 
-    if (callBack) callBack();
+
+    // if (callBack) callBack();
 }
