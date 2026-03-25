@@ -5,9 +5,8 @@
 #include "domain/Symbol.h"
 #include "domain/Sequence.h"
 #include "domain/Timing.h"
-#include "domain/Frame.h"
-
-
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 
 #include "domain/services/PixelConverter.h"
 #include <sstream>
@@ -21,12 +20,7 @@ void CommandHandler::execute(const Command& command, std::function<void()> callB
     Timing timing(300, 1090, 1090, 320, 30000);           
 
     int totalLEDs = command.getPixelsCount();
-
-    Sequence sequence;
-    std::vector<Frame> frames;
-    Frame frame = Frame::from({});
-    frame.reserve(totalLEDs);
-
+    std::vector<Symbol> allSymbols;
     for (int i = 0; i < totalLEDs; ++i) {
         PixelConverter converter = 
             PixelConverter::from(
@@ -38,21 +32,16 @@ void CommandHandler::execute(const Command& command, std::function<void()> callB
                     )
                 ),
                 timing
-        );
-        frame.addSymbols(converter.toSymbols());
-        // frame.add(Symbol::from(timing.getLowResetDuration(), 0));
-        // frames.push_back(frame);
-        // sequence.add(frame);
-        _logger.info("frame with items", std::to_string(frame.getSymbols().size()));
-        // frame.clear();
+            );
+            _streamer.addSymbolsToQueue(
+                _streamer.toRmtSymbols(
+                    converter.toSymbols()
+                )
+            );
     }
-    _streamer.stream(frame.getSymbols());
+
+    _streamer.stream();
 
 
-    // for (auto& frame : sequence.getFrames()) {
-    //     _logger.info("frame with items", std::to_string(frame.getSymbols().size()));
-    //     _streamer.stream(frame.getSymbols());
-    // }
-
-    if (callBack) callBack();
+    // if (callBack) callBack();
 }
