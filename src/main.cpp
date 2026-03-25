@@ -5,46 +5,49 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include <string>
-#include <sstream>
+#include <atomic>
 
-/* Task arguments */
-struct TaskArgs {
-    CommandHandler* handler;
-    std::string msg;
+/* Global stop flag */
+std::atomic<bool> stopTasks(false);
+
+/* Task arguments for both strips */
+struct DualTaskArgs {
+    CommandHandler* handlerOne;
+    CommandHandler* handlerTwo;
+    std::string msgOne;
+    std::string msgTwo;
 };
 
-/* Task function toggling two commands infinitely */
-void task(void* param) {
-    auto* args = static_cast<TaskArgs*>(param);
+/* Task function controlling both LED strips in sync */
+void taskBothStrips(void* param) {
+    auto* args = static_cast<DualTaskArgs*>(param);
 
     Command cmdOff   = Command::from(0, 0, 0, 60);
     Command cmdGreen = Command::from(0, 255, 0, 60);
 
-    std::function<void(bool)> executeNext;
-    executeNext = [args, &executeNext, cmdOff, cmdGreen](bool isGreen) {
+    bool isGreen = false;
+
+    while (!stopTasks.load()) {
         Command current = isGreen ? cmdGreen : cmdOff;
 
-        args->handler->execute(current, [args, &executeNext, isGreen]() {
-            Logger logger;
-            std::stringstream ss;
-            ss << args->msg << " - " << (isGreen ? "Green" : "Off");
-            logger.info("MAIN", ss.str());
+        // Send command to both strips
+        args->handlerOne->execute(current, nullptr);
+        args->handlerTwo->execute(current, nullptr);
 
-            // Delay between toggles
-            // vTaskDelay(pdMS_TO_TICKS(500));
+        // Optional logging
+        Logger logger;
+        logger.info("MAIN", args->msgOne + (isGreen ? " - Green" : " - Off"));
+        logger.info("MAIN", args->msgTwo + (isGreen ? " - Green" : " - Off"));
 
-            // Trigger opposite command
-            executeNext(!isGreen);
-        });
-    };
+        isGreen = !isGreen;
 
-    // Start with LEDs off
-    executeNext(false);
-
-    // Task itself just idles; callbacks handle toggling
-    while (true) {
-        vTaskDelay(pdMS_TO_TICKS(1000));
+        // Delay between toggles
+        vTaskDelay(pdMS_TO_TICKS(500));
     }
+
+    // Ensure both LED strips are completely off before exiting
+    args->handlerOne->execute(cmdOff, nullptr);
+    args->handlerTwo->execute(cmdOff, nullptr);
 
     delete args;
     vTaskDelete(NULL);
@@ -56,7 +59,7 @@ extern "C" void app_main() {
     // Base configuration
     ConfigsBuilder baseConfigs = ConfigsBuilder()
         .clock(RMT_CLK_SRC_DEFAULT)
-        .memBlockSymbols(128) // memory for LEDs
+        .memBlockSymbols(128)
         .queueDepth(4)
         .resolutionHz(10'000'000);
 
@@ -64,22 +67,29 @@ extern "C" void app_main() {
     ConfigsBuilder configsOne = baseConfigs.gpioNum(GPIO_NUM_4);
     auto* transceiverOne = new Rmt(configsOne.build());
     CommandHandler handlerOne(logger, *transceiverOne);
-    auto* argsOne = new TaskArgs{ &handlerOne, "LED Strip 1" };
 
     // Second LED strip (GPIO5)
     ConfigsBuilder configsTwo = baseConfigs.gpioNum(GPIO_NUM_5);
     auto* transceiverTwo = new Rmt(configsTwo.build());
     CommandHandler handlerTwo(logger, *transceiverTwo);
-    auto* argsTwo = new TaskArgs{ &handlerTwo, "LED Strip 2" };
 
-    // Create FreeRTOS tasks
-    xTaskCreate(task, "handlerOneTask", 4096, argsOne, 5, NULL);
-    xTaskCreate(task, "handlerTwoTask", 4096, argsTwo, 5, NULL);
+    // Prepare task arguments
+    auto* dualArgs = new DualTaskArgs{
+        &handlerOne,
+        &handlerTwo,
+        "LED Strip 1",
+        "LED Strip 2"
+    };
 
-    // Main loop does nothing; tasks handle LEDs
-    while (true) {
-        vTaskDelay(pdMS_TO_TICKS(1000));
-    }
+    // Create a single FreeRTOS task for both strips
+    xTaskCreate(
+        taskBothStrips,  // Task function
+        "DualStripTask", // Task name
+        4096,            // Stack size
+        dualArgs,        // Parameter
+        5,               // Priority
+        NULL             // Task handle
+    );
 
     vTaskDelete(NULL);
 }
