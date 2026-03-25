@@ -20,6 +20,14 @@ class Frame {
             _symbols.insert(_symbols.end(), symbols.begin(), symbols.end());
         }
 
+        void reserve(int& ledCount) {
+            _symbols.reserve(ledCount * 3);
+        }
+
+        void clear() {
+            _symbols.clear();
+        }
+
         const std::vector<Symbol>& getSymbols() const {
             return _symbols;
         }

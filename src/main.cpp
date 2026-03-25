@@ -7,7 +7,7 @@
 
 /* Should be a class ?*/
 struct TaskArgs {
-    CommandHandler handler;
+    CommandHandler* handler;
     Command command;
     std::string msg;
 };
@@ -16,7 +16,7 @@ void task(void* param) {
     auto* args = static_cast<TaskArgs*>(param);
 
     // while(true) {
-        args->handler.execute(args->command, [args]() {
+        args->handler->execute(args->command, [args]() {
             Logger logger;
             logger.info("MAIN", args->msg);
         });
@@ -39,21 +39,21 @@ extern "C" void app_main() {
     ConfigsBuilder configsOne = baseConfigs.gpioNum(GPIO_NUM_4);
     Transceiver transceiverOne(configsOne.build());
     CommandHandler handlerOne(logger, transceiverOne);
-    Command commandOne = Command::from(0, 255, 0, 13);
+    Command commandOne = Command::from(0, 0, 0, 60);
 
     ConfigsBuilder configsTwo = baseConfigs.gpioNum(GPIO_NUM_5);
     Transceiver transceiverTwo(configsTwo.build());
     CommandHandler handlerTwo(logger, transceiverTwo);
-    Command commandTwo = Command::from(0, 255, 0, 20);
+    Command commandTwo = Command::from(0, 0, 0, 60);
 
     auto* argsOne = new TaskArgs{
-        handlerOne, 
+        &handlerOne, 
         commandOne, 
         "Main one triggered"
     };
 
     auto* argsTwo = new TaskArgs{
-        handlerTwo, 
+        &handlerTwo, 
         commandTwo, 
         "Main two triggered"
     };

@@ -25,6 +25,7 @@ void CommandHandler::execute(const Command& command, std::function<void()> callB
     Sequence sequence;
     std::vector<Frame> frames;
     Frame frame = Frame::from({});
+    frame.reserve(totalLEDs);
 
     for (int i = 0; i < totalLEDs; ++i) {
         PixelConverter converter = 
@@ -40,16 +41,18 @@ void CommandHandler::execute(const Command& command, std::function<void()> callB
         );
         frame.addSymbols(converter.toSymbols());
         // frame.add(Symbol::from(timing.getLowResetDuration(), 0));
-        frames.push_back(frame);
-
+        // frames.push_back(frame);
         // sequence.add(frame);
-    }
-
-    for (auto& frame : frames) {
         _logger.info("frame with items", std::to_string(frame.getSymbols().size()));
-        // frame.add(Symbol::from(timing.getLowResetDuration(), 0));
-        _streamer.stream(frame.getSymbols());
+        // frame.clear();
     }
+    _streamer.stream(frame.getSymbols());
+
+
+    // for (auto& frame : sequence.getFrames()) {
+    //     _logger.info("frame with items", std::to_string(frame.getSymbols().size()));
+    //     _streamer.stream(frame.getSymbols());
+    // }
 
     if (callBack) callBack();
 }
