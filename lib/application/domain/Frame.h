@@ -1,18 +1,26 @@
 #pragma once
 #include <vector>
-#include "Pixel.h"
+#include "Symbol.h"
 
 class Frame {
     private:
-        std::vector<Pixel> _pixels;
-        Frame(const std::vector<Pixel>& pixels) : _pixels(pixels) {};
+        std::vector<Symbol> _symbols;
+        Frame(const std::vector<Symbol>& symbols) : _symbols(symbols) {};
     
     public: 
-        static Frame from(const std::vector<Pixel>& pixels) {
-            return Frame(pixels);
+        static Frame from(const std::vector<Symbol>& symbols) {
+            return Frame(symbols);
         }
 
-        const std::vector<Pixel>& getPixels() const {
-            return _pixels;
+        void add(const Symbol& symbol) {
+            _symbols.push_back(symbol);
+        }
+
+        void addSymbols(std::vector<Symbol> symbols) {
+            _symbols.insert(_symbols.end(), symbols.begin(), symbols.end());
+        }
+
+        const std::vector<Symbol>& getSymbols() const {
+            return _symbols;
         }
 };

@@ -7,15 +7,10 @@ Transmitter::Transmitter(rmt_channel_handle_t channel) : _channel(channel) {
     _streamEncoder = nullptr;
     _streamConfigs = {};
     _streamConfigs.loop_count = 0;
-
 }
 
 void Transmitter::transmit(const std::vector<rmt_symbol_word_t>& symbols) {
-
-    printf("item nb: %d \n", symbols.size());
-        rmt_new_copy_encoder(&_encoderConfigs, &_streamEncoder);
-
-
+    rmt_new_copy_encoder(&_encoderConfigs, &_streamEncoder);
     esp_err_t err = rmt_transmit(
         _channel,
         _streamEncoder,
@@ -30,4 +25,9 @@ void Transmitter::transmit(const std::vector<rmt_symbol_word_t>& symbols) {
 
     rmt_tx_wait_all_done(_channel, portMAX_DELAY);
     rmt_del_encoder(_streamEncoder);
+}
+
+void Transmitter::finish() {
+    rmt_del_encoder(_streamEncoder);
+    _streamEncoder = nullptr;
 }

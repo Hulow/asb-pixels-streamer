@@ -39,7 +39,7 @@ extern "C" void app_main() {
     ConfigsBuilder configsOne = baseConfigs.gpioNum(GPIO_NUM_4);
     Transceiver transceiverOne(configsOne.build());
     CommandHandler handlerOne(logger, transceiverOne);
-    Command commandOne = Command::from(0, 0, 0, 23);
+    Command commandOne = Command::from(0, 255, 0, 13);
 
     ConfigsBuilder configsTwo = baseConfigs.gpioNum(GPIO_NUM_5);
     Transceiver transceiverTwo(configsTwo.build());
@@ -68,14 +68,14 @@ extern "C" void app_main() {
         NULL                  // Task handle
     );
 
-    // xTaskCreate(
-    //     task,                 // Task function pointer
-    //     "handlerTwoTask",     // Name
-    //     4096,                 // Stack size
-    //     argsTwo,              // Parameter
-    //     5,                    // Priority
-    //     NULL                  // Task handle
-    // );
+    xTaskCreate(
+        task,                 // Task function pointer
+        "handlerTwoTask",     // Name
+        4096,                 // Stack size
+        argsTwo,              // Parameter
+        5,                    // Priority
+        NULL                  // Task handle
+    );
 
     vTaskDelete(NULL);
 }

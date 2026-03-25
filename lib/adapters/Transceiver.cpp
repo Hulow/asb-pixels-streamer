@@ -10,3 +10,7 @@ Transceiver::Transceiver(const rmt_tx_channel_config_t& channelConfigs) :
 void Transceiver::stream(const std::vector<Symbol>& symbols) {
     _transmitter.transmit(_encoder.toRmtSymbols(symbols));
 }
+
+void Transceiver::finish() {
+    _transmitter.finish();
+}
