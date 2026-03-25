@@ -42,10 +42,10 @@ extern "C" void app_main() {
     CommandHandler handlerOne(logger, *transceiverOne);
     Command commandOne = Command::from(0, 0, 0, 60);
 
-    // ConfigsBuilder configsTwo = baseConfigs.gpioNum(GPIO_NUM_5);
-    // Transceiver transceiverTwo(configsTwo.build());
-    // CommandHandler handlerTwo(logger, transceiverTwo);
-    // Command commandTwo = Command::from(0, 255, 0, 20);
+    ConfigsBuilder configsTwo = baseConfigs.gpioNum(GPIO_NUM_5);
+    auto* transceiverTwo = new Rmt(configsTwo.build());
+    CommandHandler handlerTwo(logger, *transceiverTwo);
+    Command commandTwo = Command::from(0, 0, 0, 60);
 
     auto* argsOne = new TaskArgs{
         &handlerOne, 
@@ -53,11 +53,11 @@ extern "C" void app_main() {
         "Main one triggered"
     };
 
-    // auto* argsTwo = new TaskArgs{
-    //     handlerTwo, 
-    //     commandTwo, 
-    //     "Main two triggered"
-    // };
+    auto* argsTwo = new TaskArgs{
+        &handlerTwo, 
+        commandTwo, 
+        "Main two triggered"
+    };
 
     /* Check xTaskCreate */
     xTaskCreate(
@@ -69,14 +69,14 @@ extern "C" void app_main() {
         NULL                  // Task handle
     );
 
-    // xTaskCreate(
-    //     task,                 // Task function pointer
-    //     "handlerTwoTask",     // Name
-    //     4096,                 // Stack size
-    //     argsTwo,              // Parameter
-    //     5,                    // Priority
-    //     NULL                  // Task handle
-    // );
+    xTaskCreate(
+        task,                 // Task function pointer
+        "handlerTwoTask",     // Name
+        4096,                 // Stack size
+        argsTwo,              // Parameter
+        5,                    // Priority
+        NULL                  // Task handle
+    );
 
     while (true) {
         vTaskDelay(pdMS_TO_TICKS(1000));

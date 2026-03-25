@@ -106,19 +106,20 @@ void Rmt::stream() {
     rmt_transmit_config_t tx_config = {};
     tx_config.loop_count = 0;
 
-    uint8_t dummy = 0;
-    
-    esp_err_t err4 = rmt_transmit(
-        _channel, //channel that created by rmt_new_tx_channel()
-        _streamEncoder, //RMT encoder that created by various factory APIs like rmt_new_bytes_encoder() /rmt_encoder_handle_t
-        &dummy, //payload -- [in] The raw data to be encoded into RMT symbols
-        1,   //payload_bytes -- [in] Size of the payload in bytes 
-        &tx_config//config -- [in] Transmission specific configuration
-    );
+    while (!_queue.empty()) {
+        uint8_t dummy = 0;
+        esp_err_t err4 = rmt_transmit(
+            _channel, //channel that created by rmt_new_tx_channel()
+            _streamEncoder, //RMT encoder that created by various factory APIs like rmt_new_bytes_encoder() /rmt_encoder_handle_t
+            &dummy, //payload -- [in] The raw data to be encoded into RMT symbols
+            1,   //payload_bytes -- [in] Size of the payload in bytes 
+            &tx_config//config -- [in] Transmission specific configuration
+        );
 
-    if (err4 != ESP_OK) {
-    ESP_LOGI(TAG, "Transmit failed: %d", err4);
-}
+        if (err4 != ESP_OK) {
+            ESP_LOGI(TAG, "Transmit failed: %d", err4);
+        }
+    }
 
     //If encoder != nullptr, payload must be nullptr and payload_bytes must be 0. ✅ You did that, correct.
 }
