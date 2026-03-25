@@ -5,6 +5,8 @@
 #include "domain/Symbol.h"
 #include "domain/Sequence.h"
 #include "domain/Timing.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 
 
 #include "domain/services/PixelConverter.h"
@@ -19,7 +21,7 @@ void CommandHandler::execute(const Command& command, std::function<void()> callB
     Timing timing(300, 1090, 1090, 320, 30000);           
 
     int totalLEDs = command.getPixelsCount();
-
+    std::vector<Symbol> allSymbols;
     for (int i = 0; i < totalLEDs; ++i) {
         PixelConverter converter = 
             PixelConverter::from(
@@ -31,14 +33,20 @@ void CommandHandler::execute(const Command& command, std::function<void()> callB
                     )
                 ),
                 timing
-        );
-        
-        _streamer.stream(converter.toSymbols());
-    }
+            );
 
-    symbols.push_back(Symbol::from(timing.getLowResetDuration(), 0));
-    _streamer.stream(symbols);
-    _streamer.finish();
+        auto symbols = converter.toSymbols();
+        allSymbols.insert(allSymbols.end(), symbols.begin(), symbols.end());
+
+
+        // _streamer.stream(converter.toSymbols());
+    }
+    allSymbols.push_back(Symbol::from(timing.getLowResetDuration(), 0));
+    // symbols.push_back(Symbol::from(timing.getLowResetDuration(), 0));
+    _streamer.stream(allSymbols);
+    vTaskDelay(pdMS_TO_TICKS(100));
+
+    _streamer.test();
 
     if (callBack) callBack();
 }

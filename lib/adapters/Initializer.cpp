@@ -10,7 +10,7 @@ void Initializer::setupConfigs() {
 }
 
 void Initializer::turnOnTransmitter() {
-    rmt_enable(_channel);
+    // rmt_enable(_channel);
 }
 
 rmt_channel_handle_t Initializer::getChannel() {

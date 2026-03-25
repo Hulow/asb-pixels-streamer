@@ -37,14 +37,18 @@ extern "C" void app_main() {
         .resolutionHz(10'000'000);
 
     ConfigsBuilder configsOne = baseConfigs.gpioNum(GPIO_NUM_4);
-    Transceiver transceiverOne(configsOne.build());
-    CommandHandler handlerOne(logger, transceiverOne);
-    Command commandOne = Command::from(0, 250, 0, 23);
 
-    ConfigsBuilder configsTwo = baseConfigs.gpioNum(GPIO_NUM_5);
-    Transceiver transceiverTwo(configsTwo.build());
-    CommandHandler handlerTwo(logger, transceiverTwo);
-    Command commandTwo = Command::from(0, 255, 0, 20);
+    static Transceiver transceiverOne(configsOne.build());
+    static Transmitter transmitterOne(transceiverOne.getChannelHandle());
+    // transmitterOne.start(transceiverOne.getBuffer());  // ✅ start here!
+
+    CommandHandler handlerOne(logger, transceiverOne);
+    Command commandOne = Command::from(0, 255, 0, 10);
+
+    // ConfigsBuilder configsTwo = baseConfigs.gpioNum(GPIO_NUM_5);
+    // Transceiver transceiverTwo(configsTwo.build());
+    // CommandHandler handlerTwo(logger, transceiverTwo);
+    // Command commandTwo = Command::from(0, 255, 0, 20);
 
     auto* argsOne = new TaskArgs{
         handlerOne, 
@@ -52,11 +56,11 @@ extern "C" void app_main() {
         "Main one triggered"
     };
 
-    auto* argsTwo = new TaskArgs{
-        handlerTwo, 
-        commandTwo, 
-        "Main two triggered"
-    };
+    // auto* argsTwo = new TaskArgs{
+    //     handlerTwo, 
+    //     commandTwo, 
+    //     "Main two triggered"
+    // };
 
     /* Check xTaskCreate */
     xTaskCreate(
@@ -76,6 +80,10 @@ extern "C" void app_main() {
     //     5,                    // Priority
     //     NULL                  // Task handle
     // );
+
+    while (true) {
+        vTaskDelay(pdMS_TO_TICKS(1000));
+    }
 
     vTaskDelete(NULL);
 }
