@@ -39,9 +39,12 @@ void CommandHandler::execute(const Command& command, std::function<void()> callB
                 )
             );
     }
+   
+    _streamer.addSymbolsToQueue(
+        _streamer.toRmtSymbols({ Symbol::from(30000, 0) })
+    );
 
     _streamer.stream();
 
-
-    // if (callBack) callBack();
+    if (callBack) callBack();
 }
