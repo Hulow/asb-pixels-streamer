@@ -1,5 +1,5 @@
 #include "commands/CommandHandler.h"
-#include "rmt.h"
+#include "../adapters/PixelWaveformPipeline.h"
 #include "ConfigsBuilder.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -49,26 +49,33 @@ void taskBothStrips(void* param) {
 
 extern "C" void app_main() {
     // Base configuration
-    ConfigsBuilder baseConfigs = ConfigsBuilder()
+    ChannelConfigsBuilder baseConfigs = ChannelConfigsBuilder()
         .clock(RMT_CLK_SRC_DEFAULT)
         .memBlockSymbols(128)
         .queueDepth(4)
         .resolutionHz(10'000'000);
+    
+    static constexpr PixelTiming ws2815Timing{
+        .highTimeSignal   = 300,
+        .lowTimeSignal    = 1090,
+        .highTimeNoSignal = 1090,
+        .lowTimeNoSignal  = 320
+    };
 
     // First LED strip (GPIO4)
-    ConfigsBuilder configsOne = baseConfigs.gpioNum(GPIO_NUM_4);
-    auto* transceiverOne = new Rmt(configsOne.build());
-    CommandHandler handlerOne(*transceiverOne);
+    auto configsOne = baseConfigs.gpioNum(GPIO_NUM_4);
+    auto* transceiverOne = new PixelWaveFormPipeline(configsOne, ws2815Timing);
+    auto* handlerOne = new CommandHandler(*transceiverOne);
 
-    // Second LED strip (GPIO5)
-    ConfigsBuilder configsTwo = baseConfigs.gpioNum(GPIO_NUM_5);
-    auto* transceiverTwo = new Rmt(configsTwo.build());
-    CommandHandler handlerTwo(*transceiverTwo);
+    // // Second LED strip (GPIO5)
+    auto configsTwo = baseConfigs.gpioNum(GPIO_NUM_5);
+    auto* transceiverTwo = new PixelWaveFormPipeline(configsTwo, ws2815Timing);
+    auto* handlerTwo = new CommandHandler(*transceiverTwo);
 
     // Prepare task arguments
     auto* dualArgs = new DualTaskArgs{
-        &handlerOne,
-        &handlerTwo,
+        handlerOne,
+        handlerTwo,
         "LED Strip 1",
         "LED Strip 2"
     };

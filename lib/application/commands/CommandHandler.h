@@ -2,14 +2,14 @@
 #include <cstdint>
 #include "Command.h"
 #include <functional> 
-#include "../ports/IPixelStreamer.h"
+#include "../ports/IPixelWaveFormPipeline.h"
 
 class CommandHandler {
     private:
         uint8_t _pixel;
-        IPixelsStreamer& _streamer;
+        IPixelWaveFormPipeline& _pipeline;
     
     public:
-        CommandHandler(IPixelsStreamer& streamer);
+        CommandHandler(IPixelWaveFormPipeline& pipeline);
         void execute(const Command& command, std::function<void()> callBack);
 };

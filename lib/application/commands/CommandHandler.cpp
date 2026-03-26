@@ -9,39 +9,21 @@
 #include "domain/services/PixelConverter.h"
 #include <sstream>
 
-CommandHandler::CommandHandler(IPixelsStreamer& streamer)
-    : _streamer(streamer) {}
+CommandHandler::CommandHandler(IPixelWaveFormPipeline& pipeline)
+    : _pipeline(pipeline) {}
 
 void CommandHandler::execute(const Command& command, std::function<void()> callBack) {
-    std::vector<Pixel> pixels;
-    std::vector<Symbol> symbols; 
-    Timing timing(300, 1090, 1090, 320, 30000);           
-
-    int totalLEDs = command.getPixelsCount();
-    std::vector<Symbol> allSymbols;
-    for (int i = 0; i < totalLEDs; ++i) {
-        PixelConverter converter = 
-            PixelConverter::from(
-                Pixel::from(
-                        command.getGreen(), 
-                        command.getRed(), 
-                        command.getBlue()
-                    
-                ),
-                timing
-            );
-            _streamer.addSymbolsToQueue(
-                _streamer.toRmtSymbols(
-                    converter.toSymbols()
-                )
-            );
+    for (int i = 0; i < command.getPixelsCount(); ++i) {
+        _pipeline.addPixelToQueue(
+            Pixel::from(
+                command.getGreen(), 
+                command.getRed(), 
+                command.getBlue()
+            )
+        );
     }
-   
-    _streamer.addSymbolsToQueue(
-        _streamer.toRmtSymbols({ Symbol::from(30000, 0) })
-    );
 
-    _streamer.stream();
+    _pipeline.startConsuming();
 
     if (callBack) callBack();
 }

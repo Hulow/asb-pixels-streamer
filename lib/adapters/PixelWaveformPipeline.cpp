@@ -19,3 +19,7 @@ void PixelWaveFormPipeline::addPixelToQueue(const Pixel& pixel) {
         _encoder.toWaveForms(pixel)
     );
 }
+
+void PixelWaveFormPipeline::startConsuming() {
+    _streamer.stream();
+}

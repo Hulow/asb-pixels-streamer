@@ -11,10 +11,14 @@ class PixelWaveFormPipeline : public IPixelWaveFormPipeline {
         ChannelWaveForm _channel;
         PixelSignalEncoder _encoder;
         WaveFormStreamer _streamer;
-        explicit PixelWaveFormPipeline(const ChannelConfigsBuilder& configsBuilder, const PixelTiming& timing);
     public:
+        explicit PixelWaveFormPipeline(
+                const ChannelConfigsBuilder& configsBuilder, 
+                const PixelTiming& timing
+        );
         static PixelWaveFormPipeline createWS2815(const ChannelConfigsBuilder& configsBuilder);
         void addPixelToQueue(const Pixel& pixel);
+        void startConsuming();
 };
 
 
