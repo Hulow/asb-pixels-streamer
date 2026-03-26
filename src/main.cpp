@@ -36,7 +36,7 @@ void taskBothStrips(void* param) {
         isGreen = !isGreen;
 
         // Delay between toggles
-        vTaskDelay(pdMS_TO_TICKS(500));
+        vTaskDelay(pdMS_TO_TICKS(1000));
     }
 
     // Ensure both LED strips are completely off before exiting
