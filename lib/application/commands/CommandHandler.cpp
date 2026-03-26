@@ -6,7 +6,7 @@ CommandHandler::CommandHandler(IPixelWaveFormPipeline& pipeline)
 
 void CommandHandler::execute(const Command& command, std::function<void()> callBack) {
     for (int i = 0; i < command.getPixelsCount(); ++i) {
-        _pipeline.addPixelToQueue(
+        _pipeline.enqueuePixel(
             Pixel::from(
                 command.getGreen(), 
                 command.getRed(), 
@@ -14,7 +14,7 @@ void CommandHandler::execute(const Command& command, std::function<void()> callB
             )
         );
     }
-    _pipeline.setReset();
+    _pipeline.signalLastPixel();
     _pipeline.start();
 
     if (callBack) callBack();
