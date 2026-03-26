@@ -3,6 +3,12 @@
 
 WaveFormStreamer::WaveFormStreamer(const rmt_channel_handle_t& channel) : _channel(channel) {}
 
+void WaveFormStreamer::addWaveformsToQueue(const PixelWaveforms& waveForms) {
+    for (const rmt_symbol_word_t  wm : waveForms.waveforms) {
+         _queue.push(wm);
+    }
+}
+
 size_t encoderCallback(
     const void* src,
     size_t src_size,
@@ -50,19 +56,22 @@ void WaveFormStreamer::stream() {
         return;
     }
 
+    while (!_queue.empty()) {
+           if (esp_err_t err = dummyStransmit() != ESP_OK) {
+                ESP_LOGI(TAG, "Transmit failed: %d", err);
+           }
+    }
+}
+
+esp_err_t WaveFormStreamer::dummyStransmit() {
     rmt_transmit_config_t tx_config = {};
     tx_config.loop_count = 0;
 
-    while (!_queue.empty()) {
-        uint8_t dummy = 0;
-        if (esp_err_t err4 = rmt_transmit(
-            _channel,
-            _streamEncoder, 
-            &dummy,
-            1, 
-            &tx_config
-        ) != ESP_OK) {
-            ESP_LOGI(TAG, "Transmit failed: %d", err4);
-        }
-    }
+    return rmt_transmit(
+        _channel,
+        _streamEncoder, 
+        0,
+        1, 
+        &tx_config
+    );
 }

@@ -6,7 +6,6 @@
 #include "PixelSignalEncoder.h"
 #include "WaveFormStreamer.h"
 
-
 class PixelWaveFormPipeline : public IPixelWaveFormPipeline {
     private:
         ChannelWaveForm _channel;
@@ -15,6 +14,7 @@ class PixelWaveFormPipeline : public IPixelWaveFormPipeline {
         explicit PixelWaveFormPipeline(const ChannelConfigsBuilder& configsBuilder, const PixelTiming& timing);
     public:
         static PixelWaveFormPipeline createWS2815(const ChannelConfigsBuilder& configsBuilder);
+        void addPixelToQueue(const Pixel& pixel);
 };
 
 

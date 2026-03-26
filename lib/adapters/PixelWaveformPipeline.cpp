@@ -13,3 +13,9 @@ PixelWaveFormPipeline PixelWaveFormPipeline::createWS2815(const ChannelConfigsBu
 
     return PixelWaveFormPipeline(configs, ws2815Timing);
 }
+
+void PixelWaveFormPipeline::addPixelToQueue(const Pixel& pixel) {
+    _streamer.addWaveformsToQueue(
+        _encoder.toWaveForms(pixel)
+    );
+}
