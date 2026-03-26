@@ -1,10 +1,10 @@
 #pragma once
 #include "../application/domain/Pixel.h"
 
-class IPixelWaveFormPipeline {
+class IPixelConsumer {
     public: 
-        virtual ~IPixelWaveFormPipeline() = default;
+        virtual ~IPixelConsumer() = default;
         virtual void enqueuePixel(const Pixel& pixel) = 0;
         virtual void start() = 0;
-        virtual void setReset() = 0;
+        virtual void signalLastPixel() = 0;
 };

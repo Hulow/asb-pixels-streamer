@@ -21,8 +21,8 @@ struct DualTaskArgs {
 void taskBothStrips(void* param) {
     auto* args = static_cast<DualTaskArgs*>(param);
 
-    Command cmdOff   = Command::from(0, 0, 0, 60);
-    Command cmdGreen = Command::from(0, 255, 0, 60);
+    Command cmdOff   = Command::from(0, 255, 0, 60);
+    Command cmdGreen = Command::from(0, 220, 0, 60);
 
     bool isGreen = false;
 
@@ -36,7 +36,7 @@ void taskBothStrips(void* param) {
         isGreen = !isGreen;
 
         // Delay between toggles
-        vTaskDelay(pdMS_TO_TICKS(10000));
+        // vTaskDelay(pdMS_TO_TICKS(10000));
     }
 
     // Ensure both LED strips are completely off before exiting

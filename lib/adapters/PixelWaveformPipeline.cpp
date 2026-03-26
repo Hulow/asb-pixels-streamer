@@ -21,11 +21,11 @@ void PixelWaveFormPipeline::addPixelToQueue(const Pixel& pixel) {
     );
 }
 
-void PixelWaveFormPipeline::addResetToQueue() {
+void PixelWaveFormPipeline::setReset() {
     ResetSignalGenerator resetSignal(30000);
     _streamer.addWaveformsToQueue(resetSignal.generate());
 }
 
-void PixelWaveFormPipeline::startConsuming() {
+void PixelWaveFormPipeline::start() {
     _streamer.stream();
 }

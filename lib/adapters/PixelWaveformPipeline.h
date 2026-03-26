@@ -18,8 +18,8 @@ class PixelWaveFormPipeline : public IPixelWaveFormPipeline {
         );
         static PixelWaveFormPipeline createWS2815(const ChannelConfigsBuilder& configsBuilder);
         void addPixelToQueue(const Pixel& pixel);
-        void addResetToQueue();
-        void startConsuming();
+        void setReset();
+        void start();
 };
 
 

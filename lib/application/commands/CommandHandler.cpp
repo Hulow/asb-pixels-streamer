@@ -14,8 +14,8 @@ void CommandHandler::execute(const Command& command, std::function<void()> callB
             )
         );
     }
-    _pipeline.addResetToQueue();
-    _pipeline.startConsuming();
+    _pipeline.setReset();
+    _pipeline.start();
 
     if (callBack) callBack();
 }
