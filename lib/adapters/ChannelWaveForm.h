@@ -2,7 +2,6 @@
 #include "driver/rmt_tx.h"
 
 #include "ChannelConfigsBuilder.h"
-#include "../application/ports/IChannelWaveForm.h"
 
 class ChannelWaveForm {
     private:
