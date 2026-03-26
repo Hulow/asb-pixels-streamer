@@ -61,7 +61,7 @@ size_t encoderCallback(
     void* user_data
 )
 {
-    auto* queue = static_cast<SymbolsQueue<1500>*>(user_data);
+    auto* queue = static_cast<WaveFormsQueue<1500>*>(user_data);
     size_t written = 0;
     rmt_symbol_word_t item;
 
@@ -109,11 +109,11 @@ void Rmt::stream() {
     while (!_queue.empty()) {
         uint8_t dummy = 0;
         esp_err_t err4 = rmt_transmit(
-            _channel, //channel that created by rmt_new_tx_channel()
-            _streamEncoder, //RMT encoder that created by various factory APIs like rmt_new_bytes_encoder() /rmt_encoder_handle_t
-            &dummy, //payload -- [in] The raw data to be encoded into RMT symbols
-            1,   //payload_bytes -- [in] Size of the payload in bytes 
-            &tx_config//config -- [in] Transmission specific configuration
+            _channel,
+            _streamEncoder, 
+            &dummy,
+            1, 
+            &tx_config
         );
 
         if (err4 != ESP_OK) {
@@ -121,7 +121,6 @@ void Rmt::stream() {
         }
     }
 
-    //If encoder != nullptr, payload must be nullptr and payload_bytes must be 0. ✅ You did that, correct.
 }
 
 void Rmt::addSymbolsToQueue(const std::vector<rmt_symbol_word_t>& symbols) {

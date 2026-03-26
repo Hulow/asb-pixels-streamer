@@ -9,9 +9,9 @@ PixelConverter PixelConverter::from(const Pixel& pixel, const Timing& timing) {
 
 std::vector<Symbol> PixelConverter::toSymbols() {
     _symbols.clear();
-    for (const uint8_t& bit : _pixel.serializeColor() ) {
-        _symbols.push_back(toSymbol(bit));
-    }
+    // for (const uint8_t& bit : _pixel.serializeColor() ) {
+    //     _symbols.push_back(toSymbol(bit));
+    // }
 
     return _symbols;
 }

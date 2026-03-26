@@ -4,7 +4,7 @@
 #include "driver/rmt_tx.h"
 
 template <size_t SIZE>
-class SymbolsQueue {
+class WaveFormsQueue {
 private:
     rmt_symbol_word_t buffer[SIZE];
     size_t head = 0;

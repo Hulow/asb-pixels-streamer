@@ -25,11 +25,10 @@ void CommandHandler::execute(const Command& command, std::function<void()> callB
         PixelConverter converter = 
             PixelConverter::from(
                 Pixel::from(
-                    Color::from(
                         command.getGreen(), 
                         command.getRed(), 
                         command.getBlue()
-                    )
+                    
                 ),
                 timing
             );

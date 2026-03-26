@@ -1,7 +1,7 @@
 #pragma once
 #include "driver/rmt_tx.h"
 #include "../application/domain/Symbol.h"
-#include "SymbolsQueue.h"
+#include "WaveFormsQueue.h"
 #include "../application/ports/IPixelStreamer.h"
 
 class Rmt : public IPixelsStreamer {
@@ -12,7 +12,7 @@ class Rmt : public IPixelsStreamer {
         rmt_transmit_config_t _streamConfigs;
         rmt_copy_encoder_config_t _encoderConfigs;
         rmt_encoder_handle_t _streamEncoder;
-        SymbolsQueue<1500> _queue;
+        WaveFormsQueue<1500> _queue;
         uint16_t toRmtTick(const uint16_t& timing);
         rmt_symbol_word_t toRmtSymbol(const Symbol& symbols);
 
