@@ -17,8 +17,8 @@ class PixelWaveFormPipeline : public IPixelWaveFormPipeline {
                 const PixelTiming& timing
         );
         static PixelWaveFormPipeline createWS2815(const ChannelConfigsBuilder& configsBuilder);
-        void addPixelToQueue(const Pixel& pixel);
-        void setReset();
+        void enqueuePixel(const Pixel& pixel);
+        void signalLastPixel();
         void start();
 };
 
