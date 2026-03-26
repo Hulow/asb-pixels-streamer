@@ -2,7 +2,7 @@
 #include "driver/rmt_tx.h"
 #include <array>
 
-#include "../application/domain/Pixel.h"
+#include "../core/Pixel.h"
 
 struct PixelWaveforms {
     static constexpr size_t WAVEFORMS_PER_PIXEL = 24;

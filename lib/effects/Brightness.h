@@ -1,5 +1,5 @@
 #pragma once
-#include "PixelFilter.h"
+#include "../effects/PixelFilter.h"
 
 class Brightness : public PixelFilter {
     private:

@@ -2,7 +2,7 @@
 #include <cstdint>
 #include "Command.h"
 #include <functional> 
-#include "../ports/IPixelConsumer.h"
+#include "../core/IPixelConsumer.h"
 
 class CommandHandler {
     private:

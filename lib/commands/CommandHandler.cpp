@@ -1,5 +1,5 @@
 #include "CommandHandler.h"
-#include "domain/Pixel.h"
+#include "../core/Pixel.h"
 
 CommandHandler::CommandHandler(IPixelConsumer& consumer) : _consumer(consumer) {}
 

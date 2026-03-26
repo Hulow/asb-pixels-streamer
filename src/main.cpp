@@ -1,14 +1,12 @@
-#include "commands/CommandHandler.h"
+#include "../lib/commands/CommandHandler.h"
 #include "../adapters/PixelWaveformPipeline.h"
 #include "ConfigsBuilder.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include <string>
 #include <atomic>
-#include "../lib/application/Brightness.h"
-#include "../lib/application/PixelFilter.h"
-
-
+#include "../lib/effects/Brightness.h"
+#include "../lib/effects/PixelFilter.h"
 
 /* Global stop flag */
 std::atomic<bool> stopTasks(false);
