@@ -1,5 +1,4 @@
 #include "commands/CommandHandler.h"
-#include "Logger.h"
 #include "rmt.h"
 #include "ConfigsBuilder.h"
 #include "freertos/FreeRTOS.h"
@@ -33,11 +32,6 @@ void taskBothStrips(void* param) {
         // Send command to both strips
         args->handlerOne->execute(current, nullptr);
         args->handlerTwo->execute(current, nullptr);
-
-        // Optional logging
-        Logger logger;
-        logger.info("MAIN", args->msgOne + (isGreen ? " - Green" : " - Off"));
-        logger.info("MAIN", args->msgTwo + (isGreen ? " - Green" : " - Off"));
 
         isGreen = !isGreen;
 

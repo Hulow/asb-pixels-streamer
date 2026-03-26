@@ -1,7 +1,6 @@
 #pragma once
 #include <cstdint>
 #include "Command.h"
-#include "Logger.h"
 #include <functional> 
 #include "../ports/IPixelStreamer.h"
 

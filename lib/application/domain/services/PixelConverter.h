@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include "../Pixel.h"
 #include "../Symbol.h"
 

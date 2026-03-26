@@ -1,7 +1,5 @@
 #include "CommandHandler.h"
-#include "Logger.h"
 #include "domain/Pixel.h"
-#include "domain/Color.h"
 #include "domain/Symbol.h"
 #include "domain/Sequence.h"
 #include "domain/Timing.h"

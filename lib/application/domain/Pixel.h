@@ -1,5 +1,4 @@
 #pragma once
-#include "Color.h"
 #include "Timing.h"
 
 class Pixel {
