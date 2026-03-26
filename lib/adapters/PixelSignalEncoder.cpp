@@ -13,21 +13,21 @@ PixelWaveforms PixelSignalEncoder::toWaveForms(const Pixel& pixel) {
 
             uint8_t value = (byte >> bit) & 0x01;
 
-            rmt_symbol_word_t sym0;
+            rmt_symbol_word_t sym;
 
             if (value) {
-                sym0.duration0 = toWaveForm(_timing.highTimeSignal);
-                sym0.level0    = 1;
-                sym0.duration1 = toWaveForm(_timing.lowTimeSignal);
-                sym0.level1    = 0;
+                sym.duration0 = toWaveForm(_timing.lowTimeSignal);
+                sym.level0    = 1;
+                sym.duration1 = toWaveForm(_timing.highTimeSignal);
+                sym.level1    = 0;
             } else {
-                sym0.duration0 = toWaveForm(_timing.highTimeNoSignal);
-                sym0.level0    = 1;
-                sym0.duration1 = toWaveForm(_timing.lowTimeNoSignal);
-                sym0.level1    = 0;
+                sym.duration0 = toWaveForm(_timing.lowTimeNoSignal);
+                sym.level0    = 1;
+                sym.duration1 = toWaveForm(_timing.highTimeNoSignal);
+                sym.level1    = 0;
             }
 
-            wf.waveforms[idx++] = sym0;
+            wf.waveforms[idx++] = sym;
         }
     };
 
