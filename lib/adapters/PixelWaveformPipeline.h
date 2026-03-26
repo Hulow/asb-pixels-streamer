@@ -1,10 +1,10 @@
 #pragma once
 
 #include "ChannelWaveForm.h"
-#include "../application/ports/IPixelWaveFormPipeline.h"
 #include "ChannelConfigsBuilder.h"
 #include "PixelSignalEncoder.h"
 #include "WaveFormStreamer.h"
+#include "../application/ports/IPixelConsumer.h"
 
 class PixelWaveFormPipeline : public IPixelConsumer {
     private:

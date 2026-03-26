@@ -69,9 +69,8 @@ extern "C" void app_main() {
     // First LED strip (GPIO4)
     auto configsOne = baseConfigs.gpioNum(GPIO_NUM_4);
     auto* transceiverOne = new PixelWaveFormPipeline(configsOne, ws2815Timing);
-    PixelWaveFormPipeline transceiverTest(configsOne, ws2815Timing);
-    Brightness bright(transceiverTest, 0.12);
-    auto* handlerOne = new CommandHandler(bright);
+    auto* bright = new Brightness(*transceiverOne, 0.92f);
+    auto* handlerOne = new CommandHandler(*bright);
 
     // // Second LED strip (GPIO5)
     auto configsTwo = baseConfigs.gpioNum(GPIO_NUM_5);
