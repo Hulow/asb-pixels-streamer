@@ -1,12 +1,12 @@
 #pragma once
-#include "../effects/PixelFilter.h"
+#include "../effects/Filter.h"
 
-class Brightness : public PixelFilter {
+class Brightness : public Filter {
     private:
         float _factor;
     
     public:
-        Brightness(IPixelConsumer& consumer,const float& factor) : PixelFilter(consumer), _factor(factor) {}
+        Brightness(IPixelConsumer& consumer,const float& factor) : Filter(consumer), _factor(factor) {}
         void enqueuePixel(const Pixel& pixel) override {
             return _consumer.enqueuePixel(
                 Pixel::from(

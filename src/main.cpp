@@ -6,7 +6,6 @@
 #include <string>
 #include <atomic>
 #include "../lib/effects/Brightness.h"
-#include "../lib/effects/PixelFilter.h"
 
 /* Global stop flag */
 std::atomic<bool> stopTasks(false);

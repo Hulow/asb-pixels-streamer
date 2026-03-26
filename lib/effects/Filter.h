@@ -2,14 +2,14 @@
 
 #include "../core/IPixelConsumer.h"
 
-class PixelFilter : public IPixelConsumer {
+class Filter : public IPixelConsumer {
     protected:
         IPixelConsumer& _consumer;
 
     public:
-        PixelFilter(IPixelConsumer& consumer) : _consumer(consumer) {}
+        Filter(IPixelConsumer& consumer) : _consumer(consumer) {}
 
-        virtual ~PixelFilter() = default;
+        virtual ~Filter() = default;
 
         virtual void enqueuePixel(const Pixel& pixel) override = 0;
 
