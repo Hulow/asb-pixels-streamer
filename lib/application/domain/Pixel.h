@@ -1,5 +1,4 @@
 #pragma once
-#include "Timing.h"
 
 class Pixel {
     private:

@@ -1,8 +1,5 @@
 #include "CommandHandler.h"
 #include "domain/Pixel.h"
-#include "domain/Symbol.h"
-
-#include "domain/services/PixelConverter.h"
 
 CommandHandler::CommandHandler(IPixelWaveFormPipeline& pipeline)
     : _pipeline(pipeline) {}
