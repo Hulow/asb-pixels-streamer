@@ -6,7 +6,7 @@
 #include "PixelSignalEncoder.h"
 #include "WaveFormStreamer.h"
 
-class PixelWaveFormPipeline : public IPixelWaveFormPipeline {
+class PixelWaveFormPipeline : public IPixelConsumer {
     private:
         ChannelWaveForm _channel;
         PixelSignalEncoder _encoder;

@@ -5,6 +5,10 @@
 #include "freertos/task.h"
 #include <string>
 #include <atomic>
+#include "../lib/application/Brightness.h"
+#include "../lib/application/PixelFilter.h"
+
+
 
 /* Global stop flag */
 std::atomic<bool> stopTasks(false);
@@ -65,7 +69,9 @@ extern "C" void app_main() {
     // First LED strip (GPIO4)
     auto configsOne = baseConfigs.gpioNum(GPIO_NUM_4);
     auto* transceiverOne = new PixelWaveFormPipeline(configsOne, ws2815Timing);
-    auto* handlerOne = new CommandHandler(*transceiverOne);
+    PixelWaveFormPipeline transceiverTest(configsOne, ws2815Timing);
+    Brightness bright(transceiverTest, 0.12);
+    auto* handlerOne = new CommandHandler(bright);
 
     // // Second LED strip (GPIO5)
     auto configsTwo = baseConfigs.gpioNum(GPIO_NUM_5);
