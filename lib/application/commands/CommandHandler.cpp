@@ -11,8 +11,8 @@
 #include "domain/services/PixelConverter.h"
 #include <sstream>
 
-CommandHandler::CommandHandler(Logger& logger, IPixelsStreamer& streamer)
-    : _logger(logger), _streamer(streamer) {}
+CommandHandler::CommandHandler(IPixelsStreamer& streamer)
+    : _streamer(streamer) {}
 
 void CommandHandler::execute(const Command& command, std::function<void()> callBack) {
     std::vector<Pixel> pixels;

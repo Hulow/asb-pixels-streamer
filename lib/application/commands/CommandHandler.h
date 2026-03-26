@@ -8,10 +8,9 @@
 class CommandHandler {
     private:
         uint8_t _pixel;
-        Logger& _logger;
         IPixelsStreamer& _streamer;
     
     public:
-        CommandHandler(Logger& logger, IPixelsStreamer& streamer);
+        CommandHandler(IPixelsStreamer& streamer);
         void execute(const Command& command, std::function<void()> callBack);
 };

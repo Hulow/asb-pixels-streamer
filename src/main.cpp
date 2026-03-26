@@ -54,8 +54,6 @@ void taskBothStrips(void* param) {
 }
 
 extern "C" void app_main() {
-    Logger logger;
-
     // Base configuration
     ConfigsBuilder baseConfigs = ConfigsBuilder()
         .clock(RMT_CLK_SRC_DEFAULT)
@@ -66,12 +64,12 @@ extern "C" void app_main() {
     // First LED strip (GPIO4)
     ConfigsBuilder configsOne = baseConfigs.gpioNum(GPIO_NUM_4);
     auto* transceiverOne = new Rmt(configsOne.build());
-    CommandHandler handlerOne(logger, *transceiverOne);
+    CommandHandler handlerOne(*transceiverOne);
 
     // Second LED strip (GPIO5)
     ConfigsBuilder configsTwo = baseConfigs.gpioNum(GPIO_NUM_5);
     auto* transceiverTwo = new Rmt(configsTwo.build());
-    CommandHandler handlerTwo(logger, *transceiverTwo);
+    CommandHandler handlerTwo(*transceiverTwo);
 
     // Prepare task arguments
     auto* dualArgs = new DualTaskArgs{
