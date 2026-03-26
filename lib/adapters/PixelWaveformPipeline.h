@@ -4,9 +4,9 @@
 #include "ChannelConfigsBuilder.h"
 #include "PixelSignalEncoder.h"
 #include "WaveFormStreamer.h"
-#include "../core/IPixelConsumer.h"
+#include "../core/IConsumer.h"
 
-class PixelWaveFormPipeline : public IPixelConsumer {
+class PixelWaveFormPipeline : public IConsumer {
     private:
         ChannelWaveForm _channel;
         PixelSignalEncoder _encoder;

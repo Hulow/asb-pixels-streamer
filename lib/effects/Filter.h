@@ -1,13 +1,13 @@
 #pragma once
 
-#include "../core/IPixelConsumer.h"
+#include "../core/IConsumer.h"
 
-class Filter : public IPixelConsumer {
+class Filter : public IConsumer {
     protected:
-        IPixelConsumer& _consumer;
+        IConsumer& _consumer;
 
     public:
-        Filter(IPixelConsumer& consumer) : _consumer(consumer) {}
+        Filter(IConsumer& consumer) : _consumer(consumer) {}
 
         virtual ~Filter() = default;
 
