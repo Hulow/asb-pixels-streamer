@@ -1,5 +1,6 @@
 #include "PixelWaveformPipeline.h"
 #include "PixelSignalEncoder.h"
+#include "ResetSignalGenerator.h"
 
 PixelWaveFormPipeline::PixelWaveFormPipeline(const ChannelConfigsBuilder& configs, const PixelTiming& timing) : _channel(configs),  _encoder(timing, configs.build().resolution_hz), _streamer(_channel.getChannel()) {}
 
@@ -18,6 +19,11 @@ void PixelWaveFormPipeline::addPixelToQueue(const Pixel& pixel) {
     _streamer.addWaveformsToQueue(
         _encoder.toWaveForms(pixel)
     );
+}
+
+void PixelWaveFormPipeline::addResetToQueue() {
+    ResetSignalGenerator resetSignal(30000);
+    _streamer.addWaveformsToQueue(resetSignal.generate());
 }
 
 void PixelWaveFormPipeline::startConsuming() {

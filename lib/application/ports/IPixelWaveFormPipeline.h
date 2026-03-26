@@ -6,4 +6,5 @@ class IPixelWaveFormPipeline {
         virtual ~IPixelWaveFormPipeline() = default;
         virtual void addPixelToQueue(const Pixel& pixel) = 0;
         virtual void startConsuming() = 0;
+        virtual void addResetToQueue() = 0;
 };

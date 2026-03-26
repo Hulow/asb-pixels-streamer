@@ -1,7 +1,9 @@
 #include "esp_log.h"
 #include "WaveFormStreamer.h"
 
-WaveFormStreamer::WaveFormStreamer(const rmt_channel_handle_t& channel) : _channel(channel) {}
+WaveFormStreamer::WaveFormStreamer(const rmt_channel_handle_t& channel) : _channel(channel) {
+    _streamEncoder = nullptr;
+}
 
 void WaveFormStreamer::addWaveformsToQueue(const PixelWaveforms& waveForms) {
     for (const rmt_symbol_word_t  wm : waveForms.waveforms) {
@@ -40,6 +42,7 @@ void WaveFormStreamer::stream() {
         return;
     }
 
+    //cleaning up the previous RMT encoder
     if (_streamEncoder) {
         rmt_del_encoder(_streamEncoder);
         _streamEncoder = nullptr;
@@ -66,11 +69,12 @@ void WaveFormStreamer::stream() {
 esp_err_t WaveFormStreamer::dummyStransmit() {
     rmt_transmit_config_t tx_config = {};
     tx_config.loop_count = 0;
+    uint8_t dummy = 0;
 
     return rmt_transmit(
         _channel,
         _streamEncoder, 
-        0,
+        &dummy,
         1, 
         &tx_config
     );
