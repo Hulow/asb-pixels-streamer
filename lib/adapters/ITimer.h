@@ -3,5 +3,5 @@
 #include <cstdint>
 class ITimer {
     public:
-        virtual void wait(uint32_t ms) = 0;
+        virtual void wait(const uint32_t& ms) = 0;
 };

@@ -9,13 +9,8 @@ class Brightness : public Filter {
     
     public:
         Brightness(IConsumer& consumer,const float& factor) : Filter(consumer), _factor(factor) {}
-        void enqueuePixel(const Pixel& pixel) override {
-            return _consumer.enqueuePixel(
-                Pixel::from(
-                    (pixel.getGreen() * _factor),
-                    (pixel.getRed() * _factor),
-                    (pixel.getBlue() * _factor)
-                )
-            );
+        void enqueuePixel(Pixel& pixel) override {
+            pixel.applyBrightness(_factor);  
+            return _consumer.enqueuePixel(pixel);
         }
 };

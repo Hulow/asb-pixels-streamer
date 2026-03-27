@@ -1,19 +1,18 @@
 #pragma once
 
-#include "../core/IPixelConsumer.h"
+#include "../core/IConsumer.h"
 
-class Behaviour : public IPixelConsumer {
+class Behaviour : public IConsumer {
     protected:
-        IPixelConsumer& _consumer; 
+        IConsumer& _consumer; 
     public: 
-        Behaviour(IPixelConsumer& consumer) : _consumer(consumer) {}
+        Behaviour(IConsumer& consumer) : _consumer(consumer) {}
         virtual ~Behaviour() = default;
-        virtual void enqueuePixel(const Pixel& pixel) override = 0;
+        virtual void enqueuePixel(Pixel& pixel) = 0;
         virtual void start() override {
             _consumer.start();
         }
         virtual void signalLastPixel() override {
             _consumer.signalLastPixel();
         }
-
 };

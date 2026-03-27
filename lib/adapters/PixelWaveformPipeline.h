@@ -17,7 +17,7 @@ class PixelWaveFormPipeline : public IConsumer {
                 const PixelTiming& timing
         );
         static PixelWaveFormPipeline createWS2815(const ChannelConfigsBuilder& configsBuilder);
-        void enqueuePixel(const Pixel& pixel);
+        void enqueuePixel(Pixel& pixel);
         void signalLastPixel();
         void start();
 };

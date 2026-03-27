@@ -11,7 +11,7 @@ class Filter : public IConsumer {
 
         virtual ~Filter() = default;
 
-        virtual void enqueuePixel(const Pixel& pixel) override = 0;
+        virtual void enqueuePixel(Pixel& pixel) override = 0;
 
         virtual void start() override {
             _consumer.start();
