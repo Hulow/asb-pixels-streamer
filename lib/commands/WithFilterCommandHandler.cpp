@@ -11,9 +11,8 @@ void WithFilterCommandHandler::execute(const Command& command, std::function<voi
         command.getBlue()
     );
     for (int i = 0; i < command.getPixelsCount(); ++i) {
-           _consumer.enqueuePixel(pixel);
+        _consumer.enqueuePixel(pixel);
     }
-     
     _consumer.signalLastPixel();
     _consumer.start();
 
