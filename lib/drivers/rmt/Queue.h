@@ -1,0 +1,32 @@
+#pragma once
+
+#include <array>
+#include "driver/rmt_tx.h"
+#include "esp_log.h"
+
+class Queue {
+    private:
+        rmt_symbol_word_t _symbols[300];
+        size_t _front = 0;
+        size_t _back = 0;
+
+    public:
+
+        void pushSymbols(std::array<rmt_symbol_word_t, 24> symbols) {
+            for (const auto& symbol : symbols) {
+                push(symbol);
+            }
+        }
+        
+        void push(const rmt_symbol_word_t& symbol) {
+            _symbols[_back] = symbol;
+            _back = _back + 1;
+        }
+
+        void printQueue() const {
+            for (size_t i = 0; i < _back; i++) {
+                ESP_LOGI("QUEUE", "symbol %d - high %d - low %d",
+                        i, _symbols[i].duration0, _symbols[i].duration1);
+            }
+    }
+};

@@ -10,10 +10,11 @@ class Transmitter {
     private:
         Channel _channel;
         Encoder _encoder;
-        // Streamer _streamer;
+        Streamer _streamer;
     public:
         Transmitter(const rmt_tx_channel_config_t& configs, const Timing& timing);
         void encode(const Pixel& pixel);
+        void printQueue();
 };
 
 

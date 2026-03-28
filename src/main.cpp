@@ -1,8 +1,9 @@
+#include "driver/rmt_tx.h"
+
 #include "../lib/drivers/rmt/ConfigsBuilder.h"
 #include "../lib/drivers/rmt/TimingBuilder.h"
 #include "../lib/drivers/rmt/Transmitter.h"
 #include "../lib/core/Pixel.h"
-
 
 extern "C" void app_main() {
     ConfigsBuilder baseConfigs = ConfigsBuilder()
@@ -24,7 +25,6 @@ extern "C" void app_main() {
 
     Pixel pixel = Pixel::from(0,255,0);
 
-    int const STRIP_LENGTH = 10;
-
     transmitter.encode(pixel);
+    transmitter.printQueue();
 };
