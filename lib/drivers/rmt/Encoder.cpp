@@ -2,7 +2,7 @@
 #include <array>
 
 #include "Encoder.h"
-#include "PulseBuilder.h"
+#include "SymbolBuilder.h"
 
 Encoder::Encoder(const uint32_t& resolution, const Timing& timing) : _resolution(resolution), _timing(timing) {}
 
@@ -21,7 +21,7 @@ std::array<rmt_symbol_word_t, 24> Encoder::encode(const Pixel& pixel) {
 }
 
 rmt_symbol_word_t Encoder::encodeResetSignal() {
-    PulseBuilder pulse = PulseBuilder();
+    SymbolBuilder pulse = SymbolBuilder();
     return pulse
         .lowLevel(0)
         .lowDuration(_timing.resetTime)
@@ -31,7 +31,7 @@ rmt_symbol_word_t Encoder::encodeResetSignal() {
 }
 
 std::array<rmt_symbol_word_t, 8> Encoder::toPulses(const uint8_t& color) {
-    PulseBuilder pulse = PulseBuilder();
+    SymbolBuilder pulse = SymbolBuilder();
     std::array<rmt_symbol_word_t, 8> pulses{};
 
     size_t idx = 0;
