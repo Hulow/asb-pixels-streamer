@@ -7,7 +7,7 @@ WaveFormStreamer::WaveFormStreamer(const rmt_channel_handle_t& channel) : _chann
 
 void WaveFormStreamer::addWaveformsToQueue(const PixelWaveforms& waveForms) {
     for (const rmt_symbol_word_t  wm : waveForms.waveforms) {
-        // ESP_LOGI("QUEUE", "Symbol duration0: %d, level0: %d, duration 1: %d, level 1: %d", wm.duration0, wm.level0, wm.duration1, wm.level1);
+        ESP_LOGI("QUEUE", "Symbol duration0: %d, level0: %d, duration 1: %d, level 1: %d", wm.duration0, wm.level0, wm.duration1, wm.level1);
         bool success = _queue.push(wm);
         if (!success) {
             ESP_LOGI("QUEUE", "Queue full! Pixel symbols dropped!");

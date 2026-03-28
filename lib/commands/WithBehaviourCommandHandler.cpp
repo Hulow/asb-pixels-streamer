@@ -34,11 +34,10 @@ void WithBehaviourCommandHandler::execute(const Command& command, std::function<
         });
         _consumer.enqueuePixel(pixel);
         _consumer.signalLastPixel();
-        if (i==1) {
-            _consumer.start();
-        }
         // ESP_LOGI("HANDLER", "Reset signal sent");
     }
+
+    _consumer.start();
 
     if (callBack) callBack();
 }

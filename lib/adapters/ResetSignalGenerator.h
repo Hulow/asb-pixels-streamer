@@ -20,7 +20,7 @@ public:
     // Generate just one reset waveform
     rmt_symbol_word_t generate() const {
         rmt_symbol_word_t wf;
-        wf.duration0 = 30000; // long low signal
+        wf.duration0 = 5000; // long low signal
         wf.level0    = 0;
         wf.duration1 = 0;           // unused
         wf.level1    = 0;           // unused
