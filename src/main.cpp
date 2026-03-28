@@ -17,16 +17,23 @@ extern "C" void app_main() {
         .lowTimeSignal(1090)
         .highTimeNoSignal(1090)
         .lowTimeNoSignal(320)
-        .resetTime(30000)
+        .resetTime(3000000)
         .build();
     
     auto configsOne = baseConfigs.gpioNum(GPIO_NUM_5);
     Transmitter transmitter(configsOne.build(), timingConfigs);
 
-    Pixel pixel = Pixel::from(0,255,0);
+    Pixel red = Pixel::from(0,255,0);
+    Pixel black = Pixel::from(0,0,0);
 
-    transmitter.pushPixel(pixel);
+    //frame 1
+    transmitter.pushPixel(red);
     transmitter.pushResetSignal();
+    //frame 2
+    transmitter.pushPixel(red);
+    transmitter.pushPixel(red);
+    transmitter.pushResetSignal();
+    
     transmitter.printQueue();
     transmitter.start();
 };

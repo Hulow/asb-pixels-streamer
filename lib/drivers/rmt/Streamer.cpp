@@ -65,11 +65,10 @@ void Streamer::stream() {
         return;
     }
 
-    while (!_queue.empty()) {
-           if (esp_err_t err = transit() != ESP_OK) {
-                ESP_LOGI(TAG, "Transmit failed: %d", err);
-           }
+    if (esp_err_t err = transit() != ESP_OK) {
+        ESP_LOGI(TAG, "Transmit failed: %d", err);
     }
+    
 }
 
 esp_err_t Streamer::transit() {

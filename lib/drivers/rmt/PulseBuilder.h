@@ -20,14 +20,22 @@ class PulseBuilder {
             return *this;
         }
 
+        PulseBuilder& lowLevel(const int& level) {
+            _pulse.level0 = level;
+            return *this;
+        }
+
+        PulseBuilder& highLevel(const int& level) {
+            _pulse.level1 = level;
+            return *this;
+        }
+
         PulseBuilder& highDuration(const uint16_t& signal) {
             _pulse.duration1 = signal;
             return *this;
         }
 
         rmt_symbol_word_t build() {
-            _pulse.level0 = 1;
-            _pulse.level1 = 0;
             return _pulse;
         }
 };

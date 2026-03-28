@@ -22,10 +22,11 @@ std::array<rmt_symbol_word_t, 24> Encoder::encode(const Pixel& pixel) {
 
 rmt_symbol_word_t Encoder::encodeResetSignal() {
     PulseBuilder pulse = PulseBuilder();
-    return pulse.lowDuration(
-            mapPulse(_timing.resetTime)
-            )
-        .highDuration(0)
+    return pulse
+        .lowLevel(0)
+        .lowDuration(mapPulse(_timing.resetTime))
+        .highLevel(0)
+        .highDuration(1)
         .build();
 }
 
@@ -40,20 +41,17 @@ std::array<rmt_symbol_word_t, 8> Encoder::toPulses(const uint8_t& color) {
         uint8_t value = (color >> bit) & 0x01;
         if (value) {
             pulse
-                .lowDuration(
-                    mapPulse(_timing.lowTimeSignal)
-                )
-                .highDuration(
-                    mapPulse(_timing.highTimeSignal)
-                );
+                .highDuration(mapPulse(_timing.highTimeSignal))
+                .highLevel(1)
+                .lowDuration(mapPulse(_timing.lowTimeSignal))
+                .lowLevel(0);
         } else {
             pulse
-                .lowDuration(
-                    mapPulse(_timing.lowTimeNoSignal)
-                )
-                .highDuration(
-                    mapPulse(_timing.highTimeNoSignal)
-                );
+                .highDuration(mapPulse(_timing.highTimeNoSignal))
+                .highLevel(1)
+                .lowDuration(mapPulse(_timing.lowTimeNoSignal))
+                .lowLevel(0);
+
         }
 
         pulses[idx++] = pulse.build();
