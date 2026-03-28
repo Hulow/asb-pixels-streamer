@@ -6,7 +6,7 @@
 
 class Queue {
     private:
-        rmt_symbol_word_t _symbols[300];
+        rmt_symbol_word_t _symbols[600];
         size_t _front = 0;
         size_t _back = 0;
 
@@ -20,16 +20,17 @@ class Queue {
         
         void push(const rmt_symbol_word_t& symbol) {
             _symbols[_back] = symbol;
-            _back = (_back + 1) % 300;
+            _back = (_back + 1) % 600;
         }
 
         bool pop(rmt_symbol_word_t& symbol) {
             if (_front == _back) {
+                ESP_LOGI("QUEUE", "FULL");
                 return false; // buffer empty
             }
 
             symbol = _symbols[_front];
-            _front = (_front + 1) % 300;
+            _front = (_front + 1) % 600;
             return true;
         }
 
