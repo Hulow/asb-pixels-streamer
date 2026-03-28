@@ -27,27 +27,23 @@ extern "C" void app_main() {
     Pixel black = Pixel::from(0,0,0);
 
     for (int i = 0; i < 1; i++) {
-        transmitter.pushPixel(black);
+        transmitter.pushPixel(red);
     }
-    transmitter.pushResetSignal();
     transmitter.pushResetSignal();
 
     for (int i = 0; i < 2; i++) {
         transmitter.pushPixel(red);
     }
     transmitter.pushResetSignal();
-    transmitter.pushResetSignal();
 
     for (int i = 0; i < 3; i++) {
         transmitter.pushPixel(red);
     }
     transmitter.pushResetSignal();
-    transmitter.pushResetSignal();
 
     for (int i = 0; i < 4; i++) {
         transmitter.pushPixel(red);
     }
-    transmitter.pushResetSignal();
     transmitter.pushResetSignal();
 
     transmitter.start();
