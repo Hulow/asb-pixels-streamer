@@ -4,7 +4,7 @@
 Transmitter::Transmitter(const rmt_tx_channel_config_t& configs, const Timing& timing) : 
     _channel(configs),
     _encoder(configs.resolution_hz, timing),
-    _streamer()
+    _streamer(_channel.getChannel())
 {}
 
 void Transmitter::pushPixel(const Pixel& pixel) {
@@ -21,4 +21,8 @@ void Transmitter::pushResetSignal() {
 
 void Transmitter::printQueue() {
     _streamer.printQueue();
+}
+
+void Transmitter::start() {
+    _streamer.stream();
 }

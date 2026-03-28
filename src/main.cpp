@@ -28,4 +28,5 @@ extern "C" void app_main() {
     transmitter.pushPixel(pixel);
     transmitter.pushResetSignal();
     transmitter.printQueue();
+    transmitter.start();
 };

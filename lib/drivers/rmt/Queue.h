@@ -20,7 +20,21 @@ class Queue {
         
         void push(const rmt_symbol_word_t& symbol) {
             _symbols[_back] = symbol;
-            _back = _back + 1;
+            _back = (_back + 1) % 300;
+        }
+
+        bool pop(rmt_symbol_word_t& symbol) {
+            if (_front == _back) {
+                return false; // buffer empty
+            }
+
+            symbol = _symbols[_front];
+            _front = (_front + 1) % 300;
+            return true;
+        }
+
+        bool empty() const {
+            return _front == _back;
         }
 
         void printQueue() const {

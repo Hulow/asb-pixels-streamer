@@ -16,6 +16,7 @@ class Transmitter {
         void pushPixel(const Pixel& pixel);
         void printQueue();
         void pushResetSignal();
+        void start();
 };
 
 
