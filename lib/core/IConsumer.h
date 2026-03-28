@@ -4,7 +4,7 @@
 class IConsumer {
     public: 
         virtual ~IConsumer() = default;
-        virtual void enqueuePixel(Pixel& pixel) = 0;
+        virtual void pushPixel(const Pixel& pixel) = 0;
         virtual void start() = 0;
-        virtual void signalLastPixel() = 0;
+        virtual void pushResetSignal() = 0;
 };
