@@ -2,64 +2,41 @@
 #include "Behaviour.h"
 #include "../core/IConsumer.h"
 #include "../core/Pixel.h"
+#include "esp_log.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 
 
-
-// which led from the strip
-// how long is the chase
-// speed (time)
-// blackpixel
-
-struct ChasingState {
-    int currentPixel;
-    int pixelCount;
-    int chasingLength ;
-};
-
-class Chasing : public Behaviour{  
+class Chasing : public Behaviour {  
     private:
-        ChasingState _state;
-
-        void setCurrentPixel(const int& currentPixel) {
-            _state.currentPixel = currentPixel;
-        };
-
-        void setPixelCount(const int& pixelCount) {
-            _state.pixelCount = pixelCount;
-        };
-
-        void setChasingLength(const int& chasingLength) {
-            _state.chasingLength = chasingLength;
-        };
+        State _state;
 
     public:
         Chasing(
             IConsumer& consumer, 
-            const ChasingState& state = {}
+            const State& state = {}
         )
             : 
                 Behaviour(consumer), 
                 _state(state)
             {}
         void enqueuePixel(Pixel& pixel) override {
-            for (int i = 0; i < _state.pixelCount; i++ ) {
-                // if (i < _pixelNumber - _pixelLength) {
-                //     _consumer.enqueuePixel(Pixel::from(0, 0, 0));
-                // }
+            for (int i = 1; i <= _state.pixelsCount; i++) {
+                if (i <= _state.currentPixel) {
+                    Pixel p = Pixel::from(0, 255, 0);
+                    // ESP_LOGI("Chasing", "LED %d ON from Sequence %d Color: %d. %d, %d", i,  _state.currentPixel, pixel.getGreen(), pixel.getRed(), pixel.getBlue());
+                    _consumer.enqueuePixel(p);
+                } else {
+                    Pixel off = Pixel::from(0, 0, 0);
+                    _consumer.enqueuePixel(off);
+                }
+                // ESP_LOGI("Chasing", "Pixel %d from Sequence %d", i, _state.currentPixel);
 
-                // if((_pixelNumber - _pixelLength) > i > _pixelNumber) {
-                //     _consumer.enqueuePixel(pixel);
-                // }
-
-                // if(i > _pixelNumber) {
-                //     _consumer.enqueuePixel(Pixel::from(0, 0, 0));
-                // }
             }
-        }
+            // vTaskDelay(pdMS_TO_TICKS(10));   
+        }   
 
-        void setState(const ChasingState& state) {
-            setChasingLength(state.chasingLength);
-            setCurrentPixel(state.currentPixel);
-            setPixelCount(state.pixelCount);
+        void setState(const State& state) override {
+            _state = state;
         }
 };

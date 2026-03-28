@@ -22,8 +22,8 @@ void PixelWaveFormPipeline::enqueuePixel(Pixel& pixel) {
 }
 
 void PixelWaveFormPipeline::signalLastPixel() {
-    ResetSignalGenerator resetSignal(30000);
-    _streamer.addWaveformsToQueue(resetSignal.generate());
+    ResetSignalGenerator resetSignal;
+    _streamer.addResetWaveform(resetSignal.generate());
 }
 
 void PixelWaveFormPipeline::start() {

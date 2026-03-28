@@ -2,6 +2,7 @@
 #include <cstddef>
 #include <vector>
 #include "driver/rmt_tx.h"
+#include "esp_log.h"
 
 template <size_t SIZE>
 class WaveFormsQueue {
@@ -17,6 +18,8 @@ public:
         if (next == tail) {
             return false; // buffer full
         }
+
+        // ESP_LOGI("QUEUE SYSTEM", "PUSH head: %d - next: %d", head, next);
 
         buffer[head] = item;
         head = next;
