@@ -14,7 +14,7 @@ class Transmitter : public IConsumer {
         Streamer _streamer;
     public:
         Transmitter(const rmt_tx_channel_config_t& configs, const Timing& timing);
-        void pushPixel(const Pixel& pixel);
+        void pushPixel(Pixel& pixel);
         void printQueue();
         void pushResetSignal();
         void start();

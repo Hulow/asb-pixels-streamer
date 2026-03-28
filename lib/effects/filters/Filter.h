@@ -11,14 +11,14 @@ class Filter : public IConsumer {
 
         virtual ~Filter() = default;
 
-        virtual void enqueuePixel(Pixel& pixel) override = 0;
+        virtual void pushPixel(Pixel& pixel) override = 0;
 
         virtual void start() override {
             _consumer.start();
         }
         
-        virtual void signalLastPixel() override {
-            _consumer.signalLastPixel();
+        virtual void pushResetSignal() override {
+            _consumer.pushResetSignal();
         }
 
 };

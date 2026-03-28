@@ -16,14 +16,14 @@ class Behaviour : public IConsumer {
         
         virtual ~Behaviour() = default;
 
-        virtual void enqueuePixel(Pixel& pixel) = 0;
+        virtual void pushPixel(Pixel& pixel) = 0;
 
         virtual void start() override {
             _consumer.start();
         }
 
-        virtual void signalLastPixel() override {
-            _consumer.signalLastPixel();
+        virtual void pushResetSignal() override {
+            _consumer.pushResetSignal();
         }
 
         virtual void setState(const State& state) = 0;

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../effects/Filter.h"
-#include "../core/IConsumer.h"
+#include "Filter.h"
+#include "../../core/IConsumer.h"
 
 class Brightness : public Filter {
     private:
@@ -9,8 +9,8 @@ class Brightness : public Filter {
     
     public:
         Brightness(IConsumer& consumer,const float& factor) : Filter(consumer), _factor(factor) {}
-        void enqueuePixel(Pixel& pixel) override {
+        void pushPixel(Pixel& pixel) override {
             pixel.applyBrightness(_factor);  
-            return _consumer.enqueuePixel(pixel);
+            return _consumer.pushPixel(pixel);
         }
 };

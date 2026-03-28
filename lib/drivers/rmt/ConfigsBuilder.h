@@ -20,7 +20,8 @@ public:
         _config.clk_src = clock;
         return *this;
     }
-
+    
+    /* value / 24 bits = nb of leds on the strip... */
     ConfigsBuilder& memBlockSymbols(int blocks) { 
         _config.mem_block_symbols = blocks;
         return *this;

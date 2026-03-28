@@ -20,15 +20,15 @@ class Chasing : public Behaviour {
                 Behaviour(consumer), 
                 _state(state)
             {}
-        void enqueuePixel(Pixel& pixel) override {
+        void pushPixel(Pixel& pixel) override {
             for (int i = 1; i <= _state.pixelsCount; i++) {
                 if (i <= _state.currentPixel) {
                     Pixel p = Pixel::from(0, 255, 0);
                     // ESP_LOGI("Chasing", "LED %d ON from Sequence %d Color: %d. %d, %d", i,  _state.currentPixel, pixel.getGreen(), pixel.getRed(), pixel.getBlue());
-                    _consumer.enqueuePixel(p);
+                    _consumer.pushPixel(p);
                 } else {
                     Pixel off = Pixel::from(0, 0, 0);
-                    _consumer.enqueuePixel(off);
+                    _consumer.pushPixel(off);
                 }
                 // ESP_LOGI("Chasing", "Pixel %d from Sequence %d", i, _state.currentPixel);
 

@@ -1,13 +1,13 @@
 #pragma once
 
-#include "../effects/Filter.h"
-#include "../core/IConsumer.h"
+#include "Filter.h"
+#include "../../core/IConsumer.h"
 
 class Blackout : public Filter {
     public:
         Blackout(IConsumer& consumer) : Filter(consumer) {}
-        void enqueuePixel(Pixel& pixel) override {
+        void pushPixel(Pixel& pixel) override {
             pixel.turnOff();
-            return _consumer.enqueuePixel(pixel);
+            return _consumer.pushPixel(pixel);
         }
 };
