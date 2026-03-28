@@ -20,6 +20,15 @@ std::array<rmt_symbol_word_t, 24> Encoder::encode(const Pixel& pixel) {
     return pulses;
 }
 
+rmt_symbol_word_t Encoder::encodeResetSignal() {
+    PulseBuilder pulse = PulseBuilder();
+    return pulse.lowDuration(
+            mapPulse(_timing.resetTime)
+            )
+        .highDuration(0)
+        .build();
+}
+
 std::array<rmt_symbol_word_t, 8> Encoder::toPulses(const uint8_t& color) {
     PulseBuilder pulse = PulseBuilder();
     std::array<rmt_symbol_word_t, 8> pulses{};

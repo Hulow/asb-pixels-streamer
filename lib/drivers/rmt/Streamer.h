@@ -10,6 +10,7 @@ class Streamer {
         Queue _queue;
 
     public: 
-        void pushToQueue(const std::array<rmt_symbol_word_t, 24>& symbols);
+        void pushPixelToQueue(const std::array<rmt_symbol_word_t, 24>& symbols);
+        void pushResetSignalToQueue(const rmt_symbol_word_t& symbol);
         void printQueue();
 };

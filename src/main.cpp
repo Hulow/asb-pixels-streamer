@@ -17,7 +17,7 @@ extern "C" void app_main() {
         .lowTimeSignal(1090)
         .highTimeNoSignal(1090)
         .lowTimeNoSignal(320)
-        .resetTime(3000)
+        .resetTime(30000)
         .build();
     
     auto configsOne = baseConfigs.gpioNum(GPIO_NUM_5);
@@ -25,6 +25,7 @@ extern "C" void app_main() {
 
     Pixel pixel = Pixel::from(0,255,0);
 
-    transmitter.encode(pixel);
+    transmitter.pushPixel(pixel);
+    transmitter.pushResetSignal();
     transmitter.printQueue();
 };

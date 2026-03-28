@@ -7,9 +7,15 @@ Transmitter::Transmitter(const rmt_tx_channel_config_t& configs, const Timing& t
     _streamer()
 {}
 
-void Transmitter::encode(const Pixel& pixel) {
-    _streamer.pushToQueue(
+void Transmitter::pushPixel(const Pixel& pixel) {
+    _streamer.pushPixelToQueue(
         _encoder.encode(pixel)
+    );
+}
+
+void Transmitter::pushResetSignal() {
+    _streamer.pushResetSignalToQueue(
+        _encoder.encodeResetSignal()
     );
 }
 

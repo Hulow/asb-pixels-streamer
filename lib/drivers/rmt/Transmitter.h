@@ -13,8 +13,9 @@ class Transmitter {
         Streamer _streamer;
     public:
         Transmitter(const rmt_tx_channel_config_t& configs, const Timing& timing);
-        void encode(const Pixel& pixel);
+        void pushPixel(const Pixel& pixel);
         void printQueue();
+        void pushResetSignal();
 };
 
 

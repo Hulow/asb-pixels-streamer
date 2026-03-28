@@ -16,4 +16,5 @@ class Encoder {
     public:
         Encoder(const uint32_t& resolution, const Timing& timing);
         std::array<rmt_symbol_word_t, 24> encode(const Pixel& pixel);
+        rmt_symbol_word_t encodeResetSignal();
 };
