@@ -6,11 +6,16 @@
 
 class Queue {
     private:
-        rmt_symbol_word_t _symbols[600];
+        rmt_symbol_word_t* _symbols;
         size_t _front = 0;
         size_t _back = 0;
+         size_t _capacity;
 
     public:
+
+        Queue(size_t capacity = 600) : _capacity(capacity) {
+            _symbols = new rmt_symbol_word_t[_capacity];
+        }
 
         void pushSymbols(std::array<rmt_symbol_word_t, 24> symbols) {
             for (const auto& symbol : symbols) {
@@ -25,7 +30,7 @@ class Queue {
 
         bool pop(rmt_symbol_word_t& symbol) {
             if (_front == _back) {
-                ESP_LOGI("QUEUE", "FULL");
+                ESP_LOGI("QUEUE", "EMPTY");
                 return false; // buffer empty
             }
 

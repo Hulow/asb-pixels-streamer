@@ -24,7 +24,7 @@ rmt_symbol_word_t Encoder::encodeResetSignal() {
     PulseBuilder pulse = PulseBuilder();
     return pulse
         .lowLevel(0)
-        .lowDuration(mapPulse(_timing.resetTime))
+        .lowDuration(_timing.resetTime)
         .highLevel(0)
         .highDuration(1)
         .build();

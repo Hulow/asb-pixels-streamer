@@ -41,7 +41,7 @@ size_t encoderCallback(
 }
 
 void Streamer::stream() {
-    static const char* TAG = "WaveFormStreamer";
+    static const char* TAG = "Streamer";
 
     if (_queue.empty()) {
         ESP_LOGW(TAG, "Queue empty, nothing to transmit");

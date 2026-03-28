@@ -8,8 +8,8 @@
 extern "C" void app_main() {
     ConfigsBuilder baseConfigs = ConfigsBuilder()
         .clock(RMT_CLK_SRC_DEFAULT)
-        .memBlockSymbols(600)
-        .queueDepth(50)
+        .memBlockSymbols(384) // you devide by the 24 bits (+ resets) you have the number of leds (step of 64)
+        .queueDepth(10)
         .resolutionHz(10 * 1000 * 1000);
 
     Timing timingConfigs = TimingBuilder()
@@ -17,7 +17,7 @@ extern "C" void app_main() {
         .lowTimeSignal(300)
         .highTimeNoSignal(300)
         .lowTimeNoSignal(900)
-        .resetTime(30000000)
+        .resetTime(60000)
         .build();
     
     auto configsOne = baseConfigs.gpioNum(GPIO_NUM_5);
@@ -27,26 +27,30 @@ extern "C" void app_main() {
     Pixel black = Pixel::from(0,0,0);
 
     for (int i = 0; i < 1; i++) {
-        transmitter.pushPixel(red);
+        transmitter.pushPixel(black);
     }
+    transmitter.pushResetSignal();
     transmitter.pushResetSignal();
 
     for (int i = 0; i < 2; i++) {
         transmitter.pushPixel(red);
     }
     transmitter.pushResetSignal();
+    transmitter.pushResetSignal();
 
     for (int i = 0; i < 3; i++) {
         transmitter.pushPixel(red);
     }
     transmitter.pushResetSignal();
+    transmitter.pushResetSignal();
 
-    // for (int i = 0; i < 4; i++) {
-    //     transmitter.pushPixel(black);
-    // }
-    // transmitter.pushResetSignal();
+    for (int i = 0; i < 4; i++) {
+        transmitter.pushPixel(red);
+    }
+    transmitter.pushResetSignal();
+    transmitter.pushResetSignal();
 
+    transmitter.start();
 
     transmitter.printQueue();
-    transmitter.start();
 };
