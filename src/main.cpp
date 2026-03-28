@@ -1,14 +1,35 @@
 #include "driver/rmt_tx.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 
 #include "../lib/drivers/rmt/ConfigsBuilder.h"
 #include "../lib/drivers/rmt/TimingBuilder.h"
 #include "../lib/drivers/rmt/Transmitter.h"
+
+#include "../lib/commands/CommandHandler.h"
+#include "../lib/commands/effect/WithFilterCommandHandler.h"
+
+#include "../lib/effects/filters/Blackout.h"
 #include "../lib/core/Pixel.h"
+
+struct TaskParams {
+    CommandHandler* handler;
+    Command command;
+};
+
+void taskHandler(void* arg) {
+    auto* params = static_cast<TaskParams*>(arg);
+
+    while (true) {
+        params->handler->execute(params->command, nullptr);
+        vTaskDelay(pdMS_TO_TICKS(100));
+    }
+}
 
 extern "C" void app_main() {
     ConfigsBuilder baseConfigs = ConfigsBuilder()
         .clock(RMT_CLK_SRC_DEFAULT)
-        .memBlockSymbols(384) // you devide by the 24 bits (+ resets) you have the number of leds (step of 64)
+        .memBlockSymbols(192) 
         .queueDepth(10)
         .resolutionHz(10 * 1000 * 1000);
 
@@ -20,33 +41,21 @@ extern "C" void app_main() {
         .resetTime(60000)
         .build();
     
-    auto configsOne = baseConfigs.gpioNum(GPIO_NUM_5);
-    Transmitter transmitter(configsOne.build(), timingConfigs);
+    int const STRIP_LENGTH = 1;
+    Command command = Command::from(0, 255, 0, STRIP_LENGTH);
+    
+    auto configsOne = baseConfigs.gpioNum(GPIO_NUM_4);
+    auto* transmitterOne = new Transmitter(configsOne.build(), timingConfigs);
+    auto* blackoutFilterOne = new Blackout(*transmitterOne);
+    auto* handlerOne = new WithFilterCommandHandler(*blackoutFilterOne);
+    auto* taskOneParams = new TaskParams{ handlerOne, Command::from(0, 255, 0, 1) };
 
-    Pixel red = Pixel::from(0,255,0);
-    Pixel black = Pixel::from(0,0,0);
+    auto configsTwo = baseConfigs.gpioNum(GPIO_NUM_5);
+    auto* transmitterTwo = new Transmitter(configsTwo.build(), timingConfigs);
+    auto* blackoutFilterTwo = new Blackout(*transmitterTwo);
+    auto* handlerTwo = new WithFilterCommandHandler(*blackoutFilterTwo);
+    auto* taskTwoParams = new TaskParams{ handlerTwo, Command::from(0, 0, 255, 1) };
 
-    for (int i = 0; i < 1; i++) {
-        transmitter.pushPixel(red);
-    }
-    transmitter.pushResetSignal();
-
-    for (int i = 0; i < 2; i++) {
-        transmitter.pushPixel(red);
-    }
-    transmitter.pushResetSignal();
-
-    for (int i = 0; i < 3; i++) {
-        transmitter.pushPixel(red);
-    }
-    transmitter.pushResetSignal();
-
-    for (int i = 0; i < 4; i++) {
-        transmitter.pushPixel(red);
-    }
-    transmitter.pushResetSignal();
-
-    transmitter.start();
-
-    transmitter.printQueue();
+    xTaskCreate(taskHandler, "Task One", 4096, taskOneParams, 5, nullptr);
+    xTaskCreate(taskHandler, "Task Two", 4096, taskTwoParams, 5, nullptr);
 };

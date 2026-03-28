@@ -32,8 +32,8 @@ void WithBehaviourCommandHandler::execute(const Command& command, std::function<
             command.getPixelsCount(),
             1
         });
-        _consumer.enqueuePixel(pixel);
-        _consumer.signalLastPixel();
+        _consumer.pushPixel(pixel);
+        _consumer.pushResetSignal();
         // ESP_LOGI("HANDLER", "Reset signal sent");
     }
 

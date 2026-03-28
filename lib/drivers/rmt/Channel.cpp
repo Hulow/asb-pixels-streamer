@@ -2,7 +2,7 @@
 #include "esp_log.h"
 
 Channel::Channel(const rmt_tx_channel_config_t& configs) : _configs(configs) {
-    static const char* TAG = "ChannelWaveForm";
+    static const char* TAG = "Channel";
     if (esp_err_t errChannel = rmt_new_tx_channel(&_configs, &_channel) != ESP_OK) {
         ESP_LOGE(TAG, "Failed to create RMT TX channel: %d", errChannel);
         _channel = nullptr;
