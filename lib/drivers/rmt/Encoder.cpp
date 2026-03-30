@@ -26,7 +26,7 @@ rmt_symbol_word_t Encoder::encodeResetSignal() {
         .lowLevel(0)
         .lowDuration(_timing.resetTime)
         .highLevel(0)
-        .highDuration(1)
+        .highDuration(_timing.resetTime)
         .build();
 }
 
