@@ -6,7 +6,7 @@
 #include "../lib/pixel/adapters/rmt/TimingBuilder.h"
 #include "../lib/pixel/adapters/rmt/Transmitter.h"
 
-#include "../lib/pixel/commands/effect/WithFilterCommandHandler.h"
+#include "../lib/pixel/application/commands/effect/WithFilterCommandHandler.h"
 
 #include "../lib/shared/adapters/Timer.h"
 #include "../lib/shared/adapters/Task.h"

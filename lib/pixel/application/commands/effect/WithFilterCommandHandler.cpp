@@ -1,6 +1,6 @@
 #include "WithFilterCommandHandler.h"
 #include "../CommandHandler.h"
-#include "../../core/Pixel.h"
+#include "../../../core/Pixel.h"
 
 WithFilterCommandHandler::WithFilterCommandHandler(IConsumer& consumer) : CommandHandler(consumer) {}
 

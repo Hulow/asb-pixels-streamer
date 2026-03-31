@@ -2,8 +2,8 @@
 
 #include "WithBehaviourCommandHandler.h"
 #include "../CommandHandler.h"
-#include "../../core/IConsumer.h"
-#include "../../adapters/effects/behaviour/Behaviour.h"
+#include "../../../core/IConsumer.h"
+#include "../../../adapters/effects/behaviour/Behaviour.h"
 
 class WithBehaviourCommandHandler : public CommandHandler {
     private:
