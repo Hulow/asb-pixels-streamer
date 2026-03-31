@@ -12,7 +12,7 @@
 #include "../lib/shared/adapters/Task.h"
 
 #include "../lib/pixel/adapters/effects/filters/Blackout.h"
-#include "../lib/pixel/core/Pixel.h"
+#include "../lib/pixel/application/domain/Pixel.h"
 
 struct Params {
     ConfigsBuilder channelConfigs;

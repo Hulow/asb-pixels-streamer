@@ -6,7 +6,7 @@
 #include "ConfigsBuilder.h"
 #include "Encoder.h"
 #include "Streamer.h"
-#include "../../core/Pixel.h"
+#include "../../application/domain/Pixel.h"
 #include "../../application/ports/IConsumer.h"
 
 class Transmitter : public IConsumer {

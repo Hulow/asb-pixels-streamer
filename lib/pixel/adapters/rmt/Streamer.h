@@ -4,7 +4,7 @@
 #include <vector>
 #include "driver/rmt_tx.h"
 
-#include "../../core/Pixel.h"
+#include "../../application/domain/Pixel.h"
 
 class Streamer {
     private:
