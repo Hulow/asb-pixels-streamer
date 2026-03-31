@@ -77,3 +77,7 @@ size_t Encoder::encodeColor(
         return 1;
     }
 }
+
+rmt_encoder_handle_t Encoder::getEncoder() {
+    return _encoder;
+}

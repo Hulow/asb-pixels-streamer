@@ -1,21 +1,21 @@
 #pragma once 
 
 #include <array>
+#include <vector>
 #include "driver/rmt_tx.h"
 
-#include "Queue.h"
+#include "../core/Pixel.h"
 
 class Streamer {
     private:
-        rmt_encoder_handle_t _streamEncoder;
         rmt_channel_handle_t _channel;
-        Queue _queue;
-        esp_err_t transit();
+        rmt_encoder_handle_t _encoder;
+        rmt_transmit_config_t _transmitConfig;
 
     public: 
-        Streamer(const rmt_channel_handle_t& channel);
+        Streamer(const rmt_channel_handle_t& channel, const rmt_encoder_handle_t& encoder);
         void pushPixelToQueue(const std::array<rmt_symbol_word_t, 24>& symbols);
         void pushResetSignalToQueue(const rmt_symbol_word_t& symbol);
         void printQueue();
-        void stream();
+        void stream(const std::vector<Pixel> pixels);
 };
