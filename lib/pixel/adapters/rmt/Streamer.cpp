@@ -21,42 +21,28 @@ Streamer::Streamer(
     };
 }
 
-std::vector<uint8_t> flattenPixels(const std::vector<Pixel>& pixels) {
-    std::vector<uint8_t> buffer;
-    buffer.reserve(pixels.size() * 3); // 3 bytes per pixel
-
-    for (const auto& p : pixels) {
-        buffer.push_back(p.getGreen());
-        buffer.push_back(p.getRed());
-        buffer.push_back(p.getBlue());
-    }
-
-    return buffer;
-}
-
 void Streamer::stream(const std::vector<Pixel> pixels) {
 
-    auto bytes = flattenPixels(pixels);
+    std::vector<uint8_t> buffer;
+    buffer.reserve(
+        pixels.size() * 3
+    );
 
-    std::string line;
-    for (size_t i = 0; i < bytes.size(); ++i) {
-        char buf[4];
-        snprintf(buf, sizeof(buf), "%02X ", bytes[i]);
-        line += buf;
-
-        // Print 16 bytes per line
-        if ((i + 1) % 16 == 0 || i == bytes.size() - 1) {
-            ESP_LOGI("TAG", "%s", line.c_str());
-            line.clear();
-        }
+    for (const auto& pixel : pixels) {
+        auto bytes = pixel.toBytes();
+        buffer.insert(
+            buffer.end(), 
+            bytes.begin(), 
+            bytes.end()
+        );
     }
 
     ESP_ERROR_CHECK(
         rmt_transmit(
             _channel, 
             _encoder, 
-            bytes.data(), 
-            bytes.size(), 
+            buffer.data(), 
+            buffer.size(), 
             &_transmitConfig
         )
     );   

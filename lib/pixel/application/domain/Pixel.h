@@ -48,4 +48,12 @@ class Pixel {
             setRed(_red * factor);
             setBlue(_blue * factor);
         }
+
+        std::array<uint8_t, 3> toBytes() const { 
+            return {
+                _green, 
+                _red, 
+                _blue
+            }; 
+        }
 };

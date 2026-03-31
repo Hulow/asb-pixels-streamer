@@ -47,6 +47,8 @@ void runTaskOne(void* arg) {
 
         transmitter.stream(blackPixels);
 
+        timer.wait(5); 
+
         for (int i = 0; i < LEDS_COUNT; i++) {
             redPixels.push_back(redPixel);
         }
