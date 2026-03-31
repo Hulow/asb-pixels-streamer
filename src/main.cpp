@@ -5,10 +5,57 @@
 #include "../lib/pixel/drivers/rmt/ConfigsBuilder.h"
 #include "../lib/pixel/drivers/rmt/TimingBuilder.h"
 #include "../lib/pixel/drivers/rmt/Transmitter.h"
-#include "../lib/shared/time/adapters/Timer.h"
+
+#include "../lib/pixel/commands/effect/WithFilterCommandHandler.h"
+
+#include "../lib/shared/adapters/Timer.h"
+#include "../lib/shared/adapters/Task.h"
 
 #include "../lib/pixel/effects/filters/Blackout.h"
 #include "../lib/pixel/core/Pixel.h"
+
+struct Params {
+    ConfigsBuilder channelConfigs;
+    Timing timingConfigs;
+};
+
+void runTaskOne(void* arg) {
+    auto params = static_cast<Params*>(arg);
+    Transmitter transmitter(
+        params->channelConfigs.build(), 
+        params->timingConfigs
+    );
+
+    int const LEDS_COUNT = 13;
+    
+    std::vector<Pixel> blackPixels;
+    Pixel blackPixel = Pixel::from(0, 0, 0);
+
+    std::vector<Pixel> redPixels;
+    Pixel redPixel = Pixel::from(0, 255, 0);
+
+    Timer timer;
+
+    while (true) {
+        blackPixels.clear();
+        redPixels.clear();
+ 
+        
+        for (int i = 0; i < LEDS_COUNT; i++) {
+            blackPixels.push_back(blackPixel);
+        }
+
+        transmitter.stream(blackPixels);
+
+        for (int i = 0; i < LEDS_COUNT; i++) {
+            redPixels.push_back(redPixel);
+        }
+
+        transmitter.stream(redPixels);
+
+        timer.wait(100); 
+    }
+}
 
 extern "C" void app_main() {
     ConfigsBuilder baseConfigs = ConfigsBuilder()
@@ -24,43 +71,15 @@ extern "C" void app_main() {
         .lowTimeNoSignal(800)
         .resetTime(300000)
         .build();
-    
-    Timer timer;
 
     auto configsOne = baseConfigs.gpioNum(GPIO_NUM_5);
-
-    Transmitter transmitter(configsOne.build(), timingConfigs);
-
-    int const LEDS_COUNT = 13;
-
-    Pixel blackPixel = Pixel::from(0, 0, 0);
-    Pixel redPixel = Pixel::from(0, 255, 0);
-
-    std::vector<Pixel> blackPixels;
-    for (int i = 0; i < LEDS_COUNT; i++) {
-        blackPixels.push_back(blackPixel);
-    }
-
-    transmitter.stream(blackPixels);
-
-    timer.wait(10); 
-
-    std::vector<Pixel> redPixels;
-    for (int i = 0; i < LEDS_COUNT; i++) {
-        redPixels.push_back(redPixel);
-    }
-
-    transmitter.stream(redPixels);
-
-    timer.wait(10); 
-
-    transmitter.stream(blackPixels);
-
-    timer.wait(10); 
+    Params* paramsOne = new Params{configsOne, timingConfigs};
     
-    transmitter.stream(redPixels);
+    Task* taskOne = new Task(
+        runTaskOne,
+        "Blackout effect",
+        paramsOne
+    );
 
-
-
-
+    taskOne->start();
 };

@@ -14,10 +14,10 @@ Streamer::Streamer(
     {
     _transmitConfig = {
         .loop_count = 0,
-        .flags = {
-            .eot_level = 1,
-            .queue_nonblocking = 1
-        }
+        // .flags = {
+        //     .eot_level = 1,
+        //     .queue_nonblocking = 1
+        // }
     };
 }
 
