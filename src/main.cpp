@@ -53,7 +53,7 @@ void runTaskOne(void* arg) {
 
         transmitter.stream(redPixels);
 
-        timer.wait(100); 
+        timer.wait(1000); 
     }
 }
 
@@ -77,9 +77,19 @@ extern "C" void app_main() {
     
     Task* taskOne = new Task(
         runTaskOne,
-        "Blackout effect",
+        "Blackout effect - channel 5",
         paramsOne
     );
 
     taskOne->start();
+
+    auto configsTwo = baseConfigs.gpioNum(GPIO_NUM_4); // different GPIO
+    Params* paramsTwo = new Params{configsTwo, timingConfigs};
+    Task* taskTwo = new Task(
+        runTaskOne, 
+        "Color cycle - channel 4", 
+        paramsTwo
+    );
+
+    taskTwo->start();
 };
