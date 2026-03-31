@@ -5,9 +5,7 @@
 #include "../lib/pixel/drivers/rmt/ConfigsBuilder.h"
 #include "../lib/pixel/drivers/rmt/TimingBuilder.h"
 #include "../lib/pixel/drivers/rmt/Transmitter.h"
-
-#include "../lib/pixel/commands/CommandHandler.h"
-#include "../lib/pixel/commands/effect/WithFilterCommandHandler.h"
+#include "../lib/shared/time/adapters/Timer.h"
 
 #include "../lib/pixel/effects/filters/Blackout.h"
 #include "../lib/pixel/core/Pixel.h"
@@ -26,6 +24,8 @@ extern "C" void app_main() {
         .lowTimeNoSignal(800)
         .resetTime(300000)
         .build();
+    
+    Timer timer;
 
     auto configsOne = baseConfigs.gpioNum(GPIO_NUM_5);
 
@@ -43,7 +43,7 @@ extern "C" void app_main() {
 
     transmitter.stream(blackPixels);
 
-    vTaskDelay(pdMS_TO_TICKS(10));  
+    timer.wait(10); 
 
     std::vector<Pixel> redPixels;
     for (int i = 0; i < LEDS_COUNT; i++) {
@@ -52,12 +52,12 @@ extern "C" void app_main() {
 
     transmitter.stream(redPixels);
 
-    vTaskDelay(pdMS_TO_TICKS(10));  
+    timer.wait(10); 
 
     transmitter.stream(blackPixels);
 
-    vTaskDelay(pdMS_TO_TICKS(1000));  
-
+    timer.wait(10); 
+    
     transmitter.stream(redPixels);
 
 

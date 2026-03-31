@@ -13,7 +13,11 @@ Streamer::Streamer(
         _encoder(encoder) 
     {
     _transmitConfig = {
-        .loop_count = 0
+        .loop_count = 0,
+        .flags = {
+            .eot_level = 1,
+            .queue_nonblocking = 1
+        }
     };
 }
 
@@ -57,5 +61,10 @@ void Streamer::stream(const std::vector<Pixel> pixels) {
         )
     );   
 
-    ESP_ERROR_CHECK(rmt_tx_wait_all_done(_channel, portMAX_DELAY));
+    ESP_ERROR_CHECK(
+        rmt_tx_wait_all_done(
+            _channel, 
+            portMAX_DELAY
+        )
+    );
 }
