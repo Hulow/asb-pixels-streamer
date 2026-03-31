@@ -4,7 +4,7 @@
 #include <array>
 #include "driver/rmt_tx.h"
 
-#include "../../core/Pixel.h"
+#include "../core/Pixel.h"
 #include "TimingBuilder.h"
 
 class Encoder {

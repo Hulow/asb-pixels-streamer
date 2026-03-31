@@ -2,9 +2,9 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-#include "../lib/pixel/drivers/rmt/ConfigsBuilder.h"
-#include "../lib/pixel/drivers/rmt/TimingBuilder.h"
-#include "../lib/pixel/drivers/rmt/Transmitter.h"
+#include "../lib/pixel/adapters/ConfigsBuilder.h"
+#include "../lib/pixel/adapters/TimingBuilder.h"
+#include "../lib/pixel/adapters/Transmitter.h"
 
 #include "../lib/pixel/commands/effect/WithFilterCommandHandler.h"
 
