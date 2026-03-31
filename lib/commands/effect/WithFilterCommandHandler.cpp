@@ -10,11 +10,6 @@ void WithFilterCommandHandler::execute(const Command& command, std::function<voi
         command.getRed(), 
         command.getBlue()
     );
-    for (int i = 0; i < command.getPixelsCount(); ++i) {
-        _consumer.pushPixel(pixel);
-    }
-    _consumer.pushResetSignal();
-    _consumer.start();
 
     if (callBack) callBack();
 }

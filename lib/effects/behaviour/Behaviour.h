@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "../core/IConsumer.h"
 
 struct State {
@@ -16,15 +18,5 @@ class Behaviour : public IConsumer {
         
         virtual ~Behaviour() = default;
 
-        virtual void pushPixel(Pixel& pixel) = 0;
-
-        virtual void start() override {
-            _consumer.start();
-        }
-
-        virtual void pushResetSignal() override {
-            _consumer.pushResetSignal();
-        }
-
-        virtual void setState(const State& state) = 0;
+        virtual void stream(const std::vector<Pixel>& pixel) = 0;
 };

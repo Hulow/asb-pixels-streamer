@@ -1,10 +1,10 @@
 #pragma once
+
+#include <vector>
+
 #include "Behaviour.h"
 #include "../core/IConsumer.h"
 #include "../core/Pixel.h"
-#include "esp_log.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
 
 
 class Chasing : public Behaviour {  
@@ -20,23 +20,6 @@ class Chasing : public Behaviour {
                 Behaviour(consumer), 
                 _state(state)
             {}
-        void pushPixel(Pixel& pixel) override {
-            for (int i = 1; i <= _state.pixelsCount; i++) {
-                if (i <= _state.currentPixel) {
-                    Pixel p = Pixel::from(0, 255, 0);
-                    // ESP_LOGI("Chasing", "LED %d ON from Sequence %d Color: %d. %d, %d", i,  _state.currentPixel, pixel.getGreen(), pixel.getRed(), pixel.getBlue());
-                    _consumer.pushPixel(p);
-                } else {
-                    Pixel off = Pixel::from(0, 0, 0);
-                    _consumer.pushPixel(off);
-                }
-                // ESP_LOGI("Chasing", "Pixel %d from Sequence %d", i, _state.currentPixel);
-
-            }
-            // vTaskDelay(pdMS_TO_TICKS(10));   
-        }   
-
-        void setState(const State& state) override {
-            _state = state;
-        }
+        
+        void stream(const std::vector<Pixel> pixels) {}
 };

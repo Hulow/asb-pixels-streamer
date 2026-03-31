@@ -10,10 +10,6 @@ Transmitter::Transmitter(const rmt_tx_channel_config_t& configs, const Timing& t
     )
 {}
 
-void Transmitter::pushPixel(Pixel& pixel) {}
-
-void Transmitter::pushResetSignal() {}
-
-void Transmitter::printQueue() {}
-
-void Transmitter::start() {}
+void Transmitter::stream(const std::vector<Pixel>& pixels) {
+    _streamer.stream(pixels);
+}

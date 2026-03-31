@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "../core/IConsumer.h"
 
 class Filter : public IConsumer {
@@ -11,14 +13,6 @@ class Filter : public IConsumer {
 
         virtual ~Filter() = default;
 
-        virtual void pushPixel(Pixel& pixel) override = 0;
-
-        virtual void start() override {
-            _consumer.start();
-        }
-        
-        virtual void pushResetSignal() override {
-            _consumer.pushResetSignal();
-        }
+        virtual void stream(const std::vector<Pixel>& pixels) override = 0;
 
 };

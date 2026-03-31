@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "Filter.h"
 #include "../../core/IConsumer.h"
 
@@ -9,8 +11,5 @@ class Brightness : public Filter {
     
     public:
         Brightness(IConsumer& consumer,const float& factor) : Filter(consumer), _factor(factor) {}
-        void pushPixel(Pixel& pixel) override {
-            pixel.applyBrightness(_factor);  
-            return _consumer.pushPixel(pixel);
-        }
+        void stream(const std::vector<Pixel>& pixels) override {}
 };

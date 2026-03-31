@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "Channel.h"
 #include "ConfigsBuilder.h"
 #include "Encoder.h"
@@ -14,10 +16,7 @@ class Transmitter : public IConsumer {
         Streamer _streamer;
     public:
         Transmitter(const rmt_tx_channel_config_t& configs, const Timing& timing);
-        void pushPixel(Pixel& pixel);
-        void printQueue();
-        void pushResetSignal();
-        void start();
+        void stream(const std::vector<Pixel>& pixels);
 };
 
 
