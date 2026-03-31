@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "../../core/IConsumer.h"
+#include "../../../core/IConsumer.h"
 
 class Filter : public IConsumer {
     protected:

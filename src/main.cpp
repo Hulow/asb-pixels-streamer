@@ -11,7 +11,7 @@
 #include "../lib/shared/adapters/Timer.h"
 #include "../lib/shared/adapters/Task.h"
 
-#include "../lib/pixel/effects/filters/Blackout.h"
+#include "../lib/pixel/adapters/effects/filters/Blackout.h"
 #include "../lib/pixel/core/Pixel.h"
 
 struct Params {
