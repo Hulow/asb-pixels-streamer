@@ -2,15 +2,15 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-#include "../lib/drivers/rmt/ConfigsBuilder.h"
-#include "../lib/drivers/rmt/TimingBuilder.h"
-#include "../lib/drivers/rmt/Transmitter.h"
+#include "../lib/pixel/drivers/rmt/ConfigsBuilder.h"
+#include "../lib/pixel/drivers/rmt/TimingBuilder.h"
+#include "../lib/pixel/drivers/rmt/Transmitter.h"
 
-#include "../lib/commands/CommandHandler.h"
-#include "../lib/commands/effect/WithFilterCommandHandler.h"
+#include "../lib/pixel/commands/CommandHandler.h"
+#include "../lib/pixel/commands/effect/WithFilterCommandHandler.h"
 
-#include "../lib/effects/filters/Blackout.h"
-#include "../lib/core/Pixel.h"
+#include "../lib/pixel/effects/filters/Blackout.h"
+#include "../lib/pixel/core/Pixel.h"
 
 extern "C" void app_main() {
     ConfigsBuilder baseConfigs = ConfigsBuilder()

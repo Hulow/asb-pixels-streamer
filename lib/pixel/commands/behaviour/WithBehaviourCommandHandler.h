@@ -1,9 +1,9 @@
 #pragma once
 
 #include "WithBehaviourCommandHandler.h"
-#include "CommandHandler.h"
-#include "../core/IConsumer.h"
-#include "../effects/behaviour/Behaviour.h"
+#include "../CommandHandler.h"
+#include "../../core/IConsumer.h"
+#include "../../effects/behaviour/Behaviour.h"
 
 class WithBehaviourCommandHandler : public CommandHandler {
     private:
