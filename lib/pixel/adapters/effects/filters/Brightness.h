@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "Filter.h"
-#include "../../../core/IConsumer.h"
+#include "../../../application/ports/IConsumer.h"
 
 class Brightness : public Filter {
     private:

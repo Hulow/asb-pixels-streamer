@@ -1,8 +1,8 @@
 #pragma once
 #include <cstdint>
 
-class ITime {
+class ITimer {
     public: 
-        virtual ~ITime() = default;
+        virtual ~ITimer() = default;
         virtual void wait(const uint32_t& ms) = 0;
 };

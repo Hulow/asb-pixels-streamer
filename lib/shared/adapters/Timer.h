@@ -1,9 +1,9 @@
 #pragma once
 
 #include <cstdint>
-#include "../ports/ITime.h"
+#include "../ports/ITimer.h"
 
-class Timer : public ITime {
+class Timer : public ITimer {
     public:
         void wait(const uint32_t& ms) override;
 };

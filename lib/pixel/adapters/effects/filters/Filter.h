@@ -14,5 +14,4 @@ class Filter : public IConsumer {
         virtual ~Filter() = default;
 
         virtual void stream(const std::vector<Pixel>& pixels) override = 0;
-
 };
