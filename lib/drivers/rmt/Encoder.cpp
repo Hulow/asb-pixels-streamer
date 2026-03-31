@@ -3,7 +3,6 @@
 #include "esp_log.h"
 
 #include "Encoder.h"
-#include "SymbolBuilder.h"
 
 Encoder::Encoder(const uint32_t& resolution, const Timing& timing) : _resolution(resolution), _timing(timing) {
 

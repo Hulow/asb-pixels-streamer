@@ -12,50 +12,55 @@
 #include "../lib/effects/filters/Blackout.h"
 #include "../lib/core/Pixel.h"
 
-struct TaskParams {
-    CommandHandler* handler;
-    Command command;
-};
-
-void taskHandler(void* arg) {
-    auto* params = static_cast<TaskParams*>(arg);
-
-    while (true) {
-        params->handler->execute(params->command, nullptr);
-        vTaskDelay(pdMS_TO_TICKS(100));
-    }
-}
-
 extern "C" void app_main() {
     ConfigsBuilder baseConfigs = ConfigsBuilder()
-        .clock(RMT_CLK_SRC_DEFAULT)
-        .memBlockSymbols(192) 
+        .clock(RMT_CLK_SRC_APB)
+        .memBlockSymbols(256)
         .queueDepth(10)
         .resolutionHz(10 * 1000 * 1000);
 
     Timing timingConfigs = TimingBuilder()
-        .highTimeSignal(900)
+        .highTimeSignal(800)
         .lowTimeSignal(300)
         .highTimeNoSignal(300)
-        .lowTimeNoSignal(900)
-        .resetTime(60000)
+        .lowTimeNoSignal(800)
+        .resetTime(300000)
         .build();
-    
-    int const STRIP_LENGTH = 1;
-    Command command = Command::from(0, 255, 0, STRIP_LENGTH);
-    
-    auto configsOne = baseConfigs.gpioNum(GPIO_NUM_4);
-    auto* transmitterOne = new Transmitter(configsOne.build(), timingConfigs);
-    auto* blackoutFilterOne = new Blackout(*transmitterOne);
-    auto* handlerOne = new WithFilterCommandHandler(*blackoutFilterOne);
-    auto* taskOneParams = new TaskParams{ handlerOne, Command::from(0, 255, 0, 1) };
 
-    auto configsTwo = baseConfigs.gpioNum(GPIO_NUM_5);
-    auto* transmitterTwo = new Transmitter(configsTwo.build(), timingConfigs);
-    auto* blackoutFilterTwo = new Blackout(*transmitterTwo);
-    auto* handlerTwo = new WithFilterCommandHandler(*blackoutFilterTwo);
-    auto* taskTwoParams = new TaskParams{ handlerTwo, Command::from(0, 0, 255, 1) };
+    auto configsOne = baseConfigs.gpioNum(GPIO_NUM_5);
 
-    xTaskCreate(taskHandler, "Task One", 4096, taskOneParams, 5, nullptr);
-    xTaskCreate(taskHandler, "Task Two", 4096, taskTwoParams, 5, nullptr);
+    Transmitter transmitter(configsOne.build(), timingConfigs);
+
+    int const LEDS_COUNT = 13;
+
+    Pixel blackPixel = Pixel::from(0, 0, 0);
+    Pixel redPixel = Pixel::from(0, 255, 0);
+
+    std::vector<Pixel> blackPixels;
+    for (int i = 0; i < LEDS_COUNT; i++) {
+        blackPixels.push_back(blackPixel);
+    }
+
+    transmitter.stream(blackPixels);
+
+    vTaskDelay(pdMS_TO_TICKS(10));  
+
+    std::vector<Pixel> redPixels;
+    for (int i = 0; i < LEDS_COUNT; i++) {
+        redPixels.push_back(redPixel);
+    }
+
+    transmitter.stream(redPixels);
+
+    vTaskDelay(pdMS_TO_TICKS(10));  
+
+    transmitter.stream(blackPixels);
+
+    vTaskDelay(pdMS_TO_TICKS(1000));  
+
+    transmitter.stream(redPixels);
+
+
+
+
 };
