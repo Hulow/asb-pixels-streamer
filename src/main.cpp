@@ -6,8 +6,6 @@
 #include "../lib/pixel/adapters/rmt/TimingBuilder.h"
 #include "../lib/pixel/adapters/rmt/Transmitter.h"
 
-#include "../lib/pixel/application/commands/effect/WithFilterCommandHandler.h"
-
 #include "../lib/shared/adapters/Timer.h"
 #include "../lib/shared/adapters/Task.h"
 
@@ -85,7 +83,7 @@ extern "C" void app_main() {
 
     taskOne->start();
 
-    auto configsTwo = baseConfigs.gpioNum(GPIO_NUM_4); // different GPIO
+    auto configsTwo = baseConfigs.gpioNum(GPIO_NUM_4);
     Params* paramsTwo = new Params{configsTwo, timingConfigs};
     Task* taskTwo = new Task(
         runTaskOne, 
