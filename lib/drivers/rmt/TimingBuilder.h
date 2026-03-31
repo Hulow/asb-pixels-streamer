@@ -3,11 +3,11 @@
 #include <cstdint>
 
 struct Timing {
-    float highTimeSignal;
-    float lowTimeSignal;
-    float highTimeNoSignal;
-    float lowTimeNoSignal;
-    float resetTime;
+    uint32_t highTimeSignal;
+    uint32_t lowTimeSignal;
+    uint32_t highTimeNoSignal;
+    uint32_t lowTimeNoSignal;
+    uint32_t resetTime;
 };
 
 class TimingBuilder {

@@ -19,26 +19,33 @@ Encoder::Encoder(const uint32_t& resolution, const Timing& timing) : _resolution
     ESP_ERROR_CHECK(rmt_new_simple_encoder(&encoderCfg, &_encoder));
 
     _lowSymbol = {
-        .duration0 = static_cast<uint16_t>(_timing.lowTimeNoSignal * _resolution / 1000000),
-        .level0 = 1,
-        .duration1 = static_cast<uint16_t>(_timing.lowTimeNoSignal * _resolution / 1000000),
-        .level1 = 0,
+        .duration0 = nsToTick(_timing.highTimeNoSignal),
+        .level0    = 1,
+        .duration1 = nsToTick(_timing.lowTimeNoSignal),
+        .level1    = 0,
     };
 
     _highSymbol = {
-        .duration0 = static_cast<uint16_t>(_timing.highTimeSignal * _resolution / 1000000),
-        .level0 = 1,
-        .duration1 = static_cast<uint16_t>(_timing.lowTimeNoSignal * _resolution / 1000000),
-        .level1 = 0,
+        .duration0 = nsToTick(_timing.highTimeSignal),
+        .level0    = 1,
+        .duration1 = nsToTick(_timing.lowTimeSignal),
+        .level1    = 0,
     };
 
     _resetSymbol = {
-        .duration0 = static_cast<uint16_t>(_resolution / 1000000 * _timing.resetTime / 2),
-        .level0 = 0,
-        .duration1 = static_cast<uint16_t>(_resolution / 1000000 * _timing.resetTime / 2),
-        .level1 = 0,
+        .duration0 = nsToTick(_timing.resetTime / 2),
+        .level0    = 0,
+        .duration1 = nsToTick(_timing.resetTime / 2),
+        .level1    = 0,
     };
 }
+
+
+uint16_t Encoder::nsToTick(const uint16_t& signal) {
+    double ticks = static_cast<double>(signal) * _resolution / 1e9;
+    return static_cast<uint16_t>(std::round(ticks));
+}
+
 
 size_t Encoder::encodeColor(
     const void *colors, 
