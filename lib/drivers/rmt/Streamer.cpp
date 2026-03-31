@@ -6,11 +6,11 @@ Streamer::Streamer(const rmt_channel_handle_t& channel) : _channel(channel) {
 }
 
 void Streamer::pushPixelToQueue(const std::array<rmt_symbol_word_t, 24>& symbols) {
-    _queue.pushSymbols(symbols);
+    // _queue.pushSymbols(symbols);
 }
 
 void Streamer::pushResetSignalToQueue(const rmt_symbol_word_t& symbol) {
-    _queue.push(symbol);
+    // _queue.push(symbol);
 }
 
 void Streamer::printQueue() {

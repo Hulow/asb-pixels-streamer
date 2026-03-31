@@ -1,66 +1,79 @@
 #include <cmath>
 #include <array>
+#include "esp_log.h"
 
 #include "Encoder.h"
 #include "SymbolBuilder.h"
 
-Encoder::Encoder(const uint32_t& resolution, const Timing& timing) : _resolution(resolution), _timing(timing) {}
+Encoder::Encoder(const uint32_t& resolution, const Timing& timing) : _resolution(resolution), _timing(timing) {
 
-std::array<rmt_symbol_word_t, 24> Encoder::encode(const Pixel& pixel) {
-    auto g = toPulses(pixel.getGreen());
-    auto r = toPulses(pixel.getRed());
-    auto b = toPulses(pixel.getBlue());
+    static const char* TAG = "Encoder";
+    ESP_LOGI(TAG, "Create simple callback-based encoder");
 
-    std::array<rmt_symbol_word_t, 24> pulses{
-        g[0], g[1], g[2], g[3], g[4], g[5], g[6], g[7],
-        r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7],
-        b[0], b[1], b[2], b[3], b[4], b[5], b[6], b[7]
+    const rmt_simple_encoder_config_t encoderCfg = {
+        .callback = Encoder::encodeColor,
+        .arg = this,
+        .min_chunk_size = 64
     };
 
-    return pulses;
+    ESP_ERROR_CHECK(rmt_new_simple_encoder(&encoderCfg, &_encoder));
+
+    _lowSymbol = {
+        .duration0 = static_cast<uint16_t>(_timing.lowTimeNoSignal * _resolution / 1000000),
+        .level0 = 1,
+        .duration1 = static_cast<uint16_t>(_timing.lowTimeNoSignal * _resolution / 1000000),
+        .level1 = 0,
+    };
+
+    _highSymbol = {
+        .duration0 = static_cast<uint16_t>(_timing.highTimeSignal * _resolution / 1000000),
+        .level0 = 1,
+        .duration1 = static_cast<uint16_t>(_timing.lowTimeNoSignal * _resolution / 1000000),
+        .level1 = 0,
+    };
+
+    _resetSymbol = {
+        .duration0 = static_cast<uint16_t>(_resolution / 1000000 * _timing.resetTime / 2),
+        .level0 = 0,
+        .duration1 = static_cast<uint16_t>(_resolution / 1000000 * _timing.resetTime / 2),
+        .level1 = 0,
+    };
 }
 
-rmt_symbol_word_t Encoder::encodeResetSignal() {
-    SymbolBuilder pulse = SymbolBuilder();
-    return pulse
-        .lowLevel(0)
-        .lowDuration(_timing.resetTime)
-        .highLevel(0)
-        .highDuration(_timing.resetTime)
-        .build();
-}
+size_t Encoder::encodeColor(
+    const void *colors, 
+    size_t totalColorsInFrame,
+    size_t symbolsCountAlreadySent, 
+    size_t availableMemoryBlock,
+    rmt_symbol_word_t *symbols, 
+    bool *done, 
+    void *arg
+) {
 
-std::array<rmt_symbol_word_t, 8> Encoder::toPulses(const uint8_t& color) {
-    SymbolBuilder pulse = SymbolBuilder();
-    std::array<rmt_symbol_word_t, 8> pulses{};
+    Encoder* self = static_cast<Encoder*>(arg);
 
-    size_t idx = 0;
-    
-    for (int bit = 7; bit >=0; bit --) {
-        pulse.clear();
-        uint8_t value = (color >> bit) & 0x01;
-        if (value) {
-            pulse
-                .highDuration(mapPulse(_timing.highTimeSignal))
-                .highLevel(1)
-                .lowDuration(mapPulse(_timing.lowTimeSignal))
-                .lowLevel(0);
-        } else {
-            pulse
-                .highDuration(mapPulse(_timing.highTimeNoSignal))
-                .highLevel(1)
-                .lowDuration(mapPulse(_timing.lowTimeNoSignal))
-                .lowLevel(0);
-
-        }
-
-        pulses[idx++] = pulse.build();
+    if(availableMemoryBlock < 8) {
+        return 0;
     }
 
-    return pulses;
-}
+    size_t indexOfNextColorToEncode = symbolsCountAlreadySent / 8;
 
-uint16_t Encoder::mapPulse(const uint16_t& signal) {
-    double ticks = static_cast<double>(signal) * _resolution / 1e9;
-    return static_cast<uint16_t>(std::round(ticks));
+    uint8_t *colorsInBytes = (uint8_t*)colors;
+
+    if (indexOfNextColorToEncode < totalColorsInFrame) {
+        size_t symbolPos = 0;
+        for (int bitmask = 0x80; bitmask != 0; bitmask >>= 1) {
+            if (colorsInBytes[indexOfNextColorToEncode]&bitmask) {
+                symbols[symbolPos++] = self->_highSymbol;
+            } else {
+                symbols[symbolPos++] = self->_lowSymbol;
+            }
+        }
+
+        return symbolPos;
+    } else {
+        symbols[0] = self->_resetSymbol;
+        *done = 1;
+        return 1;
+    }
 }

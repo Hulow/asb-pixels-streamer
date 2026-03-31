@@ -8,15 +8,15 @@ Transmitter::Transmitter(const rmt_tx_channel_config_t& configs, const Timing& t
 {}
 
 void Transmitter::pushPixel(Pixel& pixel) {
-    _streamer.pushPixelToQueue(
-        _encoder.encode(pixel)
-    );
+    // _streamer.pushPixelToQueue(
+    //     _encoder.encode(pixel)
+    // );
 }
 
 void Transmitter::pushResetSignal() {
-    _streamer.pushResetSignalToQueue(
-        _encoder.encodeResetSignal()
-    );
+    // _streamer.pushResetSignalToQueue(
+    //     _encoder.encodeResetSignal()
+    // );
 }
 
 void Transmitter::printQueue() {

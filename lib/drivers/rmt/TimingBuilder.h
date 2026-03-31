@@ -1,11 +1,13 @@
 #pragma once
 
+#include <cstdint>
+
 struct Timing {
-    int highTimeSignal;
-    int lowTimeSignal;
-    int highTimeNoSignal;
-    int lowTimeNoSignal;
-    int resetTime;
+    float highTimeSignal;
+    float lowTimeSignal;
+    float highTimeNoSignal;
+    float lowTimeNoSignal;
+    float resetTime;
 };
 
 class TimingBuilder {
