@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "../core/Pixel.h"
+#include "../../core/Pixel.h"
 
 class IConsumer {
     public: 

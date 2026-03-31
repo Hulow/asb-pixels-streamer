@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "../../../core/IConsumer.h"
+#include "../../../application/ports/IConsumer.h"
 
 struct State {
     int currentPixel;

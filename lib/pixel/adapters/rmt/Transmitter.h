@@ -7,7 +7,7 @@
 #include "Encoder.h"
 #include "Streamer.h"
 #include "../../core/Pixel.h"
-#include "../../core/IConsumer.h"
+#include "../../application/ports/IConsumer.h"
 
 class Transmitter : public IConsumer {
     private:

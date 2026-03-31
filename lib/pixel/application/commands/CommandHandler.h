@@ -3,7 +3,7 @@
 #include <cstdint>
 #include "Command.h"
 #include <functional> 
-#include "../../core/IConsumer.h"
+#include "../ports/IConsumer.h"
 
 class CommandHandler {
     protected:

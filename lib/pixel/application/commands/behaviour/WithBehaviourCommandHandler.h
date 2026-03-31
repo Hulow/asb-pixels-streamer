@@ -2,7 +2,7 @@
 
 #include "WithBehaviourCommandHandler.h"
 #include "../CommandHandler.h"
-#include "../../../core/IConsumer.h"
+#include "../../../application/ports/IConsumer.h"
 #include "../../../adapters/effects/behaviour/Behaviour.h"
 
 class WithBehaviourCommandHandler : public CommandHandler {
