@@ -1,6 +1,6 @@
 # ASB Pixels streamer
 
-asb-pixels-streamer is a LED motion control application running on an ESP32 Wroom 32 microcontroller. It controls real-time LED effects and animations with an asynchronous execution logic.
+`asb-pixels-streamer` is a LED motion control application running on an ESP32 Wroom 32 microcontroller. It controls real-time LED effects and animations with an asynchronous execution logic.
 
 This side project is will be my system for dynamic lighting installations, with a focus on supporting the electronic music community in Berlin.
 
