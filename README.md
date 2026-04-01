@@ -17,6 +17,8 @@ The ESP32 uses its RMT (Remote Control) peripheral, which generates the modulate
 
 This application is defined into different components:
 
+```
+
               +--------+    +--------------------+    +------------+    +---------+-------------+    +-------------------+  
               | Pixel  | -> |     Drivers        | -> |  Commands  | -> |        Filters        | -> |       Domain      | 
               |        |    | (RMT Transmitter)  |    | (Handler)  |    | (Effects & Animation) |    |  (Frame & Pixel)  |
@@ -31,6 +33,7 @@ This application is defined into different components:
               |        |    |              |
               +--------+    +--------------+
 
+```
 This architecture separates domain logic, effect processing, and hardware control, making the system extensible and maintainable.
 
 ### Domain
