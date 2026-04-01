@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../../shared/ports/ITimer.h"
-#include "../ports/IConsumer.h"
+#include "../../shared/ITimer.h"
+#include "../domain/IConsumer.h"
 #include "Command.h"
 
 class CommandHandler {

@@ -2,19 +2,19 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-#include "../lib/shared/adapters/Timer.h"
-#include "../lib/shared/adapters/Task.h"
+#include "../lib/shared/Timer.h"
+#include "../lib/shared/Task.h"
 
-#include "../lib/pixel/adapters/rmt/ConfigsBuilder.h"
-#include "../lib/pixel/adapters/rmt/TimingBuilder.h"
-#include "../lib/pixel/adapters/rmt/Transmitter.h"
-#include "../lib/pixel/adapters/filters/Blackout.h"
-#include "../lib/pixel/adapters/filters/Sparkling.h"
+#include "../lib/pixel/drivers/ConfigsBuilder.h"
+#include "../lib/pixel/drivers/TimingBuilder.h"
+#include "../lib/pixel/drivers/rmt/Transmitter.h"
+#include "../lib/pixel/filters/Blackout.h"
+#include "../lib/pixel/filters/Sparkling.h"
 
-#include "../lib/pixel/application/commands/CommandHandler.h"
-#include "../lib/pixel/application/commands/Command.h"
+#include "../lib/pixel/commands/CommandHandler.h"
+#include "../lib/pixel/commands/Command.h"
 
-#include "../lib/pixel/application/domain/Pixel.h"
+#include "../lib/pixel/domain/Pixel.h"
 
 struct Params {
     ConfigsBuilder channelConfigs;

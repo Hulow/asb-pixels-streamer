@@ -1,5 +1,4 @@
 #include <cmath>
-#include <array>
 #include "esp_log.h"
 
 #include "Encoder.h"

@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Filter.h"
-#include "../../application/ports/IConsumer.h"
-#include "../../application/domain/Frame.h"
+#include "../domain/IConsumer.h"
+#include "../domain/Frame.h"
 
 class Blink : public Filter {
     public:

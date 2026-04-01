@@ -1,11 +1,10 @@
 #pragma once
 
 #include <cstdint>
-#include <array>
 #include "driver/rmt_tx.h"
 
-#include "../../application/domain/Pixel.h"
-#include "TimingBuilder.h"
+#include "../../domain/Pixel.h"
+#include "../TimingBuilder.h"
 
 class Encoder {
     private:

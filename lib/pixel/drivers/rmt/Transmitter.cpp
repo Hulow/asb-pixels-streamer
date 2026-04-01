@@ -1,5 +1,4 @@
 #include "Transmitter.h"
-#include "esp_log.h"
 
 Transmitter::Transmitter(const rmt_tx_channel_config_t& configs, const Timing& timing) : 
     _channel(configs),

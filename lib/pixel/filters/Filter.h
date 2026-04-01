@@ -1,11 +1,8 @@
 #pragma once
 
-#include <vector>
-
-#include "../../../shared/ports/ITimer.h"
-#include "../../application/ports/IConsumer.h"
-#include "../../application/domain/Frame.h"
-
+#include "../../shared/ITimer.h"
+#include "../domain/IConsumer.h"
+#include "../domain/Frame.h"
 
 class Filter : public IConsumer {
     protected:

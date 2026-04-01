@@ -1,6 +1,6 @@
 #include "CommandHandler.h"
-#include "../../application/domain/Pixel.h"
-#include "../../application/domain/Frame.h"
+#include "../domain/Pixel.h"
+#include "../domain/Frame.h"
 
 CommandHandler::CommandHandler(IConsumer& consumer) : _consumer(consumer) {}
 

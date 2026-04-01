@@ -3,7 +3,6 @@
 #include "freertos/task.h"
 
 #include "Streamer.h"
-#include <string>
 
 Streamer::Streamer(
     const rmt_channel_handle_t& channel, 

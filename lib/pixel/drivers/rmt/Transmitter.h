@@ -1,14 +1,12 @@
 #pragma once
 
-#include <vector>
-
 #include "Channel.h"
-#include "ConfigsBuilder.h"
+#include "../ConfigsBuilder.h"
 #include "Encoder.h"
 #include "Streamer.h"
-#include "../../application/ports/IConsumer.h"
-#include "../../application/domain/Pixel.h"
-#include "../../application/domain/Frame.h"
+#include "../../domain/IConsumer.h"
+#include "../../domain/Pixel.h"
+#include "../../domain/Frame.h"
 
 class Transmitter : public IConsumer {
     private:

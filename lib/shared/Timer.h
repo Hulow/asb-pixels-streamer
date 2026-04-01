@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstdint>
-#include "../ports/ITimer.h"
+#include "ITimer.h"
 
 class Timer : public ITimer {
     public:

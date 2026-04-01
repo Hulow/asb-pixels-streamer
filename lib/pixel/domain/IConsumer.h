@@ -1,7 +1,7 @@
 #pragma once
-#include <vector>
-#include "../../application/domain/Pixel.h"
-#include "../../application/domain/Frame.h"
+
+#include "Pixel.h"
+#include "Frame.h"
 
 class IConsumer {
     public: 

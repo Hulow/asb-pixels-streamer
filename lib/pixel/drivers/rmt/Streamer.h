@@ -1,10 +1,9 @@
 #pragma once 
 
-#include <array>
 #include <vector>
 #include "driver/rmt_tx.h"
 
-#include "../../application/domain/Pixel.h"
+#include "../../domain/Pixel.h"
 
 class Streamer {
     private:

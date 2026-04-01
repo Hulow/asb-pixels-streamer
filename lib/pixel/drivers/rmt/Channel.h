@@ -1,7 +1,7 @@
 #pragma once
 #include "driver/rmt_tx.h"
 
-#include "ConfigsBuilder.h"
+#include "../ConfigsBuilder.h"
 
 class Channel {
     private:
