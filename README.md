@@ -1,7 +1,5 @@
 # ASB Pixels streamer
 
-## Context
-
 asb-pixels-streamer is a LED motion control application running on an ESP32 Wroom 32 microcontroller. It controls real-time LED effects and animations with an asynchronous execution logic.
 
 This side project is will be my system for dynamic lighting installations, with a focus on supporting the electronic music community in Berlin.
@@ -13,7 +11,7 @@ The ESP32 uses its RMT (Remote Control) peripheral, which generates the modulate
 - Amplitude.
 - Phase.
 
-## Overview
+# Overview
 
 This application is defined into different components:
 
@@ -36,14 +34,14 @@ This application is defined into different components:
 ```
 This architecture separates domain logic, effect processing, and hardware control, making the system extensible and maintainable.
 
-### Domain
+## Domain
 
 - Pixel: a value object and characterized by the GRB color. 
 - Frame: an aggregat of pixels representing a snapshot of the LED strip at a specific moment in time.
 
 Frames are the core data structure used to produce animations and effects.
 
-### Command Handler
+## Command Handler
 
 - The command handler is responsible for:
     - Orchestrating frames in combination with filters
@@ -51,7 +49,7 @@ Frames are the core data structure used to produce animations and effects.
 
 It acts as the bridge between the application logic and low-level drivers.
 
-### Filters
+## Filters
 
 Filters implement the Decorator Pattern to process frames dynamically.
 - Each filter implement the IConsumer interface.
@@ -65,7 +63,7 @@ Filters implement the Decorator Pattern to process frames dynamically.
 
 This design allows flexible composition of visual effects without modifying core logic.
 
-### Drivers
+## Drivers
 
 The driver layer handles low-level communication with the LED.
 
@@ -77,7 +75,7 @@ Responsable for:
 The driver implements the IConsumer interface, enabling whatever new filters and command handlers.
 
 
-## Decorator Pattern
+# Decorator Pattern
 
 Filters are implemented using the Decorator Pattern, allowing dynamic composition of frame-processing logic.
 
@@ -108,24 +106,25 @@ The concrete filters implement specific effects.
 
 This approach provides flexibility (runtime composition of effects), extensibility and separation of concerns.
 
-## Getting started.
+# Getting started.
 
-### Prerequisites
+## Prerequisites
 
 Install PlatformIO VS code extension.
-### Build
+
+## Build
 
 ```shell
 pio run
 ```
 
-### Flash
+## Flash
 
 ```shell
 pio run --target uploadpio
 ```
 
-### Monitore
+## Monitore
 
 ```shell
 pio run -t monitor
