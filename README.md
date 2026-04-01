@@ -4,7 +4,7 @@
 
 This side project is will be my system for dynamic lighting installations, with a focus on supporting the electronic music community in Berlin.
 
-The system controls 12V WS2815 LED strips, which require a precise signal using the `NZR protocol`. This protocol imposes strict timing constraints specified by the manufacturer.
+The system controls 12V `WS2815` LED strips, which require a precise signal using the `NZR protocol`. This protocol imposes strict timing constraints specified by the manufacturer.
 
 The ESP32 uses its `RMT (Remote Control Transceiver)` peripheral, which generates the modulated signal sent to the LEDs. The signal characteristics include:
 - Frequence.
