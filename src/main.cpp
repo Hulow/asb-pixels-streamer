@@ -9,7 +9,7 @@
 #include "../lib/pixel/adapters/rmt/TimingBuilder.h"
 #include "../lib/pixel/adapters/rmt/Transmitter.h"
 #include "../lib/pixel/adapters/filters/Blackout.h"
-#include "../lib/pixel/adapters/filters/Blink.h"
+#include "../lib/pixel/adapters/filters/Fading.h"
 
 #include "../lib/pixel/application/commands/CommandHandler.h"
 #include "../lib/pixel/application/commands/Command.h"
@@ -22,7 +22,7 @@ struct Params {
 };
 
 void runTask(void* arg) {
-    int const LEDS_COUNT = 13;
+    int const LEDS_COUNT = 60;
     Command commandOn = Command::from(
         0, 
         255, 
@@ -47,8 +47,8 @@ void runTask(void* arg) {
     Blackout blackoutEffect(transmitter, timer);
     CommandHandler handlerOne(blackoutEffect);
 
-    Blink blinkEffect(transmitter, timer);
-    CommandHandler handlerTwo(blinkEffect);
+    Fading faddingEffect(transmitter, timer, 0.02);
+    CommandHandler handlerTwo(faddingEffect);
 
      while (true) {
         handlerOne.execute(commandOn);
