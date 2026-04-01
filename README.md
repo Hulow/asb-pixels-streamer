@@ -81,6 +81,7 @@ The driver implements the IConsumer interface, enabling whatever new filters and
 
 Filters are implemented using the Decorator Pattern, allowing dynamic composition of frame-processing logic.
 
+```
                                     +-----------------+
                                     | RMT Transmitter |  <- concrete consumer
                                     +-----------------+
@@ -98,6 +99,8 @@ Filters are implemented using the Decorator Pattern, allowing dynamic compositio
    +-----------+ +--------+ +-----------+ +--------+ +--------+ +----------+ +-------+
    | Brightness| |  Blink | | Sparkling | | Fading | | Chasing| | Blackout | |  ...  |  <- concrete decorators
    +-----------+ +--------+ +-----------+ +--------+ +--------+ +----------+ +-------+
+
+```
 
 
 The abstract filter is the interface implementing IConsumer. 
