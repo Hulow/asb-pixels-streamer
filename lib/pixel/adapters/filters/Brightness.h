@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Filter.h"
-#include "../../../application/ports/IConsumer.h"
-#include "../../../application/domain/Frame.h"
+#include "../../application/ports/IConsumer.h"
+#include "../../application/domain/Frame.h"
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"

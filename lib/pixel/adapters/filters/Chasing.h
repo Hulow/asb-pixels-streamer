@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Behaviour.h"
-#include "../../../application/ports/IConsumer.h"
-#include "../../../application/domain/Pixel.h"
-#include "../../../application/domain/Frame.h"
+#include "Filter.h"
+#include "../../application/ports/IConsumer.h"
+#include "../../application/domain/Pixel.h"
+#include "../../application/domain/Frame.h"
 
-class Chasing : public Behaviour {  
+class Chasing : public Filter {  
     public:
-        Chasing(IConsumer& consumer, ITimer& timer): Behaviour(consumer, timer) {}
+        Chasing(IConsumer& consumer, ITimer& timer): Filter(consumer, timer) {}
         void stream(Frame& frame) override {
 
             Pixel pixelOn = Pixel::from(0, 255, 0);

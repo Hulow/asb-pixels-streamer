@@ -8,8 +8,8 @@
 #include "../lib/pixel/adapters/rmt/ConfigsBuilder.h"
 #include "../lib/pixel/adapters/rmt/TimingBuilder.h"
 #include "../lib/pixel/adapters/rmt/Transmitter.h"
-#include "../lib/pixel/adapters/effects/filters/Blackout.h"
-#include "../lib/pixel/adapters/effects/behaviour/Chasing.h"
+#include "../lib/pixel/adapters/filters/Blackout.h"
+#include "../lib/pixel/adapters/filters/Chasing.h"
 
 #include "../lib/pixel/application/commands/CommandHandler.h"
 #include "../lib/pixel/application/commands/Command.h"
