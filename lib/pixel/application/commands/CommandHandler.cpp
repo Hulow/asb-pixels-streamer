@@ -18,6 +18,4 @@ void CommandHandler::execute(const Command& command) {
     }
 
     _consumer.stream(frame);
-
-
 }

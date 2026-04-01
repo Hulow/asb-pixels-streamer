@@ -9,7 +9,7 @@
 #include "../lib/pixel/adapters/rmt/TimingBuilder.h"
 #include "../lib/pixel/adapters/rmt/Transmitter.h"
 #include "../lib/pixel/adapters/effects/filters/Blackout.h"
-#include "../lib/pixel/adapters/effects/filters/Brightness.h"
+#include "../lib/pixel/adapters/effects/behaviour/Chasing.h"
 
 #include "../lib/pixel/application/commands/CommandHandler.h"
 #include "../lib/pixel/application/commands/Command.h"
@@ -30,6 +30,13 @@ void runTask(void* arg) {
         LEDS_COUNT
     );
 
+    Command commandOff = Command::from(
+        0,
+        0,
+        0,
+        LEDS_COUNT
+    );
+
     auto params = static_cast<Params*>(arg);
     Transmitter transmitter(
         params->channelConfigs.build(), 
@@ -40,14 +47,14 @@ void runTask(void* arg) {
     Blackout blackoutEffect(transmitter, timer);
     CommandHandler handlerOne(blackoutEffect);
 
-    Brightness brightnessEffect(transmitter, 0.05, timer);
-    CommandHandler handlerTwo(brightnessEffect);
+    Chasing chasingEffect(transmitter, timer);
+    CommandHandler handlerTwo(chasingEffect);
 
      while (true) {
         handlerOne.execute(command);
         timer.wait(100);
 
-        handlerTwo.execute(command);
+        handlerTwo.execute(commandOff);
         timer.wait(100);
     }
 }

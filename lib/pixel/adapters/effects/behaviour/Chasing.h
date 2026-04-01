@@ -1,25 +1,42 @@
 #pragma once
 
-#include <vector>
-
 #include "Behaviour.h"
-#include "../core/IConsumer.h"
-#include "../core/Pixel.h"
-
+#include "../../../application/ports/IConsumer.h"
+#include "../../../application/domain/Pixel.h"
+#include "../../../application/domain/Frame.h"
 
 class Chasing : public Behaviour {  
-    private:
-        State _state;
-
     public:
-        Chasing(
-            IConsumer& consumer, 
-            const State& state = {}
-        )
-            : 
-                Behaviour(consumer), 
-                _state(state)
-            {}
-        
-        void stream(const std::vector<Pixel> pixels) {}
+        Chasing(IConsumer& consumer, ITimer& timer): Behaviour(consumer, timer) {}
+        void stream(Frame& frame) override {
+
+            Pixel pixelOn = Pixel::from(0, 255, 0);
+            Pixel pixelOff = Pixel::from(0, 0, 0);
+
+            const int chaseLength = 4;
+            const int pixelthreshold = chaseLength - 1;
+
+            for (int i = 0; i < frame.getPixels().size() ; i ++) {
+                if(shouldTurnOff(i, chaseLength)) {
+                    turnOff(frame, i - chaseLength, pixelOff);
+                }
+
+                turnOn(frame, i, pixelOn);
+
+                _consumer.stream(frame);
+                _timer.wait(100);
+            }
+        }
+    private:
+        bool shouldTurnOff(int currentIndex, int chaseLength) const {
+            return currentIndex >= chaseLength;
+        }
+
+        void turnOff(Frame& frame, int index, const Pixel& pixelOff) const {
+            frame.getPixels()[index] = pixelOff;
+        }
+
+        void turnOn(Frame& frame, int index, const Pixel& pixelOn) const {
+            frame.getPixels()[index] = pixelOn;
+        }
 };

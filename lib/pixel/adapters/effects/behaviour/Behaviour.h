@@ -2,21 +2,19 @@
 
 #include <vector>
 
+#include "../../../../shared/ports/ITimer.h"
 #include "../../../application/ports/IConsumer.h"
+#include "../../../application/domain/Frame.h"
 
-struct State {
-    int currentPixel;
-    int pixelsCount;
-    int chasingLength ;
-};
 
 class Behaviour : public IConsumer {
     protected:
         IConsumer& _consumer; 
+        ITimer& _timer;
     public: 
-        Behaviour(IConsumer& consumer) : _consumer(consumer) {}
+        Behaviour(IConsumer& consumer, ITimer& timer) : _consumer(consumer), _timer(timer) {}
         
         virtual ~Behaviour() = default;
 
-        virtual void stream(const std::vector<Pixel>& pixel) = 0;
+        virtual void stream(Frame& frame) = 0;
 };
