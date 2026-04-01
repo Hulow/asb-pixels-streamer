@@ -7,9 +7,9 @@ This side project is will be my system for dynamic lighting installations, with 
 The system controls 12V `WS2815` LED strips, which require a precise signal using the `NZR protocol`. This protocol imposes strict timing constraints specified by the manufacturer.
 
 The ESP32 uses its `RMT (Remote Control Transceiver)` peripheral, which generates the modulated signal sent to the LEDs. The signal characteristics include:
-- Frequence.
-- Amplitude.
-- Phase.
+- Frequence
+- Amplitude
+- Phase
 
 # Overview
 
@@ -44,7 +44,7 @@ Frames are the core data structure used to produce animations and effects.
 ## Command Handler
 
 - The command handler is responsible for:
-    - Orchestrating frames in combination with filters
+    - Orchestrating frames in combination with filters.
     - streaming pixels via a consumer interface (`IConsumer`).
 
 It acts as the bridge between the application logic and low-level drivers.
