@@ -2,12 +2,12 @@
 
 `asb-pixels-streamer` is a LED motion control application running on an ESP32 Wroom 32 microcontroller. It controls real-time LED effects and animations with an asynchronous execution logic.
 
-This side project is will be my system for dynamic lighting installations, with a focus on supporting the electronic music community in Berlin.
+I built this project to have full control over my LED strips, so I can create more complex lighting installations for underground, under the radar electronic music events I organize with my friends in Berlin.
 
 The system controls 12V `WS2815` LED strips, which require a precise signal using the `NZR protocol`. This protocol imposes strict timing constraints specified by the manufacturer.
 
 The ESP32 uses its `RMT (Remote Control Transceiver)` peripheral, which generates the modulated signal sent to the LEDs. The signal characteristics include:
-- Frequence
+- Frequency
 - Amplitude
 - Phase
 
@@ -37,7 +37,7 @@ This architecture separates domain logic, effect processing, and hardware contro
 ## Domain
 
 - `Pixel`: a value object and characterized by the `GRB color`. 
-- `Frame`: an aggregat of pixels representing a snapshot of the LED strip at a specific moment in time.
+- `Frame`: an aggregate of pixels representing a snapshot of the LED strip at a specific moment in time.
 
 Frames are the core data structure used to produce animations and effects.
 
@@ -52,7 +52,7 @@ It acts as the bridge between the application logic and low-level drivers.
 ## Filters
 
 Filters implement the `Decorator Pattern` to process frames dynamically.
-- Each filter implement the `IConsumer` interface.
+- Each filter implements the `IConsumer` interface.
 - They wrap each other to form a decorator chain.
 - Each filter modifies or enriches the frame before passing it downstream.
 - Filters can implement effects such as Chasing or Fading.
@@ -63,7 +63,7 @@ This design allows flexible composition of visual effects without modifying core
 
 The driver layer handles low-level communication with the LED.
 
-Responsable for:
+Responsible for:
 - Configuring DMA Channels.
 - Converting `time-based pixel` values into `waveform signals`.
 - Streaming waveforms to the LED strips.
@@ -96,16 +96,16 @@ Filters are implemented using the Decorator Pattern, allowing dynamic compositio
 
 ```
 
-The abstract filter is the interface implementing IConsumer. 
+The abstract filter is the interface implementing `IConsumer`. 
 The concrete filters implement specific effects.
 
 This approach provides flexibility (runtime composition of effects), extensibility and separation of concerns.
 
-# Getting started.
+# Getting Started.
 
 ## Prerequisites
 
-Install PlatformIO VS code extension.
+PlatformIO (VS Code extension recommended).
 
 ## Build
 
@@ -116,12 +116,11 @@ pio run
 ## Flash
 
 ```shell
-pio run --target uploadpio
+pio run --target upload
 ```
 
-## Monitore
+## Monitor
 
 ```shell
 pio run -t monitor
 ```
-
