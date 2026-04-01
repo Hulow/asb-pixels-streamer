@@ -1,9 +1,10 @@
 #pragma once
 #include <vector>
 #include "../../application/domain/Pixel.h"
+#include "../../application/domain/Frame.h"
 
 class IConsumer {
     public: 
         virtual ~IConsumer() = default;
-        virtual void stream(const std::vector<Pixel>& pixel) = 0;
+        virtual void stream(Frame& frame) = 0;
 };

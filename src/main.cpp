@@ -21,22 +21,6 @@ struct Params {
     Timing timingConfigs;
 };
 
-void processCommands(
-    CommandHandler& handlerOne, 
-    CommandHandler& handlerTwo, 
-    Command command, 
-    Timer& timer
-) {
-    handlerOne.execute(command, [&, command]() {
-        timer.wait(1000);
-        handlerTwo.execute(command, [&, command]() {
-            timer.wait(1000);
-            // schedule next step again
-            processCommands(handlerOne, handlerTwo, command, timer);
-        });
-    });
-}
-
 void runTask(void* arg) {
     int const LEDS_COUNT = 13;
     Command command = Command::from(
@@ -53,18 +37,19 @@ void runTask(void* arg) {
     );
 
     Timer timer;
-    Blackout blackoutEffect(transmitter);
-    CommandHandler handlerOne(blackoutEffect, timer);
+    Blackout blackoutEffect(transmitter, timer);
+    CommandHandler handlerOne(blackoutEffect);
 
-    Brightness brightnessEffect(transmitter, 0.9);
-    CommandHandler handlerTwo(brightnessEffect, timer);
+    Brightness brightnessEffect(transmitter, 0.05, timer);
+    CommandHandler handlerTwo(brightnessEffect);
 
-    processCommands(
-        handlerOne,
-        handlerTwo,
-        command,
-        timer
-    );
+     while (true) {
+        handlerOne.execute(command);
+        timer.wait(100);
+
+        handlerTwo.execute(command);
+        timer.wait(100);
+    }
 }
 
 extern "C" void app_main() {
@@ -76,10 +61,10 @@ extern "C" void app_main() {
 
     Timing timingConfigs = TimingBuilder()
         .highTimeSignal(800)
-        .lowTimeSignal(300)
-        .highTimeNoSignal(300)
-        .lowTimeNoSignal(800)
-        .resetTime(300000)
+        .lowTimeSignal(450)
+        .highTimeNoSignal(400)
+        .lowTimeNoSignal(850)
+        .resetTime(400000)
         .build();
 
     auto configsOne = baseConfigs.gpioNum(GPIO_NUM_5);

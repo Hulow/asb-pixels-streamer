@@ -10,6 +10,8 @@ Transmitter::Transmitter(const rmt_tx_channel_config_t& configs, const Timing& t
     )
 {}
 
-void Transmitter::stream(const std::vector<Pixel>& pixels) {
-    _streamer.stream(pixels);
+void Transmitter::stream(Frame& frame) {
+    _streamer.stream(
+        frame.getPixels()
+    );
 }
