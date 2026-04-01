@@ -13,7 +13,7 @@ The ESP32 uses its `RMT (Remote Control Transceiver)` peripheral, which generate
 
 # Overview
 
-This application is defined into different components:
+This architecture separates domain logic, effect processing, and hardware control, making the system extensible and maintainable.
 
 ```
 
@@ -32,7 +32,6 @@ This application is defined into different components:
               +--------+    +--------------+
 
 ```
-This architecture separates domain logic, effect processing, and hardware control, making the system extensible and maintainable.
 
 ## Domain
 
