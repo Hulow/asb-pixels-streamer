@@ -9,7 +9,7 @@
 #include "../lib/pixel/adapters/rmt/TimingBuilder.h"
 #include "../lib/pixel/adapters/rmt/Transmitter.h"
 #include "../lib/pixel/adapters/filters/Blackout.h"
-#include "../lib/pixel/adapters/filters/Fading.h"
+#include "../lib/pixel/adapters/filters/Sparkling.h"
 
 #include "../lib/pixel/application/commands/CommandHandler.h"
 #include "../lib/pixel/application/commands/Command.h"
@@ -47,8 +47,8 @@ void runTask(void* arg) {
     Blackout blackoutEffect(transmitter, timer);
     CommandHandler handlerOne(blackoutEffect);
 
-    Fading faddingEffect(transmitter, timer, 0.02);
-    CommandHandler handlerTwo(faddingEffect);
+    Sparkling sparklingEffect(transmitter, timer);
+    CommandHandler handlerTwo(sparklingEffect);
 
      while (true) {
         handlerOne.execute(commandOn);
