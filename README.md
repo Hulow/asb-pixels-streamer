@@ -69,7 +69,7 @@ By implementing the `IConsumer` interface, the Transmitter can be easily integra
 
 # Decorator Pattern
 
-Filters are implemented using the Decorator Pattern, enabling dynamic composition of effects on frames & pixels. 
+Filters are implemented using the `Decorator Pattern`, enabling dynamic composition of effects on frames & pixels. 
 
 ```
                                     +-----------------+
@@ -92,24 +92,23 @@ Filters are implemented using the Decorator Pattern, enabling dynamic compositio
 
 ```
 
-Filter is an abstract decorator for all filters.
-It allows filter to wrap another consumer and build a chain of responsibility.
-Every filter is also an IConsumer because Filter inherits from IConsumer.
+- `Filter` is an abstract decorator for all filters.
+- It allows filter to wrap another consumer and build a chain of responsibility.
+- Every filter is also an `IConsumer` because Filter inherits from `IConsumer`.
 
 ## Example
 
-Wrap in Fading 
+- Wrap in Fading 
 ```Fading* fadingEffect = new Fading(*transmitter);```
 
-Wrap in Chasing
+- Wrap in Chasing
 ```Chasing* chasingAndFadingEffects = new Chasing(*fadingEffect);```
 
-Wrap in Blinking
+- Wrap in Blinking
 ```Blinking* chasingAndFadingAndBlinkingEffects = new Blinking(*chasingAndFadingEffects);```
 
-Use the chain in command handler
+- Use the chain in command handler
 ```CommandHandler* handlerTwo = new CommandHandler(*chasingAndFadingAndBlinkingEffects, *timer);```
-
 
 
 # Getting Started
