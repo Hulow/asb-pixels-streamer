@@ -1,41 +1,33 @@
 #pragma once
-
 #include "Filter.h"
-#include "../domain/IConsumer.h"
 #include "../domain/Pixel.h"
 #include "../domain/Frame.h"
 
 class Chasing : public Filter {  
-    public:
-        Chasing(IConsumer& consumer): Filter(consumer) {}
-        void stream(Frame& frame) override {
+private:
+    int _currentIndex = 0; 
+    const int chaseLength = 3;
+    Pixel _pixelOff = Pixel::from(0, 0, 0);
+    Pixel _pixelOn = Pixel::from(0, 255, 0);
 
-            Pixel pixelOn = Pixel::from(0, 255, 0);
-            Pixel pixelOff = Pixel::from(0, 0, 0);
+public:
+    Chasing(IConsumer& consumer): Filter(consumer) {}
 
-            const int chaseLength = 4;
-            const int pixelthreshold = chaseLength - 1;
+    void stream(Frame& frame) override {
+        int size = frame.getPixels().size();
 
-            for (int i = 0; i < frame.getPixels().size() ; i ++) {
-                if(shouldTurnOff(i, chaseLength)) {
-                    turnOff(frame, i - chaseLength, pixelOff);
-                }
+        // turn off pixel that left the chase window
+        int offIndex = (_currentIndex - chaseLength + size) % size;
+        frame.getPixels()[offIndex] = _pixelOff;
 
-                turnOn(frame, i, pixelOn);
-
-                _consumer.stream(frame);
-            }
-        }
-    private:
-        bool shouldTurnOff(int currentIndex, int chaseLength) const {
-            return currentIndex >= chaseLength;
+        // turn on all pixels in the chase window
+        for (int i = 0; i < chaseLength; i++) {
+            int index = (_currentIndex - i + size) % size;
+            frame.getPixels()[index] = _pixelOn;
         }
 
-        void turnOff(Frame& frame, int index, const Pixel& pixelOff) const {
-            frame.getPixels()[index] = pixelOff;
-        }
+        _consumer.stream(frame); // send to next decorator / transmitter
 
-        void turnOn(Frame& frame, int index, const Pixel& pixelOn) const {
-            frame.getPixels()[index] = pixelOn;
-        }
+        _currentIndex = (_currentIndex + 1) % size;
+    }
 };
