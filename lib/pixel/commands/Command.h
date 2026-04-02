@@ -6,17 +6,17 @@ class Command {
         uint8_t _green;
         uint8_t _red;
         uint8_t _blue;
-        int _pixelsCount;
+        int _sequenceLength;
         Command(
             const uint8_t& green, 
             const uint8_t& red, 
             const uint8_t&blue, 
-            const int& pixelsCount
+            const int& sequenceLength
         ) : 
             _green(green), 
             _red(red), 
             _blue(blue),
-            _pixelsCount(pixelsCount)
+            _sequenceLength(sequenceLength)
         {};
     
     public:
@@ -41,7 +41,7 @@ class Command {
             return _blue;
         }
 
-        int getPixelsCount() const {
-            return _pixelsCount;
+        int getSequenceLength() const {
+            return _sequenceLength;
         }
 };

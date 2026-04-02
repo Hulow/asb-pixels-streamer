@@ -7,7 +7,8 @@
 class CommandHandler {
     private:
         IConsumer& _consumer;
+        ITimer& _timer;
     public: 
-        CommandHandler(IConsumer& consumer);
+        CommandHandler(IConsumer& consumer, ITimer& timer);
         void execute(const Command& command);
 };
