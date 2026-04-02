@@ -1,62 +1,26 @@
 #include "driver/rmt_tx.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
 
 #include "../lib/shared/Timer.h"
-#include "../lib/shared/Task.h"
+#include "../lib/shared/TaskScheduler.h"
 
 #include "../lib/pixel/drivers/ConfigsBuilder.h"
 #include "../lib/pixel/drivers/TimingBuilder.h"
 #include "../lib/pixel/drivers/rmt/Transmitter.h"
-#include "../lib/pixel/filters/Blackout.h"
-#include "../lib/pixel/filters/Sparkling.h"
+
+#include "../lib/pixel/filters/Blinking.h"
+#include "../lib/pixel/filters/Chasing.h"
 
 #include "../lib/pixel/commands/CommandHandler.h"
 #include "../lib/pixel/commands/Command.h"
 
-#include "../lib/pixel/domain/Pixel.h"
-
 struct Params {
-    ConfigsBuilder channelConfigs;
-    Timing timingConfigs;
+    CommandHandler* handler;
+    Command command;
 };
 
 void runTask(void* arg) {
-    int const LEDS_COUNT = 60;
-    Command commandOn = Command::from(
-        0, 
-        255, 
-        0, 
-        LEDS_COUNT
-    );
-
-    Command commandOff = Command::from(
-        0,
-        0,
-        0,
-        LEDS_COUNT
-    );
-
     auto params = static_cast<Params*>(arg);
-    Transmitter transmitter(
-        params->channelConfigs.build(), 
-        params->timingConfigs
-    );
-
-    Timer timer;
-    Blackout blackoutEffect(transmitter, timer);
-    CommandHandler handlerOne(blackoutEffect);
-
-    Sparkling sparklingEffect(transmitter, timer);
-    CommandHandler handlerTwo(sparklingEffect);
-
-     while (true) {
-        handlerOne.execute(commandOn);
-        timer.wait(100);
-
-        handlerTwo.execute(commandOn);
-        timer.wait(100);
-    }
+    params->handler->execute(params->command);
 }
 
 extern "C" void app_main() {
@@ -74,23 +38,53 @@ extern "C" void app_main() {
         .resetTime(400000)
         .build();
 
-    auto configsOne = baseConfigs.gpioNum(GPIO_NUM_5);
-    Params* paramsOne = new Params{configsOne, timingConfigs};
-    Task* taskOne = new Task(
-        runTask,
-        "Blackout effect - channel 5",
+    const int LEDS_COUNT = 13;
+    Command command = Command::from(0, 255, 0, LEDS_COUNT);
+    Timer* timer = new Timer();
+
+    /* ---- CHANNEL 1 ---- */
+    Transmitter* transmitterOne = new Transmitter(
+        baseConfigs.gpioNum(GPIO_NUM_5).build(), 
+        timingConfigs
+    );
+    Blinking* blinkingEffectOne = new Blinking(*transmitterOne);
+    Chasing* chasingOne = new Chasing(*blinkingEffectOne);
+    CommandHandler* handlerOne = new CommandHandler(
+        *chasingOne, 
+        *timer
+    );
+
+    Params* paramsOne = new Params{
+        handlerOne, 
+        command
+    };
+
+    TaskScheduler* task1 = new TaskScheduler(
+        runTask, 
+        "Handler on channel 5", 
         paramsOne
     );
+    task1->start();
 
-    taskOne->start();
-
-    auto configsTwo = baseConfigs.gpioNum(GPIO_NUM_4);
-    Params* paramsTwo = new Params{configsTwo, timingConfigs};
-    Task* taskTwo = new Task(
-        runTask, 
-        "Color cycle - channel 4", 
-        paramsTwo
+    /* ---- CHANNEL 2 ---- */
+    Transmitter* transmitterTwo = new Transmitter(
+        baseConfigs.gpioNum(GPIO_NUM_4).build(), 
+        timingConfigs
+    );
+    Chasing* chasingEffectTwo = new Chasing(*transmitterTwo);
+    CommandHandler* handlerTwo = new CommandHandler(
+        *chasingEffectTwo, 
+        *timer
     );
 
-    taskTwo->start();
-};
+    Params* params2 = new Params{
+        handlerTwo, 
+        command
+    };
+    TaskScheduler* task2 = new TaskScheduler(
+        runTask, 
+        "Handler on channel 4", 
+        params2
+    );
+    task2->start();
+}
