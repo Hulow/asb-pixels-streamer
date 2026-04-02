@@ -17,17 +17,17 @@ This architecture separates domain logic, effect processing, and hardware contro
 
 ```
 
-              +--------+    +--------------------+    +------------+    +---------+-------------+    +-------------------+  
-              | Pixel  | -> |     Drivers        | -> |  Commands  | -> |        Filters        | -> |       Domain      | 
-              |        |    | (RMT Transmitter)  |    | (Handler)  |    | (Effects & Animation) |    |  (Frame & Pixel)  |
-              +--------+    +--------------------+    +------------+    +-----------------------+    +-------------------+ 
+              +--------+    +--------------------+    +-----------------------+    +---------+-------------+    +-------------------+  
+              | Pixel  | -> |     Drivers        | -> |        Filters        | -> |        Command        | -> |       Domain      | 
+              |        |    | (RMT Transmitter)  |    | (Effects & Animation) |    |       (Handler)       |    |  (Frame & Pixel)  |
+              +--------+    +--------------------+    +-----------------------+----+-----------------------+    +-------------------+ 
             /
    +-------+
    | main  |
    +-------+
             \   
               +--------+    +--------------+
-              | shared | -> | Timer & Task |
+              | Shared | -> | Timer & Task |
               |        |    |              |
               +--------+    +--------------+
 
@@ -42,37 +42,34 @@ Frames are the core data structure used to produce animations and effects.
 
 ## Command Handler
 
-- The command handler is responsible for:
-    - Orchestrating frames in combination with filters.
-    - streaming frames via a consumer interface (`IConsumer`).
+Part of the application layer and responsible for:
+- Generating frames.
+- Orchestrating streaming.
+- Delegating rendering/effects to the filter chain (`IConsumer` implementation)
 
 It acts as the bridge between the application logic and the low-level driver.
 
 ## Filters
 
-Filters implement the `Decorator Pattern` to process frames dynamically.
-- Each filter implements the `IConsumer` interface.
-- They wrap each other to form a decorator chain.
-- Each filter modifies or enriches the frame before passing it downstream.
-- Filters can implement effects such as Chasing or Fading.
+Part of the Presentation / Effect Layer and responsible for:
+- Modifying frames visually.
+- Delegating the frame to the next consumer in the chain.
 
-This design allows flexible composition of visual effects without modifying core logic.
+This follows the Decorator Pattern. This design allows flexible composition of visual effects without modifying core logic.
 
 ## Drivers
 
-The driver layer handles low-level communication with the LED.
-
-Responsible for:
+Part of the infrastructure layer, the RMT transceiver is responsible for:
 - Configuring DMA Channels.
 - Converting `time-based pixel` values into `waveform signals`.
 - Streaming waveforms to the LED strips.
 
-The driver implements the `IConsumer` interface, enabling whatever new filters and command handlers.
+By implementing the `IConsumer` interface, the Transmitter can be easily integrated into the filters chain, enabling flexible composition of new filters and good chaining of effects :) :) 
 
 
 # Decorator Pattern
 
-Filters are implemented using the Decorator Pattern, allowing dynamic composition of frame-processing logic.
+Filters are implemented using the Decorator Pattern, enabling dynamic composition of effects on frames & pixels. 
 
 ```
                                     +-----------------+
@@ -95,10 +92,25 @@ Filters are implemented using the Decorator Pattern, allowing dynamic compositio
 
 ```
 
-- The abstract filter is the interface implementing `IConsumer`. 
-- The concrete filters implement specific effects.
+Filter is an abstract decorator for all filters.
+It allows filter to wrap another consumer and build a chain of responsibility.
+Every filter is also an IConsumer because Filter inherits from IConsumer.
 
-This approach provides flexibility (runtime composition of effects), extensibility and separation of concerns.
+## Example
+
+Wrap in Fading 
+```Fading* fadingEffect = new Fading(*transmitter);```
+
+Wrap in Chasing
+```Chasing* chasingAndFadingEffects = new Chasing(*fadingEffect);```
+
+Wrap in Blinking
+```Blinking* chasingAndFadingAndBlinkingEffects = new Blinking(*chasingAndFadingEffects);```
+
+Use the chain in command handler
+```CommandHandler* handlerTwo = new CommandHandler(*chasingAndFadingAndBlinkingEffects, *timer);```
+
+
 
 # Getting Started
 

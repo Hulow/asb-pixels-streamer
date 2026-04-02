@@ -5,9 +5,8 @@
 CommandHandler::CommandHandler(IConsumer& consumer,  ITimer& timer) : _consumer(consumer), _timer(timer) {}
 
 void CommandHandler::execute(const Command& command) {
-    Frame frame;
-    int frameIndex = 0;
     const int sequenceLength = command.getSequenceLength();
+    Frame frame;
 
     Pixel pixel = Pixel::from(
         command.getGreen(),
@@ -22,6 +21,5 @@ void CommandHandler::execute(const Command& command) {
     while(true) {
         _consumer.stream(frame);
         _timer.wait(500);
-        frameIndex = (frameIndex + 1) % sequenceLength;
     }
 }
