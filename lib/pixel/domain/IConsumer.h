@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Pixel.h"
 #include "Frame.h"
 
 class IConsumer {

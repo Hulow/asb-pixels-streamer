@@ -1,8 +1,8 @@
 #pragma once
 
-class ITask {
+class ITaskScheduler {
     public:
-        virtual ~ITask() = default;
+        virtual ~ITaskScheduler() = default;
         virtual bool start() = 0;
         virtual void stop() = 0;
         

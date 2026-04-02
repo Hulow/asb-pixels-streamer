@@ -1,6 +1,6 @@
-#include "Task.h"
+#include "TaskScheduler.h"
 
-Task::Task(TaskFunction_t function, const char* name, void* params) 
+TaskScheduler::TaskScheduler(TaskFunction_t function, const char* name, void* params) 
     : 
         _function(function),
         _name(name),
@@ -8,7 +8,7 @@ Task::Task(TaskFunction_t function, const char* name, void* params)
         _handle(nullptr)
     {}
 
-bool Task::start() {
+bool TaskScheduler::start() {
     /* store a stack control block */
     _taskBuffer = new StaticTask_t; 
     /* store a task's stack */
@@ -27,7 +27,7 @@ bool Task::start() {
     return (_handle != nullptr);
 }
 
-void Task::stop() {
+void TaskScheduler::stop() {
     if (_handle) {
         vTaskDelete(_handle);
         _handle = nullptr;

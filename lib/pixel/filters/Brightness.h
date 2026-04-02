@@ -12,13 +12,12 @@ class Brightness : public Filter {
         float _factor;
     
     public:
-        Brightness(IConsumer& consumer,const float& factor, ITimer& timer) : Filter(consumer, timer), _factor(factor) {}
+        Brightness(IConsumer& consumer,const float& factor) : Filter(consumer), _factor(factor) {}
         void stream(Frame& frame) override {
             for (auto& pixel : frame.getPixels()) {
                 pixel.applyBrightness(_factor);
             }
 
             _consumer.stream(frame);
-            _timer.wait(100);
         }
 };

@@ -7,7 +7,7 @@
 
 class Chasing : public Filter {  
     public:
-        Chasing(IConsumer& consumer, ITimer& timer): Filter(consumer, timer) {}
+        Chasing(IConsumer& consumer): Filter(consumer) {}
         void stream(Frame& frame) override {
 
             Pixel pixelOn = Pixel::from(0, 255, 0);
@@ -24,7 +24,6 @@ class Chasing : public Filter {
                 turnOn(frame, i, pixelOn);
 
                 _consumer.stream(frame);
-                _timer.wait(100);
             }
         }
     private:

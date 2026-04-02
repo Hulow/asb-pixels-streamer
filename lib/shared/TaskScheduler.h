@@ -3,9 +3,9 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-#include "ITask.h"
+#include "ITaskScheduler.h"
 
-class Task : public ITask {
+class TaskScheduler : public ITaskScheduler {
     private:
         TaskFunction_t _function;
         const char* _name;
@@ -16,7 +16,7 @@ class Task : public ITask {
         StaticTask_t* _taskBuffer;
         StackType_t* _stackBuffer;
     public:
-        Task(
+        TaskScheduler(
             TaskFunction_t function,
             const char* name,
             void* params
@@ -24,7 +24,7 @@ class Task : public ITask {
         bool start() override;
         void stop() override;
 
-        ~Task() override {
+        ~TaskScheduler() override {
             stop();
             delete[] _stackBuffer;
             delete _taskBuffer;

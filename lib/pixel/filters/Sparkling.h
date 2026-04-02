@@ -1,15 +1,13 @@
 #pragma once
 
 #include "Filter.h"
-#include "../domain/IConsumer.h"
-#include "../domain/Frame.h"
 
 class Sparkling : public Filter {
     private:
         int _sparkleCount;
     
     public:
-        Sparkling(IConsumer& consumer, ITimer& timer, int sparkleCount = 3) : Filter(consumer, timer), _sparkleCount(sparkleCount) {}
+        Sparkling(IConsumer& consumer, int sparkleCount = 3) : Filter(consumer), _sparkleCount(sparkleCount) {}
         void stream(Frame& frame) override {
             auto originalPixels = frame.getPixels();
 
@@ -17,7 +15,6 @@ class Sparkling : public Filter {
             applySparkles(frame, originalPixels);
 
             _consumer.stream(frame);
-            _timer.wait(100);
         }
 
         void resetFrame(Frame& frame) {

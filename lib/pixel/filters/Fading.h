@@ -12,7 +12,7 @@ class Fading : public Filter {
         float _factor;
     
     public:
-        Fading(IConsumer& consumer, ITimer& timer, const float& factor) : Filter(consumer, timer), _factor(factor) {}
+        Fading(IConsumer& consumer, const float& factor) : Filter(consumer), _factor(factor) {}
         void stream(Frame& frame) override {
             auto originalPixels = frame.getPixels();
             fadeOut(frame, originalPixels);
@@ -22,7 +22,6 @@ class Fading : public Filter {
             for (float factor = 0; factor <= 1.0f; factor += _factor) {
                 applyBrightness(frame, originalPixels, factor);
                 _consumer.stream(frame);
-                _timer.wait(100);
             }
         }
 
@@ -30,7 +29,6 @@ class Fading : public Filter {
             for (float factor = 1.0f; factor >= 0.0f; factor -= _factor) {
                 applyBrightness(frame, originalPixels, factor);
                 _consumer.stream(frame);
-                _timer.wait(100);
             }
         }
 
