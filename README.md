@@ -2,7 +2,7 @@
 
 `asb-pixels-streamer` is a LED motion control application running on an ESP32 Wroom 32 microcontroller. It controls real-time LED effects and animations with an asynchronous execution logic.
 
-I built this project to have full control over my LED strips, so I can create more complex lighting installations for underground, under the radar electronic music events I organize with my friends in Berlin.
+I built this project to have good control over my LED strips and create interesting lighting installations for the underground electronic music scene in Berlin.
 
 The system controls 12V `WS2815` LED strips, which require a precise input signal using the `NZR protocol`. This protocol imposes strict timing constraints specified by the manufacturer.
 
@@ -16,16 +16,16 @@ The ESP32 uses its `RMT (Remote Control Transceiver)` peripheral, which generate
 This architecture separates domain logic, effect processing, and hardware control, making the system extensible and maintainable.
 
 ```
-
+                                     INFRA                   PRESENTATION                 APPLICATION                  DOMAIN
               +--------+    +--------------------+    +-----------------------+    +---------+-------------+    +-------------------+  
-              | Pixel  | -> |     Drivers        | -> |        Filters        | -> |        Command        | -> |       Domain      | 
-              |        |    | (RMT Transmitter)  |    | (Effects & Animation) |    |       (Handler)       |    |  (Frame & Pixel)  |
+              | Pixel  | -> |     Drivers        | -> |        Filters        | -> |        Command        | -> |   Frame & Pixel   | 
+              |        |    | (RMT Transmitter)  |    | (Effects & Animation) |    |       (Handler)       |    |                   |
               +--------+    +--------------------+    +-----------------------+----+-----------------------+    +-------------------+ 
             /
    +-------+
    | main  |
    +-------+
-            \   
+            \                     INFRA 
               +--------+    +--------------+
               | Shared | -> | Timer & Task |
               |        |    |              |
@@ -40,22 +40,25 @@ This architecture separates domain logic, effect processing, and hardware contro
 
 Frames are the core data structure used to produce animations and effects.
 
+
 ## Command Handler
 
 Part of the application layer and responsible for:
 - Generating frames.
-- Orchestrating streaming.
+- Orchestrating the streaming loop.
 - Delegating rendering/effects to the filter chain (`IConsumer` implementation)
 
 It acts as the bridge between the application logic and the low-level driver.
 
+
 ## Filters
 
 Part of the Presentation / Effect Layer and responsible for:
-- Modifying frames visually.
-- Delegating the frame to the next consumer in the chain.
+- Applying visual transformations to frames.
+- Delegating processing to the next consumer in the chain.
 
-This follows the Decorator Pattern. This design allows flexible composition of visual effects without modifying core logic.
+They are implemented using the `Decorator Pattern` and rely on polymorphism (`IConsumer`) enabling a flexible composition of effects.
+
 
 ## Drivers
 
@@ -69,8 +72,7 @@ By implementing the `IConsumer` interface, the Transmitter can be easily integra
 
 # Decorator Pattern
 
-Filters are implemented using the `Decorator Pattern`, enabling dynamic composition of effects on frames & pixels. 
-
+Filters are implemented using the `Decorator Pattern` to dynamically compose visual effects.
 ```
                                     +-----------------+
                                     | RMT Transmitter |  <- concrete consumer
@@ -91,18 +93,20 @@ Filters are implemented using the `Decorator Pattern`, enabling dynamic composit
    +-----------+ +--------+ +-----------+ +--------+ +--------+ +----------+ +-------+
 
 ```
+## Concept 
 
 - `Filter` is an abstract decorator for all filters.
 - It allows filter to wrap another consumer and build a chain of responsibility.
 - Every filter is also an `IConsumer` because Filter inherits from `IConsumer`.
 
+
 ## Example of decorating effects on a LED strip
 
 ```
-Fading* fadingEffect = new Fading(*transmitter);
-Chasing* chasingAndFadingEffects = new Chasing(*fadingEffect);
-Blinking* chasingAndFadingAndBlinkingEffects = new Blinking(*chasingAndFadingEffects);
-CommandHandler* handlerTwo = new CommandHandler(*chasingAndFadingAndBlinkingEffects, *timer);
+Fading* fading = new Fading(*transmitter);
+Chasing* chasingAndFading = new Chasing(*fading);
+Blinking* chasingAndFadingAndBlinking = new Blinking(*chasingAndFading);
+CommandHandler* handler = new CommandHandler(*chasingAndFadingAndBlinking, *timer);
 ```
 
 # Getting Started
