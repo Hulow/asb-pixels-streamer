@@ -10,15 +10,14 @@ class Blinking : public Filter {
     public:
         Blinking(IConsumer& consumer) : Filter(consumer) {}
         void stream(Frame& frame) override {
-            _state = !_state; // toggle on/off per frame
+            _state = !_state;
 
             if (!_state) {
-                // turn off all pixels
                 for (auto& pixel : frame.getPixels()) {
                     pixel = Pixel::from(0, 0, 0);
                 }
             }
 
-            _consumer.stream(frame); // send to transmitter
+            _consumer.stream(frame); 
         }
 };

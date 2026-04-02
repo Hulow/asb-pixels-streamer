@@ -9,6 +9,7 @@
 
 #include "../lib/pixel/filters/Blinking.h"
 #include "../lib/pixel/filters/Chasing.h"
+#include "../lib/pixel/filters/Fading.h"
 
 #include "../lib/pixel/commands/CommandHandler.h"
 #include "../lib/pixel/commands/Command.h"
@@ -71,11 +72,18 @@ extern "C" void app_main() {
         baseConfigs.gpioNum(GPIO_NUM_4).build(), 
         timingConfigs
     );
-    Chasing* chasingEffectTwo = new Chasing(*transmitterTwo);
-    CommandHandler* handlerTwo = new CommandHandler(
-        *chasingEffectTwo, 
-        *timer
-    );
+
+    /* Wrap in Fading */
+    Fading* fadingEffect = new Fading(*transmitterTwo);
+
+    /* Wrap in Chasing */
+    Chasing* chasingEffect = new Chasing(*fadingEffect);
+
+    /* Wrap in Blinking */
+    Blinking* blinkingEffectTwo = new Blinking(*chasingEffect);
+
+    /* Use the chain in command handler */
+    CommandHandler* handlerTwo = new CommandHandler(*blinkingEffectTwo, *timer);
 
     Params* params2 = new Params{
         handlerTwo, 

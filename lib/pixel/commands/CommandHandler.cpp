@@ -21,7 +21,7 @@ void CommandHandler::execute(const Command& command) {
 
     while(true) {
         _consumer.stream(frame);
-        _timer.wait(100);
+        _timer.wait(500);
         frameIndex = (frameIndex + 1) % sequenceLength;
     }
 }

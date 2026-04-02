@@ -1,6 +1,8 @@
 #pragma once
 
+#include <cstdlib>
 #include "Filter.h"
+
 
 class Sparkling : public Filter {
     private:
