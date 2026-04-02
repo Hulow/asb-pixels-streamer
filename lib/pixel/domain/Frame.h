@@ -7,12 +7,9 @@
 class Frame {
     private: 
         std::vector<Pixel> _pixels;
-        Frame(const std::vector<Pixel>& pixels) : _pixels(pixels) {}
 
     public:
-        static Frame from(const std::vector<Pixel>& pixels) {
-            return Frame(pixels);
-        }  
+        Frame() {}
 
         void add(const Pixel& pixel) {
             _pixels.push_back(pixel);
