@@ -96,20 +96,14 @@ Filters are implemented using the `Decorator Pattern`, enabling dynamic composit
 - It allows filter to wrap another consumer and build a chain of responsibility.
 - Every filter is also an `IConsumer` because Filter inherits from `IConsumer`.
 
-## Example
+## Example of decorating effects on a LED strip
 
-- Wrap in Fading 
-```Fading* fadingEffect = new Fading(*transmitter);```
-
-- Wrap in Chasing
-```Chasing* chasingAndFadingEffects = new Chasing(*fadingEffect);```
-
-- Wrap in Blinking
-```Blinking* chasingAndFadingAndBlinkingEffects = new Blinking(*chasingAndFadingEffects);```
-
-- Use the chain in command handler
-```CommandHandler* handlerTwo = new CommandHandler(*chasingAndFadingAndBlinkingEffects, *timer);```
-
+```
+Fading* fadingEffect = new Fading(*transmitter);
+Chasing* chasingAndFadingEffects = new Chasing(*fadingEffect);
+Blinking* chasingAndFadingAndBlinkingEffects = new Blinking(*chasingAndFadingEffects);
+CommandHandler* handlerTwo = new CommandHandler(*chasingAndFadingAndBlinkingEffects, *timer);
+```
 
 # Getting Started
 
