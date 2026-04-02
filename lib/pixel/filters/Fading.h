@@ -1,41 +1,43 @@
 #pragma once
-
+#include <vector>
 #include "Filter.h"
 #include "../domain/IConsumer.h"
 #include "../domain/Frame.h"
 
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-
 class Fading : public Filter {
-    private:
-        float _factor;
-    
-    public:
-        Fading(IConsumer& consumer, const float& factor) : Filter(consumer), _factor(factor) {}
-        void stream(Frame& frame) override {
-            auto originalPixels = frame.getPixels();
-            fadeOut(frame, originalPixels);
+private:
+    float _step = 0.1; 
+    std::vector<Pixel> _originalPixels;
+    float _currentFactor = 0.0f;     
+    bool _fadeIn = true;               
+
+public:
+    Fading(IConsumer& consumer) 
+        : Filter(consumer) {}
+
+    void stream(Frame& frame) override {
+        if (_originalPixels.empty()) {
+            _originalPixels = frame.getPixels();
         }
 
-        void fadeIn(Frame& frame, const std::vector<Pixel>& originalPixels) {
-            for (float factor = 0; factor <= 1.0f; factor += _factor) {
-                applyBrightness(frame, originalPixels, factor);
-                _consumer.stream(frame);
-            }
+        for (size_t i = 0; i < frame.getPixels().size(); ++i) {
+            frame.getPixels()[i].applyBrightness(_currentFactor);
         }
 
-        void fadeOut(Frame& frame, const std::vector<Pixel>& originalPixels) {
-            for (float factor = 1.0f; factor >= 0.0f; factor -= _factor) {
-                applyBrightness(frame, originalPixels, factor);
-                _consumer.stream(frame);
-            }
-        }
+        _consumer.stream(frame);
 
-        void applyBrightness(Frame& frame, const std::vector<Pixel>& originalPixels, float factor) {
-            for (size_t i = 0; i < frame.getPixels().size(); ++i) {
-                frame.getPixels()[i] = originalPixels[i]; 
-                frame.getPixels()[i].applyBrightness(factor);
+        if (_fadeIn) {
+            _currentFactor += _step;
+            if (_currentFactor >= 1.0f) {
+                _currentFactor = 1.0f;
+                _fadeIn = false;
+            }
+        } else {
+            _currentFactor -= _step;
+            if (_currentFactor <= 0.0f) {
+                _currentFactor = 0.0f;
+                _fadeIn = true;
             }
         }
+    }
 };

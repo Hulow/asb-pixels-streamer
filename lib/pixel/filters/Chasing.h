@@ -16,17 +16,15 @@ public:
     void stream(Frame& frame) override {
         int size = frame.getPixels().size();
 
-        // turn off pixel that left the chase window
         int offIndex = (_currentIndex - chaseLength + size) % size;
         frame.getPixels()[offIndex] = _pixelOff;
 
-        // turn on all pixels in the chase window
         for (int i = 0; i < chaseLength; i++) {
             int index = (_currentIndex - i + size) % size;
             frame.getPixels()[index] = _pixelOn;
         }
 
-        _consumer.stream(frame); // send to next decorator / transmitter
+        _consumer.stream(frame);
 
         _currentIndex = (_currentIndex + 1) % size;
     }
