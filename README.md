@@ -4,12 +4,12 @@
 
 I built this project to have full control over my LED strips, so I can create more complex lighting installations for underground, under the radar electronic music events I organize with my friends in Berlin.
 
-The system controls 12V `WS2815` LED strips, which require a precise signal using the `NZR protocol`. This protocol imposes strict timing constraints specified by the manufacturer.
+The system controls 12V `WS2815` LED strips, which require a precise input signal using the `NZR protocol`. This protocol imposes strict timing constraints specified by the manufacturer.
 
 The ESP32 uses its `RMT (Remote Control Transceiver)` peripheral, which generates the modulated signal sent to the LEDs. The signal characteristics include:
-- Frequency
-- Amplitude
+- Amplitude fixed by the GPIO voltage (~3.3V)
 - Phase
+- Frequency defined by the pulse timings from the LED requirements. The resolution (clock + divider) defines how precise this timing is generated...
 
 # Overview
 
@@ -44,9 +44,9 @@ Frames are the core data structure used to produce animations and effects.
 
 - The command handler is responsible for:
     - Orchestrating frames in combination with filters.
-    - streaming pixels via a consumer interface (`IConsumer`).
+    - streaming frames via a consumer interface (`IConsumer`).
 
-It acts as the bridge between the application logic and low-level drivers.
+It acts as the bridge between the application logic and the low-level driver.
 
 ## Filters
 
@@ -87,7 +87,7 @@ Filters are implemented using the Decorator Pattern, allowing dynamic compositio
                                     |     Filter      |  <- abstract decorator
                                     +-----------------+
                                             |
-    ----------------------------------------------------------------------------------
+    ---------------------------------------------------------------------------------
          |          |           |           |          |          |          |
    +-----------+ +--------+ +-----------+ +--------+ +--------+ +----------+ +-------+
    | Brightness| |  Blink | | Sparkling | | Fading | | Chasing| | Blackout | |  ...  |  <- concrete decorators
@@ -95,12 +95,12 @@ Filters are implemented using the Decorator Pattern, allowing dynamic compositio
 
 ```
 
-The abstract filter is the interface implementing `IConsumer`. 
-The concrete filters implement specific effects.
+- The abstract filter is the interface implementing `IConsumer`. 
+- The concrete filters implement specific effects.
 
 This approach provides flexibility (runtime composition of effects), extensibility and separation of concerns.
 
-# Getting Started.
+# Getting Started
 
 ## Prerequisites
 
