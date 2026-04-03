@@ -7,9 +7,9 @@ I built this project to have good control over my LED strips and create interest
 The system controls 12V `WS2815` LED strips, which require a precise input signal using the `NZR protocol`. This protocol imposes strict timing constraints specified by the manufacturer.
 
 The ESP32 uses its `RMT (Remote Control Transceiver)` peripheral, which generates the modulated signal sent to the LEDs. The signal characteristics include:
-- Amplitude fixed by the GPIO voltage (~3.3V)
+- Amplitude
 - Phase
-- Frequency defined by the pulse timings from the LED requirements. The resolution (clock + divider) defines how precise this timing is generated...
+- Frequency
 
 # Overview
 
