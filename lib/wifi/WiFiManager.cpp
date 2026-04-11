@@ -5,6 +5,7 @@ WiFiManager::WiFiManager() {
     setNetwork();
     setEventMessagingSystem();
     setRessources();
+    setStorage();
     configureNetwork();
     setOperatingMode();
     buildOperatingConfigs();
