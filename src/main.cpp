@@ -14,7 +14,7 @@
 #include "../lib/pixel/commands/CommandHandler.h"
 #include "../lib/pixel/commands/Command.h"
 
-#include "../lib/wifi/WiFiManager.h"
+#include "../lib/wifi/WifiManager.h"
 
 struct Params {
     CommandHandler* handler;
@@ -27,7 +27,8 @@ void runTask(void* arg) {
 }
 
 extern "C" void app_main() {
-    WiFiManager wifiManager;
+    WifiManager wifiManager;
+    wifiManager.start();
     
     ConfigsBuilder baseConfigs = ConfigsBuilder()
         .clock(RMT_CLK_SRC_APB)

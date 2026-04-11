@@ -1,24 +1,17 @@
 #pragma once
 
-#include "esp_wifi.h"
-#include "esp_err.h"
-#include "nvs_flash.h"
-#include <cstring>
+#include "NVS.h"
+#include "Network.h"
+#include "Driver.h"
 
-class WiFiManager {
-    public:
-        WiFiManager();
+class WifiManager {
+public:
+    WifiManager();
+    void start();
 
-    private:
-        wifi_config_t _operatingConfigs = {};
-        void initNVS();
-        void setNetwork();
-        void configureNetwork();
-        void setEventMessagingSystem();
-        void setStorage();
-        void setRessources();
-        void setOperatingMode();
-        void buildOperatingConfigs();
-        void setOperatingConfigs();
-        void start();
+private:
+    NVS nvs;
+    Network network;
+    Driver driver;
+    void init();
 };
