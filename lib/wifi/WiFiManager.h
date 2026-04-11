@@ -15,6 +15,7 @@ class WiFiManager {
         void setNetwork();
         void configureNetwork();
         void setEventMessagingSystem();
+        void setStorage();
         void setRessources();
         void setOperatingMode();
         void buildOperatingConfigs();

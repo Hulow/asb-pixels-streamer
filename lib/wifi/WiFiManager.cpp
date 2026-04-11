@@ -34,6 +34,10 @@ void WiFiManager::setEventMessagingSystem() {
     ESP_ERROR_CHECK(esp_event_loop_create_default());
 }
 
+void WiFiManager::setStorage() {
+    ESP_ERROR_CHECK(esp_wifi_set_storage(WIFI_STORAGE_RAM));
+}
+
 void WiFiManager::setRessources() {
     wifi_init_config_t configs = WIFI_INIT_CONFIG_DEFAULT();
     ESP_ERROR_CHECK(esp_wifi_init(&configs));
