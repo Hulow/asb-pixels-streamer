@@ -15,6 +15,7 @@
 #include "../lib/pixel/commands/Command.h"
 
 #include "../lib/wifi/WifiManager.h"
+#include "../lib/http/WebServer.h"
 
 struct Params {
     CommandHandler* handler;
@@ -29,6 +30,9 @@ void runTask(void* arg) {
 extern "C" void app_main() {
     WifiManager wifiManager;
     wifiManager.start();
+
+    WebServer webServer;
+    webServer.start();
     
     ConfigsBuilder baseConfigs = ConfigsBuilder()
         .clock(RMT_CLK_SRC_APB)
@@ -100,4 +104,8 @@ extern "C" void app_main() {
         params2
     );
     task2->start();
+
+     while (true) {
+        vTaskDelay(pdMS_TO_TICKS(1000));
+    }
 }
