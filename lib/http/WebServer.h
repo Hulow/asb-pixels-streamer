@@ -4,6 +4,10 @@
 #include <vector>
 #include "IRoute.h"
 
+/*
+    https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/protocols/esp_http_server.html
+*/
+
 class WebServer {
 public:
     WebServer(const std::vector<IRoute*>& routes);
