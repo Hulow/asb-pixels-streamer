@@ -17,6 +17,8 @@
 #include "../lib/wifi/WifiManager.h"
 #include "../lib/http/WebServer.h"
 
+#include "../pixel/controllers/ChasingRoute.h"
+
 struct Params {
     CommandHandler* handler;
     Command command;
@@ -31,8 +33,15 @@ extern "C" void app_main() {
     WifiManager wifiManager;
     wifiManager.start();
 
-    WebServer webServer;
+    static ChasingRoute chasingRoute;
+
+    static std::vector<IRoute*> routes = {
+        &chasingRoute
+    };
+
+    static WebServer webServer(routes);
     webServer.start();
+    webServer.registerRoutes();
     
     ConfigsBuilder baseConfigs = ConfigsBuilder()
         .clock(RMT_CLK_SRC_APB)
