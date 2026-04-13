@@ -20,6 +20,9 @@
 #include "../lib/pixel/web/ChasingController.h"
 #include "../lib/pixel/services/ChasingService.h"
 
+#include "../lib/health/web/HealthRoute.h"
+#include "../lib/health/web/HealthController.h"
+
 
 extern "C" void app_main() {
     ConfigsBuilder baseConfigs = ConfigsBuilder()
@@ -52,8 +55,13 @@ extern "C" void app_main() {
     );
 
     ChasingService service(handlerOne, "service");
-    ChasingController controller(service);
-    ChasingRoute route(controller);
+    ChasingController chasingController(service);
+    ChasingRoute chasingRoute(chasingController);
+
+    /* ---- Health ---- */
+
+    HealthController healthController;
+    HealthRoute healthRoute(healthController);
 
     /* ---- Start WIFI Network ---- */
 
@@ -63,7 +71,8 @@ extern "C" void app_main() {
     /* ---- Start Web Server ---- */
 
     std::vector<IRoute*> routes = {
-        &route
+        &chasingRoute,
+        &healthRoute
     };
 
     WebServer webServer(routes);
