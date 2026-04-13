@@ -1,6 +1,6 @@
 #include "HealthController.h"
 
-HealthController::HealthController(){}
+HealthController::HealthController(HealthService& service) : _service(service) {}
 
 esp_err_t HealthController::handle(httpd_req_t *req)
 {
@@ -10,6 +10,8 @@ esp_err_t HealthController::handle(httpd_req_t *req)
         httpd_resp_send_err(req, HTTPD_500_INTERNAL_SERVER_ERROR, "No controller context");
         return ESP_FAIL;
     }
+
+    controller->_service.start();
 
     const char* response = "OK";
 

@@ -22,6 +22,7 @@
 
 #include "../lib/health/web/HealthRoute.h"
 #include "../lib/health/web/HealthController.h"
+#include "../lib/health/service/HealthService.h"
 
 
 extern "C" void app_main() {
@@ -60,7 +61,8 @@ extern "C" void app_main() {
 
     /* ---- Health ---- */
 
-    HealthController healthController;
+    HealthService healthService;
+    HealthController healthController(healthService);
     HealthRoute healthRoute(healthController);
 
     /* ---- Start WIFI Network ---- */
