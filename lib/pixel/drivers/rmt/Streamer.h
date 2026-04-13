@@ -13,5 +13,5 @@ class Streamer {
 
     public: 
         Streamer(const rmt_channel_handle_t& channel, const rmt_encoder_handle_t& encoder);
-        void stream(const std::vector<Pixel> pixels);
+        void stream(const std::vector<Pixel>& pixels);
 };

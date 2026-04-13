@@ -20,7 +20,7 @@ Streamer::Streamer(
     };
 }
 
-void Streamer::stream(const std::vector<Pixel> pixels) {
+void Streamer::stream(const std::vector<Pixel>& pixels) {
 
     std::vector<uint8_t> buffer;
     buffer.reserve(
