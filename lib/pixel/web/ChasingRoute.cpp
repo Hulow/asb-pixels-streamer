@@ -5,7 +5,7 @@ ChasingRoute::ChasingRoute(ChasingController& controller) : _controller(controll
 void ChasingRoute::registerRoute(httpd_handle_t server)
 {
     httpd_uri_t uri = {
-        .uri = "/chasing",
+        .uri = "/pixel/chasing",
         .method = HTTP_GET,
         .handler = ChasingController::handle,
         .user_ctx = &_controller
