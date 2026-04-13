@@ -1,8 +1,9 @@
 #include "HealthService.h"
 #include "esp_log.h"
+#include <stdio.h>
 
-HealthService::HealthService() {}
+ChipInfoService HealthService::_chipInfoService;
 
-void HealthService::start() {
-    ESP_LOGI("HealthService", "hello");
+ChipInfo HealthService::monitor() {
+    return _chipInfoService.getChipInfo();
 }

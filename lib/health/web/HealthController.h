@@ -1,7 +1,10 @@
 #pragma once
 
-#include "../service/HealthService.h"
 #include "esp_http_server.h"
+#include <inttypes.h>
+
+#include "../service/HealthService.h"
+#include "../mapper/HealthMapper.h"
 
 class HealthController {
     private: 
