@@ -12,11 +12,11 @@ esp_err_t HealthController::handle(httpd_req_t *req)
     }
 
 
-    ChipInfo chip = controller->_service.monitor();
+    HealthResult result = controller->_service.monitor();
 
     static char json[256];
 
-    HealthMapper::toJson(json, sizeof(json), chip);
+    HealthMapper::toJson(json, sizeof(json), result);
 
     httpd_resp_set_type(req, "application/json");
     httpd_resp_send(req, json, HTTPD_RESP_USE_STRLEN);

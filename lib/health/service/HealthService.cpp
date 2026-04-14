@@ -3,7 +3,12 @@
 #include <stdio.h>
 
 ChipInfoService HealthService::_chipInfoService;
+MemoryMonitor HealthService::_memoryMonitor;
+HealthResult HealthService::_result;
 
-ChipInfo HealthService::monitor() {
-    return _chipInfoService.getChipInfo();
+HealthResult HealthService::monitor() {
+    return {
+        chipInfo: _chipInfoService.getChipInfo(),
+        memoryInfo: _memoryMonitor.getMemoryInfo()
+    };
 }

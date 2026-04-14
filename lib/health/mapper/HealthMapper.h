@@ -3,7 +3,7 @@
 #include <cstddef>
 #include <inttypes.h>
 
-#include "../service/ChipInfoService.h"
+#include "../service/HealthService.h"
 
 
 class HealthMapper {
@@ -11,6 +11,6 @@ class HealthMapper {
         static void toJson(
             char* buffer, 
             size_t size, 
-            const ChipInfo& chip
+            const HealthResult& result
         );
 };
