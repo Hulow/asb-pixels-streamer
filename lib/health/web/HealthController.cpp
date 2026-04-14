@@ -14,7 +14,7 @@ esp_err_t HealthController::handle(httpd_req_t *req)
 
     HealthResult result = controller->_service.monitor();
 
-    static char json[256];
+    static char json[1024];
 
     HealthMapper::toJson(json, sizeof(json), result);
 
