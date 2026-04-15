@@ -14,7 +14,7 @@ class TaskScheduler : public ITaskScheduler {
         UBaseType_t _priority = 5;
         TaskHandle_t _handle;
         StaticTask_t* _taskBuffer;
-        StackType_t* _stackBuffer;
+        StackType_t _stackBuffer[4096];
     public:
         TaskScheduler(
             TaskFunction_t function,
