@@ -9,19 +9,14 @@ TaskScheduler::TaskScheduler(TaskFunction_t function, const char* name, void* pa
     {}
 
 bool TaskScheduler::start() {
-    /* store a stack control block */
-    _taskBuffer = new StaticTask_t; 
-    /* store a task's stack */
-    _stackBuffer = new StackType_t[_stackDepth]; 
-
     _handle = xTaskCreateStatic(
         _function,
         _name,
-        _stackDepth,
+        STACK_SIZE,
         _params,
         _priority,
         _stackBuffer,
-        _taskBuffer
+        &_taskBuffer
     );
 
     return (_handle != nullptr);

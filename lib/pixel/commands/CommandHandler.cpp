@@ -18,8 +18,5 @@ void CommandHandler::execute(const Command& command) {
         frame.add(pixel);
     }
 
-    while(true) {
-        _consumer.stream(frame);
-        _timer.wait(500);
-    }
+    _consumer.stream(frame);
 }
